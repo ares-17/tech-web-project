@@ -1,12 +1,28 @@
+/*
 import express from "express";
 import morgan from "morgan"; //popular logging middleware (http://expressjs.com/en/resources/middleware/morgan.html)
 import cors from "cors";
 import swaggerUI from "swagger-ui-express";
-import swaggerJSDoc from "swagger-jsdoc";
+import swaggerJSDoc from "swagger-jsdoc"; 
+*/
 
+const express = require("express");
+const morgan = require("morgan"); // popolare middleware di logging (http://expressjs.com/en/resources/middleware/morgan.html)
+const cors = require("cors");
+const swaggerUI = require("swagger-ui-express");
+const swaggerJSDoc = require("swagger-jsdoc");
+
+
+/*
 import { todoRouter } from "./routes/todoRouter.js";
 import { authenticationRouter } from "./routes/authenticationRouter.js";
 import { enforceAuthentication } from "./middleware/authorization.js";
+*/
+
+const { todoRouter } = require("./routes/todoRouter.js");
+const { authenticationRouter } = require("./routes/authenticationRouter.js");
+const { enforceAuthentication } = require("./middleware/authorization.js");
+
 
 const app = express();
 const PORT = 3000;

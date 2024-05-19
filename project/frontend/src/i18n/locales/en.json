@@ -1,0 +1,28 @@
+{
+    "navbar_title": "Smart Quizz",
+    "navbar_createquizz": "Create Quiz",
+    "navbar_signup": "Sign Up",
+    "navbar_signin": "Sign In",
+    "createquiz_title": "Create new Quiz",
+    "createquiz_titlequiz": "Title",
+    "createquiz_description": "Description",
+    "createquiz_view_preview": "See the preview",
+    "createquiz_numQuestions": "Number of questions: ",
+    "validators_minlength": "Enter text at least 3 characters long",
+    "validators_numRange": "The value entered is not included in the range [{min}, {max}]",
+    "createquiz_title_preview": "Preview",
+    "create_quiz_step1": "Fill data",
+    "create_quiz_step2": "Preview",
+    "createquiz_submitquiz": "Create quiz!",
+    "createquiz_success_toast": "Quiz successfully created!",
+    "navbar_toquiz": "Take a quiz",
+
+    "logToQuiz_title": "Enter quiz code",
+    "home_create_new_quiz": "Create new quiz!",
+    "home_or_choice": "Or",
+    
+    "question_component_next": "Continue",
+    "question_component_back": "Go back",
+    "question_component_last_next": "Conclude quiz",
+    "openquestion_answer": "Answer"
+}
