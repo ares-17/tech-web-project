@@ -1,0 +1,420 @@
+openapi: 3.0.3
+info:
+  title: Tech Web - OpenAPI 3.0
+  description: Prova
+  termsOfService: 'http://swagger.io/terms/'
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  version: 1.0.1
+servers:
+  - url: 'http://localhost:8084'
+
+paths:
+  /status:
+    get:
+      summary: Ritorna lo stato dell'applicazione
+      tags:
+        - public
+      description: |
+        Ritorna lo stato dell'applicazione in formato problem+json
+      security: []
+      responses:
+        '200':
+          description: Il servizio funziona correttamente
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        default:
+          description: Il server ha riscontrato un problema
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+  '/quiz/{uidQuiz}':
+    get:
+      tags:
+        - quiz
+      summary: Restituisce un quiz
+      operationId: getQuiz
+      parameters:
+        - in: path
+          name: uidQuiz
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quiz'
+        default:
+          description: Il server ha riscontrato un problema
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+  /quiz:
+    post:
+      tags:
+        - quiz
+      summary: Crea un nuovo quiz
+      operationId: createQuiz
+      requestBody:
+        description: I dettagli del quiz da creare
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuizQuestionsDTO'
+      responses:
+        '200':
+          description: Quiz creato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quiz'
+
+
+  '/user/{uidUser}':
+    get:
+      tags:
+        - user
+      summary: Restituisce un utente
+      operationId: getUserById
+      parameters:
+        - in: path
+          name: uidUser
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        default:
+          description: Il server ha riscontrato un problema
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+  '/user/quiz/{uidUser}':
+    get:
+      tags:
+        - user
+      summary: Restituisce i quiz creati dall'utente
+      operationId: getQuizByUser
+      parameters:
+        - in: path
+          name: uidUser
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Quiz'
+        default:
+          description: Il server ha riscontrato un problema
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+  /quiz/complete:
+    post:
+      tags:
+        - quiz
+      summary: Consente di completare un quiz
+      operationId: completeQuiz
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompleteQuizDTO'
+      responses:
+        '200':
+          description: Ok
+
+  /questions/{uidQuiz}:
+    get:
+      tags:
+        - questions
+      summary: Restituisce tutte le domande (aperte e/o chiuse) di un quiz
+      operationId: getQuestionsByQuiz
+      parameters:
+        - in: path
+          name: uidQuiz
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Question'
+        default:
+          description: Il server ha riscontrato un problema
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+  /quiz/completed/{uidQuiz}:
+    get:
+      tags:
+        - quiz
+      summary: Restituisce tutti i giocatori (Customers e Users) che hanno partecipato al Quiz
+      operationId: getPlayersByQuiz
+      parameters:
+        - in: path
+          name: uidQuiz
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Question'
+        default:
+          description: Il server ha riscontrato un problema
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+
+
+
+components:
+  schemas:
+    Quiz:
+      type: object
+      properties:
+        uid:
+          type: string
+        title:
+          type: string
+          example: A beatiful Quiz
+        description:
+          type: string
+          example: Description of Quiz
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        maxErrors:
+          type: integer
+          format: int64
+          example: 3
+        isOpen:
+          type: boolean
+          example: true
+        questions:
+          type: array
+          items:
+            type: string
+          minLength: 1
+          maxLength: 30
+      required:
+        - uid
+        - title
+        - maxErrors
+        - questions
+        - createdBy
+
+
+    Player:
+      type: object
+      properties:
+        uid:
+          type: string
+      required:
+        - uid
+
+    User:
+      allOf:
+        - $ref: '#/components/schemas/Player'
+        - type: object
+      type: object
+      properties:
+        username:
+          type: string
+        quiz:
+          type: array
+          items:
+            type: string
+      required:
+        - username
+        - quiz
+
+    Customer:
+      allOf:
+        - $ref: '#/components/schemas/Player'
+        - type: object
+      type: object
+      properties:
+        username:
+          type: string
+
+    Question:
+      type: object
+      properties:
+        title:
+          type: string
+        isMultipleChoices:
+          type: boolean
+          example: true
+        uidQuiz:
+          type: string
+      required:
+        - title
+        - isMultipleChoices
+
+    MultipleChoiceQuestion:
+      allOf:
+        - $ref: '#/components/schemas/Question'
+        - type: object
+      type: object
+      properties:
+        choices:
+          type: array
+          items:
+            type: string
+            description: Choices
+          minLength: 4
+          maxLength: 4
+        correctChoice:
+          type: integer
+          format: int64
+      required:
+        - choices
+        - correctChoice
+
+    OpenChoiceQuestion:
+      allOf:
+        - $ref: '#/components/schemas/Question'
+        - type: object
+      type: object
+      properties:
+        answer:
+          type: string
+
+    ScoreQuizPlayer:
+      type: object
+      properties:
+        uidQuiz:
+          type: string
+        uidPlayer:
+          type: string
+        score:
+          type: integer
+          format: int64
+          minimum: 0
+      required:
+        - uidQuiz
+        - uidPlayer
+        - score
+
+    CompleteQuizDTO:
+      type: object
+      properties:
+        uidQuiz:
+          type: string
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Question'
+
+    QuizQuestionsDTO:
+      type: object
+      properties:
+        uid:
+          type: string
+        title:
+          type: string
+          example: A beatiful Quiz
+        description:
+          type: string
+          example: Description of Quiz
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        maxErrors:
+          type: integer
+          format: int64
+          example: 3
+        isOpen:
+          type: boolean
+          example: true
+        questions:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/MultipleChoiceQuestion'
+              - $ref: '#/components/schemas/OpenChoiceQuestion'
+          minLength: 1
+          maxLength: 30
+      required:
+        - uid
+        - title
+        - maxErrors
+        - questions
+        - createdBy
+
+
+    Problem:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+          minimum: 100
+          maximum: 600
+        detail:
+          type: string
+        instance:
+          type: string
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'https://petstore3.swagger.io/oauth/authorize'
+          scopes:
+            'write:pets': modify pets in your account
+            'read:pets': read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
