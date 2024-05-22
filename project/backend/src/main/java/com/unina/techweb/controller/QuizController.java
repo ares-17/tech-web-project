@@ -3,6 +3,7 @@ package com.unina.techweb.controller;
 import com.unina.techweb.controller.api.QuizApi;
 import com.unina.techweb.dto.CustomerDto;
 import com.unina.techweb.dto.QuizDto;
+import com.unina.techweb.dto.ScorequizcustomerDto;
 import com.unina.techweb.service.CustomerService;
 import com.unina.techweb.service.QuizService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,5 +40,11 @@ public class QuizController implements QuizApi {
     @Override
     public ResponseEntity<List<CustomerDto>> getUsersByQuiz(String uidQuiz) {
         return ResponseEntity.ok(this.quizService.getUsersByQuiz(uidQuiz));
+    }
+
+    @Override
+    public ResponseEntity<Void> completeQuiz(ScorequizcustomerDto scorequizcustomerDto) {
+        this.quizService.completeQuiz(scorequizcustomerDto);
+        return ResponseEntity.ok().build();
     }
 }

@@ -7,6 +7,7 @@ package com.unina.techweb.controller.api;
 
 import com.unina.techweb.dto.CustomerDto;
 import com.unina.techweb.dto.QuizDto;
+import com.unina.techweb.dto.ScorequizcustomerDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -168,6 +169,32 @@ public interface QuizApi {
                 }
             }
         });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+    /**
+     * POST /quiz/complete : Associa il punteggio ottenuto dall&#39;utente
+     *
+     * @param scorequizcustomerDto  (required)
+     * @return Quiz completato con successo (status code 200)
+     */
+    @Operation(
+            operationId = "completeQuiz",
+            summary = "Associa il punteggio ottenuto dall'utente",
+            tags = { "quiz" },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Quiz completato con successo")
+            }
+    )
+    @RequestMapping(
+            method = RequestMethod.POST,
+            value = "/quiz/complete",
+            consumes = { "application/json" }
+    )
+    default ResponseEntity<Void> completeQuiz(
+            @Parameter(name = "ScorequizcustomerDto", description = "", required = true) @Valid @RequestBody ScorequizcustomerDto scorequizcustomerDto
+    ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

@@ -192,6 +192,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
 
+  /quiz/complete:
+    post:
+      tags:
+        - quiz
+      summary: Associa il punteggio ottenuto dall'utente
+      operationId: completeQuiz
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScorequizcustomerDto'
+      responses:
+        '200':
+          description: Quiz completato con successo
+
   /user:
     post:
       tags:
@@ -303,6 +319,28 @@ components:
         - idQuestion
         - text
         - isCorrect
+
+    ScorequizcustomerDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        idCustomer:
+          type: string
+          format: uuid
+        idQuiz:
+          type: string
+          format: uuid
+        score:
+          type: integer
+          format: int64
+          minimum: 0
+          example: 100
+      required:
+        - idCustomer
+        - idQuiz
+        - score
 
     Problem:
       type: object
