@@ -5,8 +5,8 @@
  */
 package com.unina.techweb.controller.api;
 
-import com.unina.techweb.api.ApiUtil;
-import com.unina.techweb.model.*;
+import com.unina.techweb.dto.CustomerDto;
+import com.unina.techweb.dto.QuizDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,7 +28,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import java.util.List;
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-05-20T16:04:02.451980250+02:00[Europe/Rome]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-05-22T16:24:32.875036460+02:00[Europe/Rome]")
 @Validated
 @Tag(name = "quiz", description = "the quiz API")
 public interface QuizApi {
@@ -38,62 +38,35 @@ public interface QuizApi {
     }
 
     /**
-     * POST /quiz/complete : Consente di completare un quiz
-     *
-     * @param completeQuizDTO  (required)
-     * @return Ok (status code 200)
-     */
-    @Operation(
-        operationId = "completeQuiz",
-        summary = "Consente di completare un quiz",
-        tags = { "quiz" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Ok")
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/quiz/complete",
-        consumes = { "application/json" }
-    )
-    default ResponseEntity<Void> completeQuiz(
-        @Parameter(name = "CompleteQuizDTO", description = "", required = true) @Valid @RequestBody CompleteQuizDTO completeQuizDTO
-    ) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
      * POST /quiz : Crea un nuovo quiz
      *
-     * @param quizQuestionsDTO I dettagli del quiz da creare (required)
+     * @param quizDto I dettagli del quiz da creare (required)
      * @return Quiz creato con successo (status code 200)
      */
     @Operation(
-        operationId = "createQuiz",
-        summary = "Crea un nuovo quiz",
-        tags = { "quiz" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Quiz creato con successo", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Quiz.class))
-            })
-        }
+            operationId = "createQuiz",
+            summary = "Crea un nuovo quiz",
+            tags = { "quiz" },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Quiz creato con successo", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = QuizDto.class))
+                    })
+            }
     )
     @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/quiz",
-        produces = { "application/json" },
-        consumes = { "application/json" }
+            method = RequestMethod.POST,
+            value = "/quiz",
+            produces = { "application/json" },
+            consumes = { "application/json" }
     )
-    default ResponseEntity<Quiz> createQuiz(
-        @Parameter(name = "QuizQuestionsDTO", description = "I dettagli del quiz da creare", required = true) @Valid @RequestBody QuizQuestionsDTO quizQuestionsDTO
+    default ResponseEntity<QuizDto> createQuiz(
+            @Parameter(name = "QuizDto", description = "I dettagli del quiz da creare", required = true) @Valid @RequestBody QuizDto quizDto
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"uid\" : \"uid\", \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"isOpen\" : true, \"maxErrors\" : 3, \"createdBy\" : \"createdBy\", \"questions\" : [ \"questions\", \"questions\" ], \"description\" : \"Description of Quiz\", \"title\" : \"A beatiful Quiz\" }";
-                    com.unina.techweb.api.ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    String exampleString = "{ \"uid\" : \"uid\", \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"isOpen\" : true, \"maxErrors\" : 3, \"createdBy\" : \"createdBy\", \"questions\" : [ { \"idQuiz\" : \"idQuiz\", \"answers\" : [ { \"idQuiz\" : \"idQuiz\", \"idQuestion\" : \"idQuestion\", \"id\" : \"id\", \"text\" : \"text\", \"isCorrect\" : true }, { \"idQuiz\" : \"idQuiz\", \"idQuestion\" : \"idQuestion\", \"id\" : \"id\", \"text\" : \"text\", \"isCorrect\" : true } ], \"id\" : \"id\", \"title\" : \"title\" }, { \"idQuiz\" : \"idQuiz\", \"answers\" : [ { \"idQuiz\" : \"idQuiz\", \"idQuestion\" : \"idQuestion\", \"id\" : \"id\", \"text\" : \"text\", \"isCorrect\" : true }, { \"idQuiz\" : \"idQuiz\", \"idQuestion\" : \"idQuestion\", \"id\" : \"id\", \"text\" : \"text\", \"isCorrect\" : true } ], \"id\" : \"id\", \"title\" : \"title\" } ], \"description\" : \"Description of Quiz\", \"title\" : \"A beatiful Quiz\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
             }
@@ -101,56 +74,6 @@ public interface QuizApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
-
-
-    /**
-     * GET /quiz/completed/{uidQuiz} : Restituisce tutti i giocatori (Customers e Users) che hanno partecipato al Quiz
-     *
-     * @param uidQuiz  (required)
-     * @return Ok (status code 200)
-     *         or Il server ha riscontrato un problema (status code 200)
-     */
-    @Operation(
-        operationId = "getPlayersByQuiz",
-        summary = "Restituisce tutti i giocatori (Customers e Users) che hanno partecipato al Quiz",
-        tags = { "quiz" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Ok", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Question.class)),
-                @Content(mediaType = "application/problem+json", schema = @Schema(implementation = Question.class))
-            }),
-            @ApiResponse(responseCode = "200", description = "Il server ha riscontrato un problema", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)),
-                @Content(mediaType = "application/problem+json", schema = @Schema(implementation = Problem.class))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/quiz/completed/{uidQuiz}",
-        produces = { "application/json", "application/problem+json" }
-    )
-    default ResponseEntity<List<Question>> getPlayersByQuiz(
-        @Parameter(name = "uidQuiz", description = "", required = true) @PathVariable("uidQuiz") String uidQuiz
-    ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"isMultipleChoices\" : true, \"uidQuiz\" : \"uidQuiz\", \"title\" : \"title\" }";
-                    com.unina.techweb.api.ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/problem+json"))) {
-                    String exampleString = "Custom MIME type example not yet supported: application/problem+json";
-                    com.unina.techweb.api.ApiUtil.setExampleResponse(request, "application/problem+json", exampleString);
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
 
     /**
      * GET /quiz/{uidQuiz} : Restituisce un quiz
@@ -160,13 +83,13 @@ public interface QuizApi {
      *         or Il server ha riscontrato un problema (status code 200)
      */
     @Operation(
-        operationId = "getQuiz",
+        operationId = "getQuizById",
         summary = "Restituisce un quiz",
         tags = { "quiz" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Ok", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Quiz.class)),
-                @Content(mediaType = "application/problem+json", schema = @Schema(implementation = Quiz.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = QuizDto.class)),
+                @Content(mediaType = "application/problem+json", schema = @Schema(implementation = QuizDto.class))
             }),
             @ApiResponse(responseCode = "200", description = "Il server ha riscontrato un problema", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)),
@@ -179,14 +102,63 @@ public interface QuizApi {
         value = "/quiz/{uidQuiz}",
         produces = { "application/json", "application/problem+json" }
     )
-    default ResponseEntity<Quiz> getQuiz(
+    default ResponseEntity<QuizDto> getQuizById(
         @Parameter(name = "uidQuiz", description = "", required = true) @PathVariable("uidQuiz") String uidQuiz
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"uid\" : \"uid\", \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"isOpen\" : true, \"maxErrors\" : 3, \"createdBy\" : \"createdBy\", \"questions\" : [ \"questions\", \"questions\" ], \"description\" : \"Description of Quiz\", \"title\" : \"A beatiful Quiz\" }";
-                    com.unina.techweb.api.ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    String exampleString = "{ \"uid\" : \"uid\", \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"isOpen\" : true, \"maxErrors\" : 3, \"createdBy\" : \"createdBy\", \"questions\" : [ { \"idQuiz\" : \"idQuiz\", \"answers\" : [ { \"idQuiz\" : \"idQuiz\", \"idQuestion\" : \"idQuestion\", \"id\" : \"id\", \"text\" : \"text\", \"isCorrect\" : true }, { \"idQuiz\" : \"idQuiz\", \"idQuestion\" : \"idQuestion\", \"id\" : \"id\", \"text\" : \"text\", \"isCorrect\" : true } ], \"id\" : \"id\", \"title\" : \"title\" }, { \"idQuiz\" : \"idQuiz\", \"answers\" : [ { \"idQuiz\" : \"idQuiz\", \"idQuestion\" : \"idQuestion\", \"id\" : \"id\", \"text\" : \"text\", \"isCorrect\" : true }, { \"idQuiz\" : \"idQuiz\", \"idQuestion\" : \"idQuestion\", \"id\" : \"id\", \"text\" : \"text\", \"isCorrect\" : true } ], \"id\" : \"id\", \"title\" : \"title\" } ], \"description\" : \"Description of Quiz\", \"title\" : \"A beatiful Quiz\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/problem+json"))) {
+                    String exampleString = "Custom MIME type example not yet supported: application/problem+json";
+                    ApiUtil.setExampleResponse(request, "application/problem+json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /quiz/users/{uidQuiz} : Restituisce tutti i giocatori (loggati e non) che hanno partecipato al Quiz
+     *
+     * @param uidQuiz  (required)
+     * @return Ok (status code 200)
+     *         or Il server ha riscontrato un problema (status code 200)
+     */
+    @Operation(
+        operationId = "getUsersByQuiz",
+        summary = "Restituisce tutti i giocatori (loggati e non) che hanno partecipato al Quiz",
+        tags = { "quiz" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Ok", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = CustomerDto.class)),
+                @Content(mediaType = "application/problem+json", schema = @Schema(implementation = CustomerDto.class))
+            }),
+            @ApiResponse(responseCode = "200", description = "Il server ha riscontrato un problema", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)),
+                @Content(mediaType = "application/problem+json", schema = @Schema(implementation = Problem.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/quiz/users/{uidQuiz}",
+        produces = { "application/json", "application/problem+json" }
+    )
+    default ResponseEntity<List<CustomerDto>> getUsersByQuiz(
+        @Parameter(name = "uidQuiz", description = "", required = true) @PathVariable("uidQuiz") String uidQuiz
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"isAnonymous\" : true, \"isLogged\" : true, \"id\" : \"id\", \"username\" : \"username\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/problem+json"))) {

@@ -5,8 +5,7 @@
  */
 package com.unina.techweb.controller.api;
 
-import com.unina.techweb.model.Problem;
-import com.unina.techweb.model.Question;
+import com.unina.techweb.dto.QuestionDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -26,7 +25,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import java.util.List;
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-05-20T15:49:36.060179726+02:00[Europe/Rome]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-05-22T14:54:59.738081458+02:00[Europe/Rome]")
 @Validated
 @Tag(name = "questions", description = "the questions API")
 public interface QuestionsApi {
@@ -36,9 +35,9 @@ public interface QuestionsApi {
     }
 
     /**
-     * GET /questions/{uidQuiz} : Restituisce tutte le domande (aperte e/o chiuse) di un quiz
+     * GET /questions/{idQuiz} : Restituisce tutte le domande (aperte e/o chiuse) di un quiz
      *
-     * @param uidQuiz  (required)
+     * @param idQuiz  (required)
      * @return Ok (status code 200)
      *         or Il server ha riscontrato un problema (status code 200)
      */
@@ -48,8 +47,8 @@ public interface QuestionsApi {
         tags = { "questions" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Ok", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Question.class)),
-                @Content(mediaType = "application/problem+json", schema = @Schema(implementation = Question.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = QuestionDto.class)),
+                @Content(mediaType = "application/problem+json", schema = @Schema(implementation = QuestionDto.class))
             }),
             @ApiResponse(responseCode = "200", description = "Il server ha riscontrato un problema", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)),
@@ -59,16 +58,16 @@ public interface QuestionsApi {
     )
     @RequestMapping(
         method = RequestMethod.GET,
-        value = "/questions/{uidQuiz}",
+        value = "/questions/{idQuiz}",
         produces = { "application/json", "application/problem+json" }
     )
-    default ResponseEntity<List<Question>> getQuestionsByQuiz(
-        @Parameter(name = "uidQuiz", description = "", required = true) @PathVariable("uidQuiz") String uidQuiz
+    default ResponseEntity<List<QuestionDto>> getQuestionsByQuiz(
+        @Parameter(name = "idQuiz", description = "", required = true) @PathVariable("idQuiz") String idQuiz
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"isMultipleChoices\" : true, \"uidQuiz\" : \"uidQuiz\", \"title\" : \"title\" }";
+                    String exampleString = "{ \"idQuiz\" : \"idQuiz\", \"answers\" : [ { \"idQuiz\" : \"idQuiz\", \"idQuestion\" : \"idQuestion\", \"id\" : \"id\", \"text\" : \"text\", \"isCorrect\" : true }, { \"idQuiz\" : \"idQuiz\", \"idQuestion\" : \"idQuestion\", \"id\" : \"id\", \"text\" : \"text\", \"isCorrect\" : true } ], \"id\" : \"id\", \"title\" : \"title\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

@@ -1,7 +1,8 @@
 package com.unina.techweb.controller;
 
-import com.unina.techweb.api.QuestionsApi;
-import com.unina.techweb.model.Question;
+
+import com.unina.techweb.controller.api.QuestionsApi;
+import com.unina.techweb.dto.QuestionDto;
 import com.unina.techweb.service.QuestionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class QuestionController implements QuestionsApi {
     }
 
     @Override
-    public ResponseEntity<List<Question>> getQuestionsByQuiz(String uidQuiz) {
-        return this.questionService.getQuestionsByQuiz(uidQuiz);
+    public ResponseEntity<List<QuestionDto>> getQuestionsByQuiz(String idQuiz) {
+        return ResponseEntity.ok(questionService.getQuestionsByQuiz(idQuiz));
     }
 }

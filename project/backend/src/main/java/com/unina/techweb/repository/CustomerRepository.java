@@ -8,9 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.UUID;
 
-public interface QuizRepository extends JpaRepository<Quiz, UUID> {
+public interface CustomerRepository extends JpaRepository<Customer, UUID> {
 
-    @Query("select q from Quiz q where q.createdby = ?1")
-    List<Quiz> findByIdUser(Customer customer);
-
+    @Query("select c from Customer c where ")
+    List<Customer> findByQuiz(Quiz quiz);
 }

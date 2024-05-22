@@ -5,7 +5,6 @@
  */
 package com.unina.techweb.controller.api;
 
-import com.unina.techweb.model.Problem;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,7 +21,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-05-20T15:49:36.060179726+02:00[Europe/Rome]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-05-22T14:54:59.738081458+02:00[Europe/Rome]")
 @Validated
 @Tag(name = "status", description = "the status API")
 public interface StatusApi {

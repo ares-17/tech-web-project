@@ -1,9 +1,9 @@
 package com.unina.techweb.controller;
 
-import com.unina.techweb.api.UserApi;
-import com.unina.techweb.model.Quiz;
-import com.unina.techweb.model.User;
-import com.unina.techweb.service.UserService;
+import com.unina.techweb.controller.api.UserApi;
+import com.unina.techweb.dto.CustomerDto;
+import com.unina.techweb.dto.QuizDto;
+import com.unina.techweb.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,20 +15,27 @@ import java.util.List;
 @RestController
 public class UserController implements UserApi {
 
-    private final UserService userService;
+    private final CustomerService customerService;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(CustomerService customerService) {
+        this.customerService = customerService;
     }
 
     @Override
-    public ResponseEntity<User> getUserById(String uidUser) {
-        return this.userService.getUserById(uidUser);
+    public ResponseEntity<CustomerDto> getCustomerById(String uidUser) {
+        return ResponseEntity.ok(this.customerService.getUserById(uidUser));
     }
 
     @Override
-    public ResponseEntity<List<Quiz>> getQuizByUser(String uidUser) {
-        return this.userService.getQuizByUser(uidUser);
+    public ResponseEntity<List<QuizDto>> getQuizListByUser(String uidUser) {
+        return ResponseEntity.ok(this.customerService.getQuizByUser(uidUser));
     }
+
+    @Override
+    public ResponseEntity<CustomerDto> createUser(CustomerDto customerDto) {
+        var customerWithId = customerService.createCustomer(customerDto);
+        return ResponseEntity.ok(customerWithId);
+    }
+
 }

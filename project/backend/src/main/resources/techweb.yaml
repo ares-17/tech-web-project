@@ -38,7 +38,7 @@ paths:
       tags:
         - quiz
       summary: Restituisce un quiz
-      operationId: getQuiz
+      operationId: getQuizById
       parameters:
         - in: path
           name: uidQuiz
@@ -51,7 +51,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Quiz'
+                $ref: '#/components/schemas/QuizDto'
         default:
           description: Il server ha riscontrato un problema
           content:
@@ -71,25 +71,25 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/QuizQuestionsDTO'
+              $ref: '#/components/schemas/QuizDto'
       responses:
         '200':
           description: Quiz creato con successo
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Quiz'
+                $ref: '#/components/schemas/QuizDto'
 
 
-  '/user/{uidUser}':
+  '/user/{idCustomer}':
     get:
       tags:
         - user
       summary: Restituisce un utente
-      operationId: getUserById
+      operationId: getCustomerById
       parameters:
         - in: path
-          name: uidUser
+          name: idCustomer
           schema:
             type: string
           required: true
@@ -99,7 +99,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/CustomerDto'
         default:
           description: Il server ha riscontrato un problema
           content:
@@ -107,15 +107,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
 
-  '/user/quiz/{uidUser}':
+  '/user/quiz/{idCustomer}':
     get:
       tags:
         - user
       summary: Restituisce i quiz creati dall'utente
-      operationId: getQuizByUser
+      operationId: getQuizListByUser
       parameters:
         - in: path
-          name: uidUser
+          name: idCustomer
           schema:
             type: string
           required: true
@@ -127,7 +127,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Quiz'
+                  $ref: '#/components/schemas/QuizDto'
         default:
           description: Il server ha riscontrato un problema
           content:
@@ -135,23 +135,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
 
-  /quiz/complete:
-    post:
-      tags:
-        - quiz
-      summary: Consente di completare un quiz
-      operationId: completeQuiz
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CompleteQuizDTO'
-      responses:
-        '200':
-          description: Ok
 
-  /questions/{uidQuiz}:
+  /questions/{idQuiz}:
     get:
       tags:
         - questions
@@ -159,7 +144,7 @@ paths:
       operationId: getQuestionsByQuiz
       parameters:
         - in: path
-          name: uidQuiz
+          name: idQuiz
           schema:
             type: string
           required: true
@@ -171,7 +156,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Question'
+                  $ref: '#/components/schemas/QuestionDto'
         default:
           description: Il server ha riscontrato un problema
           content:
@@ -179,12 +164,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
 
-  /quiz/completed/{uidQuiz}:
+  /quiz/users/{uidQuiz}:
     get:
       tags:
         - quiz
-      summary: Restituisce tutti i giocatori (Customers e Users) che hanno partecipato al Quiz
-      operationId: getPlayersByQuiz
+      summary: Restituisce tutti i giocatori (loggati e non) che hanno partecipato al Quiz
+      operationId: getUsersByQuiz
       parameters:
         - in: path
           name: uidQuiz
@@ -199,7 +184,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Question'
+                  $ref: '#/components/schemas/CustomerDto'
         default:
           description: Il server ha riscontrato un problema
           content:
@@ -207,11 +192,32 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
 
+  /user:
+    post:
+      tags:
+        - user
+      summary: Crea un nuovo Utente
+      operationId: createUser
+      requestBody:
+        description: I dettagli del quiz da creare
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerDto'
+      responses:
+        '200':
+          description: Utente creato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerDto'
+
 
 
 components:
   schemas:
-    Quiz:
+    QuizDto:
       type: object
       properties:
         uid:
@@ -237,157 +243,66 @@ components:
         questions:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/QuestionDto'
           minLength: 1
           maxLength: 30
       required:
-        - uid
         - title
         - maxErrors
         - questions
         - createdBy
 
-
-    Player:
+    CustomerDto:
       type: object
       properties:
-        uid:
+        id:
           type: string
-      required:
-        - uid
-
-    User:
-      allOf:
-        - $ref: '#/components/schemas/Player'
-        - type: object
-      type: object
-      properties:
         username:
           type: string
-        quiz:
-          type: array
-          items:
-            type: string
+        isLogged:
+          type: boolean
+        isAnonymous:
+          type: boolean
       required:
-        - username
-        - quiz
+        - isAnonymous
 
-    Customer:
-      allOf:
-        - $ref: '#/components/schemas/Player'
-        - type: object
-      type: object
-      properties:
-        username:
-          type: string
 
-    Question:
+    QuestionDto:
       type: object
       properties:
         title:
           type: string
-        isMultipleChoices:
-          type: boolean
-          example: true
-        uidQuiz:
+        id:
           type: string
+        idQuiz:
+          type: string
+        answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerDto'
       required:
         - title
-        - isMultipleChoices
+        - idQuiz
+        - answers
 
-    MultipleChoiceQuestion:
-      allOf:
-        - $ref: '#/components/schemas/Question'
-        - type: object
+    AnswerDto:
       type: object
       properties:
-        choices:
-          type: array
-          items:
-            type: string
-            description: Choices
-          minLength: 4
-          maxLength: 4
-        correctChoice:
-          type: integer
-          format: int64
-      required:
-        - choices
-        - correctChoice
-
-    OpenChoiceQuestion:
-      allOf:
-        - $ref: '#/components/schemas/Question'
-        - type: object
-      type: object
-      properties:
-        answer:
+        id:
           type: string
-
-    ScoreQuizPlayer:
-      type: object
-      properties:
-        uidQuiz:
+        text:
           type: string
-        uidPlayer:
-          type: string
-        score:
-          type: integer
-          format: int64
-          minimum: 0
-      required:
-        - uidQuiz
-        - uidPlayer
-        - score
-
-    CompleteQuizDTO:
-      type: object
-      properties:
-        uidQuiz:
-          type: string
-        questions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Question'
-
-    QuizQuestionsDTO:
-      type: object
-      properties:
-        uid:
-          type: string
-        title:
-          type: string
-          example: A beatiful Quiz
-        description:
-          type: string
-          example: Description of Quiz
-        createdAt:
-          type: string
-          format: date-time
-        createdBy:
-          type: string
-        maxErrors:
-          type: integer
-          format: int64
-          example: 3
-        isOpen:
+        isCorrect:
           type: boolean
-          example: true
-        questions:
-          type: array
-          items:
-            oneOf:
-              - $ref: '#/components/schemas/MultipleChoiceQuestion'
-              - $ref: '#/components/schemas/OpenChoiceQuestion'
-          minLength: 1
-          maxLength: 30
+        idQuestion:
+          type: string
+        idQuiz:
+          type: string
       required:
-        - uid
-        - title
-        - maxErrors
-        - questions
-        - createdBy
-
+        - idQuiz
+        - idQuestion
+        - text
+        - isCorrect
 
     Problem:
       type: object
@@ -405,6 +320,7 @@ components:
           type: string
         instance:
           type: string
+
   securitySchemes:
     petstore_auth:
       type: oauth2
