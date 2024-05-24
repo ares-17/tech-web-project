@@ -4,30 +4,12 @@
             <div class="col-12 col-xl-6 col-lg-6 mx-auto">
                 <Stepper v-if="quiz && quiz.questions?.length" :stepsConfig="stepsConfig" ref="stepperRef">
                     <template v-for="(question, index) of quiz?.questions" v-slot:[`step-${index}`]>
-                        <QuestionComponent :question="question" 
-                            @update:answer="(val: string) => onSubmitAnswer(val, index)" />
-                        <div class="row mt-3">
-                            <div class="col-12 col-md-6 col-sm-6 col-lg-6 col-xl-6 mb-3 mx-auto mx-auto">
-                                <button :class="{ disabled: index === 0 }" type="submit"
-                                    @click="goBack()"
-                                    class="btn btn-outline-secondary w-100">
-                                    <i class="bi bi-arrow-left"></i>
-                                    {{ $t('question_component_back') }}
-                                </button>
-                            </div>
-                            <div class="col-12 col-md-6 col-sm-6 col-lg-6 col-xl-6 mb-3 mx-auto mx-auto">
-                                <button :class="{ disabled: index === (quiz.questions?.length - 1) }" 
-                                    @click="goNext()"
-                                    type="submit"
-                                    class="btn btn-primary w-100">
-                                    {{ index === (quiz.questions?.length - 1) ? 
-                                        $t('question_component_last_next') : 
-                                        $t('question_component_next') 
-                                    }}
-                                    <i class="bi bi-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
+                        <QuestionComponent 
+                            :question="question"
+                            :index="index"
+                            :totalQuestion="quiz?.questions?.length" 
+                            @update:answer="(val: string) => onSubmitAnswer(val, index)"
+                             />
                     </template>
                 </Stepper>
             </div>
@@ -38,13 +20,14 @@
 </template>
 
 <script lang="ts">
-import Toast from '../components/Toast.vue';
-import Quiz from '@/models/Quiz.model';
-import { watch, ref, type Ref } from 'vue';
+import type { QuizApi, ScoreApi } from '@/api';
+import type { QuizDto } from '@/api/models';
 import QuestionComponent from '@/components/QuestionComponent.vue';
-import type MultipleChoiceQuestion from '@/models/MultipleChoiceQuestion.model';
 import Stepper from '@/components/Stepper.vue';
-import type OpenQuestion from '@/models/OpenChoiceQuestion.model';
+import i18n from '@/i18n/i18n';
+import { inject, ref, watch, type Ref } from 'vue';
+import { useRouter } from 'vue-router';
+import Toast from '../components/Toast.vue';
 
 export default {
     props: {
@@ -55,10 +38,14 @@ export default {
     },
     setup(props) {
         const stepsConfig: Ref<string[]> = ref([]);
-        const quiz: Ref<Partial<Quiz | undefined>> = ref(undefined);
+        const quiz: Ref<Partial<QuizDto | undefined>> = ref(undefined);
         const code: Ref<String | undefined> = ref(props.code);
         const stepperRef: Ref<typeof Stepper | null> = ref(null);
-        const answers: Ref<undefined | any> = ref();
+        const quizApi = inject('QuizApi') as QuizApi;
+        const scoreApi = inject('ScoreApi') as ScoreApi;
+        const responses: Ref<string[]> = ref([]);
+        const toastService: Ref<typeof Toast | null> = ref(null);
+        const router = useRouter();
 
         if (code.value) {
             loadQuiz();
@@ -70,28 +57,13 @@ export default {
         });
 
         async function loadQuiz() {
-            const questions: OpenQuestion[] = [{
-                answer: 'Si',
-                isMultipleChoices: false,
-                title: '## Titolo particolare'
-            },
-            {
-                answer: 'Si',
-                isMultipleChoices: false,
-                title: '## Titolo particolare 2'
-            }];
-
-            quiz.value = await Promise.resolve({
-                createdAt: '12/04/2025',
-                createdBy: 'aress',
-                description: 'description',
-                questions: questions,
-                title: '# Un quiz fantastico!',
-                uid: '12343423'
-            });
-            stepsConfig.value = (quiz?.value?.questions) ?
-                quiz?.value?.questions?.map(question => question.title) :
-                [];
+            quizApi.getQuizById({ uidQuiz: code.value as string })
+                .then(response => {
+                    quiz.value = response;
+                    stepsConfig.value = (quiz?.value?.questions) ?
+                        quiz?.value?.questions?.map(question => question.title) :
+                        [];
+                });
         }
 
         function goBack(){
@@ -103,6 +75,27 @@ export default {
         }
 
         function onSubmitAnswer(val: string, index: number){
+            responses.value[index] = val;
+
+            const isAddedAllResponses = responses?.value
+                ?.filter(a => a && a !== null && a !== undefined && a !== '')
+                ?.length === quiz?.value?.questions?.length;
+
+            if(isAddedAllResponses){
+                console.log(responses.value);
+            }
+            scoreApi.completeQuiz({
+                scoreDto: {
+                    customerId: '',
+                    quizId: quiz?.value?.uid!,
+                    score: 0,
+                }
+            })
+            .then(() => {
+                toastService.value?.show(i18n.global.t(''));
+                router.push({ name: 'home' })
+            })
+            .catch(() => toastService.value?.show(i18n.global.t('')))
             
         }
 
@@ -111,7 +104,8 @@ export default {
             quiz,
             stepperRef,
             goBack,
-            goNext
+            goNext,
+            onSubmitAnswer
         }
     },
     components: {

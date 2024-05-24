@@ -16,11 +16,11 @@
 import * as runtime from './models/runtime';
 import type {
   Problem,
-} from '../models/index';
+} from './models/index';
 import {
     ProblemFromJSON,
     ProblemToJSON,
-} from '../models/index';
+} from './models/index';
 
 /**
  * 

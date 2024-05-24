@@ -24,5 +24,6 @@
     "question_component_next": "Continue",
     "question_component_back": "Go back",
     "question_component_last_next": "Conclude quiz",
-    "openquestion_answer": "Answer"
+    "openquestion_answer": "Answer",
+    "home_error_id": "No quiz with the entered id was found"
 }

@@ -5,6 +5,9 @@ import HomeView from '@/views/HomeView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  scrollBehavior: () => {
+    return { el: '#app', behavior: 'smooth' }
+  },
   routes: [
     {
       path: '/',

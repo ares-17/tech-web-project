@@ -264,7 +264,7 @@ components:
     QuizDto:
       type: object
       properties:
-        uid:
+        id:
           type: string
         title:
           type: string

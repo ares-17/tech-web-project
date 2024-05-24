@@ -17,13 +17,13 @@ import * as runtime from './models/runtime';
 import type {
   Problem,
   QuestionDto,
-} from '../models/index';
+} from './models/index';
 import {
     ProblemFromJSON,
     ProblemToJSON,
     QuestionDtoFromJSON,
     QuestionDtoToJSON,
-} from '../models/index';
+} from './models/index';
 
 export interface GetQuestionsByQuizRequest {
     idQuiz: string;

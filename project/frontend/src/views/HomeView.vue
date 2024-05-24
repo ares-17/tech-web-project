@@ -11,10 +11,10 @@
                             <label for="quizInput" class="form-label">{{ $t('logToQuiz_title') }}</label>
                             <div class="row">
                                 <div class="col-9 col-md-9 col-sm-9 col-lg-9 col-xl-9 mb-2 ms-auto my-auto">
-                                    <input type="text" class="form-control" id="quizInput" v-model="quizInput">
+                                    <input type="text" class="form-control" id="quizInput" v-model="code">
                                 </div>
                                 <div class="col-3 col-md-3 col-sm-3 col-lg-3 mb-2 col-xl-3 my-auto">
-                                    <button class="btn btn-primary w-100"><i class="bi bi-arrow-right"></i></button>
+                                    <button class="btn btn-primary w-100" @click="getQuizByCode"><i class="bi bi-arrow-right"></i></button>
                                 </div>
                             </div>
                             <div class="separator mx-3">{{ $t('home_or_choice') }}</div>
@@ -27,17 +27,47 @@
             </div>
         </div>
     </div>
+
+    <Toast ref="toastService"/>
+
 </template>
 
 <script lang="ts">
+import type { QuizApi } from '@/api/QuizApi';
+import Toast from '@/components/Toast.vue';
+import i18n from '@/i18n/i18n';
+import type { Ref } from 'vue';
+import { inject, ref } from 'vue';
+import { useRouter, type Router } from 'vue-router';
+
 export default {
     name: 'HomeView',
     setup() {
-        return {
+        const code: Ref<string | undefined> = ref();
+        const quizApi = inject('QuizApi') as QuizApi;
+        const toastService: Ref<typeof Toast | null> = ref(null);
+        const router: Router = useRouter();
 
+        function getQuizByCode(){
+            if(!code.value){
+                return;
+            }
+            quizApi.getQuizById({ uidQuiz: code.value })
+                .then(() => {
+                    router.push({ name: 'quiz-istance', params: { code: code.value } })
+                })
+                .catch(() => toastService.value?.show(i18n.global.t('home_error_id')));
+        }
+
+        return {
+            code,
+            getQuizByCode,
+            toastService
         }
     },
-    component: { }
+    component: {
+        Toast
+    }
 };
 </script>
 

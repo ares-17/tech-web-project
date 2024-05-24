@@ -17,13 +17,13 @@ import * as runtime from './models/runtime';
 import type {
   Problem,
   ScoreDto,
-} from '../models/index';
+} from './models/index';
 import {
     ProblemFromJSON,
     ProblemToJSON,
     ScoreDtoFromJSON,
     ScoreDtoToJSON,
-} from '../models/index';
+} from './models/index';
 
 export interface CompleteQuizRequest {
     scoreDto: ScoreDto;

@@ -24,5 +24,6 @@
     "question_component_next": "Prosegui",
     "question_component_back": "Torna indietro",
     "question_component_last_next": "Concludi il quiz",
-    "openquestion_answer": "Risposta"
+    "openquestion_answer": "Risposta",
+    "home_error_id": "Non è stato trovato nessun quiz con l'id inserito"
 }

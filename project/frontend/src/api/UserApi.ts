@@ -18,7 +18,7 @@ import type {
   CustomerDto,
   Problem,
   QuizDto,
-} from '../models/index';
+} from './models/index';
 import {
     CustomerDtoFromJSON,
     CustomerDtoToJSON,
@@ -26,7 +26,7 @@ import {
     ProblemToJSON,
     QuizDtoFromJSON,
     QuizDtoToJSON,
-} from '../models/index';
+} from './models/index';
 
 export interface CreateUserRequest {
     customerDto: CustomerDto;

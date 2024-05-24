@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues } from './runtime';
 import type { QuestionDto } from './QuestionDto';
 import {
     QuestionDtoFromJSON,
@@ -31,7 +31,7 @@ export interface QuizDto {
      * @type {string}
      * @memberof QuizDto
      */
-    uid?: string;
+    id?: string;
     /**
      * 
      * @type {string}
@@ -97,7 +97,7 @@ export function QuizDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): Q
     }
     return {
         
-        'uid': json['uid'] == null ? undefined : json['uid'],
+        'id': json['id'] == null ? undefined : json['id'],
         'title': json['title'],
         'description': json['description'] == null ? undefined : json['description'],
         'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
@@ -114,7 +114,7 @@ export function QuizDtoToJSON(value?: QuizDto | null): any {
     }
     return {
         
-        'uid': value['uid'],
+        'id': value['id'],
         'title': value['title'],
         'description': value['description'],
         'createdAt': value['createdAt'] == null ? undefined : ((value['createdAt']).toISOString()),
