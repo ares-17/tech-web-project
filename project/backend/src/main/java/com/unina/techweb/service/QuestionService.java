@@ -28,7 +28,8 @@ public class QuestionService {
     }
 
     public List<QuestionDto> getQuestionsByQuiz(String uidQuiz) {
-        Quiz quiz = quizRepository.getById(UUID.fromString(uidQuiz));
+        Quiz quiz = quizRepository.findById(UUID.fromString(uidQuiz))
+                .orElseThrow(IllegalArgumentException::new);
 
         var questionsWithAnswers = quiz.getQuestions().stream()
                 .peek(q -> q.setAnswers(new HashSet<>(answerRepository.getAnswerByQuestion(q)))).toList();

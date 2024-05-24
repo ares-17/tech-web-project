@@ -1,13 +1,7 @@
 package com.unina.techweb.utils;
 
-import com.unina.techweb.dto.AnswerDto;
-import com.unina.techweb.dto.CustomerDto;
-import com.unina.techweb.dto.QuestionDto;
-import com.unina.techweb.dto.QuizDto;
-import com.unina.techweb.entities.Answer;
-import com.unina.techweb.entities.Customer;
-import com.unina.techweb.entities.Question;
-import com.unina.techweb.entities.Quiz;
+import com.unina.techweb.dto.*;
+import com.unina.techweb.entities.*;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -85,7 +79,7 @@ public class Mapper {
         quiz.setCreatedby(customer);
         quiz.setId(quizDto.getId());
 
-        Set<Question> questions = new HashSet<Question>(quizDto.getQuestions().stream()
+        Set<Question> questions = new HashSet<>(quizDto.getQuestions().stream()
                 .map(q -> Mapper.mapQuestionDtoToQuestion(q, quiz)).toList());
 
         quiz.setQuestions(questions);
@@ -98,6 +92,23 @@ public class Mapper {
                 customer.getUsername(),
                 customer.getIslogged(),
                 customer.getIsanonymous()
+        );
+    }
+
+    public static ScoreDto mapScoreQuizCustomerToScoreCustomerDto(Score entity){
+        return new ScoreDto(
+                entity.getCustomer().getId().toString(),
+                entity.getCustomer().getUsername(),
+                entity.getCustomer().getIslogged(),
+                entity.getCustomer().getIsanonymous(),
+                entity.getQuiz().getId().toString(),
+                entity.getQuiz().getTitle(),
+                entity.getQuiz().getDescription(),
+                entity.getQuiz().getCreatedat(),
+                entity.getQuiz().getMaxerrors(),
+                entity.getQuiz().getIsopen(),
+                entity.getScore(),
+                entity.getCompletedat()
         );
     }
 }

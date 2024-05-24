@@ -164,15 +164,31 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
 
-  /quiz/users/{uidQuiz}:
+  /score/complete:
+    post:
+      tags:
+        - score
+      summary: Associa il punteggio ottenuto dall'utente
+      operationId: completeQuiz
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScoreDto'
+      responses:
+        '200':
+          description: Quiz completato con successo
+
+  /score/customers/{idQuiz}:
     get:
       tags:
-        - quiz
-      summary: Restituisce tutti i giocatori (loggati e non) che hanno partecipato al Quiz
-      operationId: getUsersByQuiz
+        - score
+      summary: Restituisce i punteggi di tutti i giocatori che hanno sostenuto un quiz
+      operationId: getScoresByQuiz
       parameters:
         - in: path
-          name: uidQuiz
+          name: idQuiz
           schema:
             type: string
           required: true
@@ -184,7 +200,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CustomerDto'
+                  $ref: '#/components/schemas/ScoreDto'
         default:
           description: Il server ha riscontrato un problema
           content:
@@ -192,21 +208,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
 
-  /quiz/complete:
-    post:
+  /score/quiz/{idCustomer}:
+    get:
       tags:
-        - quiz
-      summary: Associa il punteggio ottenuto dall'utente
-      operationId: completeQuiz
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ScorequizcustomerDto'
+        - score
+      summary: Restituisce i punteggi ottenuti da un singolo giocatore
+      operationId: getScoreByCustomer
+      parameters:
+        - in: path
+          name: idCustomer
+          schema:
+            type: string
+          required: true
       responses:
         '200':
-          description: Quiz completato con successo
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScoreDto'
+        default:
+          description: Il server ha riscontrato un problema
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
 
   /user:
     post:
@@ -283,6 +311,41 @@ components:
         - isAnonymous
 
 
+    ScoreDto:
+      type: object
+      properties:
+        customerId:
+          type: string
+        customerUsername:
+          type: string
+        customerIslogged:
+          type: boolean
+        customerIsanonymous:
+          type: boolean
+        quizId:
+          type: string
+        quizTitle:
+          type: string
+        quizDescription:
+          type: string
+        quizCreatedat:
+          type: string
+        quizMaxerrors:
+          type: integer
+        quizIsopen:
+          type: boolean
+        completedaAt:
+          type: string
+          format: date-time
+        score:
+          type: integer
+          format: int64
+          example: 3
+      required:
+        - customerId
+        - quizId
+        - score
+
     QuestionDto:
       type: object
       properties:
@@ -319,28 +382,6 @@ components:
         - idQuestion
         - text
         - isCorrect
-
-    ScorequizcustomerDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        idCustomer:
-          type: string
-          format: uuid
-        idQuiz:
-          type: string
-          format: uuid
-        score:
-          type: integer
-          format: int64
-          minimum: 0
-          example: 100
-      required:
-        - idCustomer
-        - idQuiz
-        - score
 
     Problem:
       type: object

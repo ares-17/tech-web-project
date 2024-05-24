@@ -30,11 +30,14 @@ public class CustomerService {
     }
 
     public CustomerDto getUserById(String uidUser) {
-        return Mapper.mapCustomerToCustomerDto(this.customerRepository.getById(UUID.fromString(uidUser)));
+        Customer customer = this.customerRepository.findById(UUID.fromString(uidUser))
+                .orElseThrow(IllegalArgumentException::new);
+        return Mapper.mapCustomerToCustomerDto(customer);
     }
 
     public List<QuizDto> getQuizByUser(String uidUser) {
-        Customer customer = this.customerRepository.getById(UUID.fromString(uidUser));
+        Customer customer = this.customerRepository.findById(UUID.fromString(uidUser))
+                .orElseThrow(IllegalArgumentException::new);
 
         return this.quizRepository.findByIdUser(customer).stream()
                 .map(q -> Mapper.mapQuizToQuizDTO(q, List.of())).toList();

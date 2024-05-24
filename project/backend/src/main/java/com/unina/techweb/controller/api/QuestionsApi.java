@@ -25,7 +25,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import java.util.List;
 import java.util.Optional;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-05-22T14:54:59.738081458+02:00[Europe/Rome]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-05-24T15:27:33.160334992+02:00[Europe/Rome]")
 @Validated
 @Tag(name = "questions", description = "the questions API")
 public interface QuestionsApi {

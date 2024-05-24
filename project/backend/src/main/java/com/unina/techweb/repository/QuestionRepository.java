@@ -9,6 +9,4 @@ import java.util.UUID;
 
 public interface QuestionRepository extends JpaRepository<Question, UUID> {
 
-    @Query("select q from Question q where q.uidquiz = ?1")
-    List<Question> findByIdQuiz(String uuid);
 }

@@ -3,8 +3,6 @@ package com.unina.techweb.controller;
 import com.unina.techweb.controller.api.QuizApi;
 import com.unina.techweb.dto.CustomerDto;
 import com.unina.techweb.dto.QuizDto;
-import com.unina.techweb.dto.ScorequizcustomerDto;
-import com.unina.techweb.service.CustomerService;
 import com.unina.techweb.service.QuizService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +16,9 @@ import java.util.List;
 public class QuizController implements QuizApi {
 
     private final QuizService quizService;
-    private final CustomerService customerService;
 
     @Autowired
-    QuizController(QuizService service, CustomerService customerService){
-        this.customerService = customerService;
+    QuizController(QuizService service){
         this.quizService = service;
     }
 
@@ -35,16 +31,5 @@ public class QuizController implements QuizApi {
     public ResponseEntity<QuizDto> createQuiz(QuizDto quizDto) {
         var savedQuizDto = quizService.createQuiz(quizDto);
         return ResponseEntity.ok(savedQuizDto);
-    }
-
-    @Override
-    public ResponseEntity<List<CustomerDto>> getUsersByQuiz(String uidQuiz) {
-        return ResponseEntity.ok(this.quizService.getUsersByQuiz(uidQuiz));
-    }
-
-    @Override
-    public ResponseEntity<Void> completeQuiz(ScorequizcustomerDto scorequizcustomerDto) {
-        this.quizService.completeQuiz(scorequizcustomerDto);
-        return ResponseEntity.ok().build();
     }
 }
