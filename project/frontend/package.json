@@ -11,9 +11,11 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "codegen": "openapi-generator-cli generate -i /home/aress/Documenti/projects/tech-web/tech-web-project/project/backend/src/main/resources/techweb.yaml -g typescript-fetch -o ./src/open-api --additional-properties=modelPropertyNaming=camelCase,withSeparateModelsAndApi=true,modelSuffix=Model,apiSuffix=Api,typescriptThreePlus=true,supportsES6=true"
   },
   "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.13.4",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "marked": "^12.0.2",
