@@ -21,7 +21,7 @@ export default defineComponent({
     },
     emits: ['update:answer'],
     setup(props) {
-        const question: Ref<Partial<any>> = ref(props.question);
+        const question: Ref<Partial<QuestionDto>> = ref(props.question);
         const answer: Ref<undefined | string> = ref(undefined)
 
         return {
