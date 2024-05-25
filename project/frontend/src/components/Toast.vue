@@ -1,6 +1,7 @@
 <template>
-    <div ref="toast" class="toast bg-success toast-container align-items-center text-bg-primary border-0" role="alert"
-        aria-live="assertive" aria-atomic="true">
+    <div ref="toast" :class="{ 'bg-success': toastClass === 'success', 'bg-danger': toastClass !== 'success' }" 
+        class="toast toast-container align-items-center text-bg-primary border-0" role="alert"
+        aria-live="assertive" aria-atomic="true" data-bs-animation>
         <div class="d-flex">
             <div class="toast-body">
                 {{ message }}
@@ -19,18 +20,32 @@ export default defineComponent({
     setup() {
         const toast: Ref<any> = ref(null);
         const message = ref('');
+        const toastClass: Ref<'error' | 'success'> = ref('success');
 
-        function show(val: any) {
+        function showError(val: any) {
+            toastClass.value = 'error';
             message.value = val;
             toast.value?.classList?.add('show');
             setTimeout(() => {
                 toast.value?.classList?.remove('show');
             }, 3000);
         }
+
+        function show(val: any) {
+            toastClass.value = 'success';
+            message.value = val;
+            toast.value?.classList?.add('show');
+            setTimeout(() => {
+                toast.value?.classList?.remove('show');
+            }, 3000);
+        }
+
         return {
             show,
+            showError,
             toast,
-            message
+            message,
+            toastClass
         }
     }
 });

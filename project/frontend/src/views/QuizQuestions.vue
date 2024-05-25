@@ -87,15 +87,15 @@ export default {
             scoreApi.completeQuiz({
                 scoreDto: {
                     customerId: '',
-                    quizId: quiz?.value?.uid!,
+                    quizId: quiz?.value?.id!,
                     score: 0,
                 }
             })
             .then(() => {
-                toastService.value?.show(i18n.global.t(''));
+                toastService.value?.show(i18n.global.t('questions_submit_success'));
                 router.push({ name: 'home' })
             })
-            .catch(() => toastService.value?.show(i18n.global.t('')))
+            .catch(() => toastService.value?.showError(i18n.global.t('questions_submit_error')))
             
         }
 

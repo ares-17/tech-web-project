@@ -12,13 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from './runtime';
-import type { QuestionDto } from './QuestionDto';
+import { mapValues } from '../../open-api/runtime';
+import type { QuestionDto } from '../../open-api/models/QuestionDto';
 import {
     QuestionDtoFromJSON,
     QuestionDtoFromJSONTyped,
     QuestionDtoToJSON,
-} from './QuestionDto';
+} from '../../open-api/models/QuestionDto';
 
 /**
  * 

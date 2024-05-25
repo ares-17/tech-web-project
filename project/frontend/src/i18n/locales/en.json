@@ -25,5 +25,10 @@
     "question_component_back": "Go back",
     "question_component_last_next": "Conclude quiz",
     "openquestion_answer": "Answer",
-    "home_error_id": "No quiz with the entered id was found"
+    "home_error_id": "No quiz with the entered id was found",
+
+    "questions_submit_success": "Quiz successfully completed!",
+
+    "generic_api_error": "An error occurred, please try again"
+
 }
