@@ -3,6 +3,7 @@
 CREATE TABLE Customer (
     uid UUID PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
     isLogged BOOLEAN NOT NULL,
     isAnonymous BOOLEAN NOT NULL
 );

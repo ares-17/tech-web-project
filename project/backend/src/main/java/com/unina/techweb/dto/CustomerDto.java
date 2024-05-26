@@ -30,4 +30,7 @@ public class CustomerDto implements Serializable {
 
     @NotNull
     Boolean isAnonymous;
+
+    @NotNull
+    String password;
 }

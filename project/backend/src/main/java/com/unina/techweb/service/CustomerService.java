@@ -55,7 +55,8 @@ public class CustomerService {
                 id,
                 customerDto.getUsername(),
                 customerDto.getIsLogged(),
-                customerDto.getIsAnonymous()
+                customerDto.getIsAnonymous(),
+                "" // password is not needed
                 );
     }
 }

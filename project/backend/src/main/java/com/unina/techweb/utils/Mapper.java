@@ -91,8 +91,19 @@ public class Mapper {
                 customer.getId(),
                 customer.getUsername(),
                 customer.getIslogged(),
-                customer.getIsanonymous()
+                customer.getIsanonymous(),
+                customer.getPassword()
         );
+    }
+
+    public static Customer mapCustomerDtoToCustomer(CustomerDto customer) {
+        var entity = new Customer();
+        entity.setIsanonymous(customer.getIsAnonymous());
+        entity.setIslogged(customer.getIsLogged());
+        entity.setUsername(customer.getUsername());
+        entity.setId(customer.getId());
+        entity.setPassword(customer.getPassword());
+        return entity;
     }
 
     public static ScoreDto mapScoreQuizCustomerToScoreCustomerDto(Score entity){
