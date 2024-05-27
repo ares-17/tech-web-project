@@ -9,6 +9,7 @@ import com.unina.techweb.service.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -34,9 +35,7 @@ public class AuthController implements AuthApi {
 
     @Override
     public ResponseEntity<AuthenticationDto> register(CustomerDto customerDto) {
-        Customer registeredUser = authenticationService.signup(customerDto);
-        String jwtToken = jwtService.generateToken(registeredUser);
-        AuthenticationDto dto = new AuthenticationDto(jwtToken, jwtService.getExpirationTime());
-        return ResponseEntity.ok(dto);
+        authenticationService.signup(customerDto);
+        return this.login(customerDto);
     }
 }

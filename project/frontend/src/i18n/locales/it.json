@@ -29,5 +29,8 @@
 
     "questions_submit_success": "Quiz completato con successo!",
 
-    "generic_api_error": "Si è verificato un errore, riprovare"
+    "generic_api_error": "Si è verificato un errore, riprovare",
+
+    "login_error": "Credenziali errate, riprovare",
+    "login_success": "Benvenuto, {username}"
 }

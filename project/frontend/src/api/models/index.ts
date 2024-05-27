@@ -6,3 +6,4 @@ export * from './Problem';
 export * from './QuestionDto';
 export * from './QuizDto';
 export * from './ScoreDto';
+export * from './AuthenticationDto';

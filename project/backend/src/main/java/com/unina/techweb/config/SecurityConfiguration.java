@@ -37,7 +37,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/**")
+                        .requestMatchers("/auth/**", "/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs", "/webjars/**", "/v3/api-docs/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
@@ -58,6 +58,7 @@ public class SecurityConfiguration {
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET","POST", "PUT"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 

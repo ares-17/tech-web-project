@@ -84,15 +84,15 @@ import Integer from '@/components/Integer.vue';
 import Stepper from '@/components/Stepper.vue';
 import Toast from '@/components/Toast.vue';
 import i18n from '@/i18n/i18n';
-import Quiz from '@/models/Quiz.model';
 import { Validators } from '@/utils/Validators';
 import { v4 as uuidv4 } from 'uuid';
 import { ref, type Ref } from 'vue';
 import Utils from '../utils/Utils';
+import type { QuizDto } from '@/api/models';
 
 export default {
   setup() {
-    const quiz: Ref<Partial<Quiz>> = ref({});
+    const quiz: Ref<Partial<QuizDto>> = ref({});
     const confirmClicked = ref(false);
     const formHasErrors = ref(true);
     const stepperRef: Ref<typeof Stepper | null> = ref(null);

@@ -29,6 +29,8 @@
 
     "questions_submit_success": "Quiz successfully completed!",
 
-    "generic_api_error": "An error occurred, please try again"
+    "generic_api_error": "An error occurred, please try again",
 
+    "login_error": "Incorrect credentials, try again",
+    "login_success": "Welcome, {username}"
 }
