@@ -13,16 +13,13 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import '@fontawesome/fontawesome-free/css/all.css';
 
 const app = createApp(App);
 
 const vuetify = createVuetify({
     components,
     directives,
-    icons: {
-        defaultSet: 'fa'
-    }
+
 })
 
 app.use(createPinia())
