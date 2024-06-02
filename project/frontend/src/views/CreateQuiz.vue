@@ -1,18 +1,19 @@
 <template>
-  <div class="container mt-5 pt-5">
-    <Stepper :stepsConfig="stepsConfig" ref="stepperRef" showNames>
+  <div class="container mt-5 pt-5 ">
+    <div class="w-50 mx-auto">
+      <Stepper :stepsConfig="stepsConfig" ref="stepperRef" showNames>
     <template #step-0>
       <div class="row">
-        <h2 class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-6 mb-3 mx-auto text-center">{{ $t('createquiz_title') }}</h2>
+        <h2 class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-12 mb-3 mx-auto text-center">{{ $t('createquiz_title') }}</h2>
         <form @submit.prevent="viewPreview">
-          <div class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-6 mb-3 mx-auto">
+          <div class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-12 mb-3 mx-auto">
             <label for="title" class="form-label">{{ $t('createquiz_titlequiz') }}</label>
             <input type="text" class="form-control" v-model="quiz.title">
             <div v-if="confirmClicked && !Validators.minLength(quiz?.title || '')">
               <p class="text-danger">{{ $t('validators_minlength') }}</p>
             </div>
           </div>
-          <div class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-6 mb-3 mx-auto">
+          <div class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-12 mb-3 mx-auto">
             <label for="description" class="form-label">{{ $t('createquiz_description') }}</label>
             <textarea class="form-control" v-model="quiz.description"></textarea>
             <div v-if="confirmClicked && !Validators.minLength(quiz?.description || '')">
@@ -20,10 +21,10 @@
             </div>
           </div>
           <div class="row mb-3">
-            <div class="col-6 col-sm-6 col-lg-3 col-md-6 col-xl-3 ms-auto my-auto">
+            <div class="col-6 col-sm-6 col-lg-3 col-md-6 col-xl-6 ms-auto my-auto">
               <p class="my-auto">{{ $t('createquiz_numQuestions') }}</p>
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 col-md-6 col-xl-3 me-auto d-flex justify-content-end">
+            <div class="col-6 col-sm-6 col-lg-3 col-md-6 col-xl-6 me-auto d-flex justify-content-end">
               <Integer :counter="quiz.numQuestions" @update:counter="val => quiz.numQuestions = val" />
             </div>
           </div>
@@ -73,6 +74,7 @@
       </div>
     </template>
   </Stepper>
+    </div>
   </div>
 
   <Toast ref="toastService"/>

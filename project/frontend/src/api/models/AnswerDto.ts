@@ -42,13 +42,14 @@ export interface AnswerDto {
      * @type {string}
      * @memberof AnswerDto
      */
-    idQuestion: string;
+    // TODO: modificare open api
+    idQuestion?: string;
     /**
      * 
      * @type {string}
      * @memberof AnswerDto
      */
-    idQuiz: string;
+    idQuiz?: string;
 }
 
 /**

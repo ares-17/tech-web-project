@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import Navbar  from '@/components/Navbar.vue'
+import Navbar from '@/components/Navbar.vue'
 </script>
 
 <template>
@@ -8,14 +8,31 @@ import Navbar  from '@/components/Navbar.vue'
     <Navbar></Navbar>
   </header>
   <main class="page-content content-wrapper">
-    <div class="main-div"><router-view /></div>
+    <div class="main-div">
+      <div class="container-fluid container-page">
+
+        <router-view />
+      </div>
+    </div>
   </main>
 </template>
 
 <style scoped>
-div.main-div{
+div.main-div {
   position: absolute;
   top: 0vw;
   width: 100%;
+}
+
+.container-page {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-image: url('./assets/wallapper-poker.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 50rem;
+    padding-top: 10rem;
 }
 </style>

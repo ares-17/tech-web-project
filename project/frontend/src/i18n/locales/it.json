@@ -13,7 +13,7 @@
     "createquiz_title_preview": "Anteprima",
     "create_quiz_step1": "Inserisci i dati",
     "create_quiz_step2": "Anteprima",
-    "createquiz_submitquiz": "Crea il quiz!",
+    "createquiz_submitquiz": "Inserisci ",
     "createquiz_success_toast": "Quiz creato con successo!",
     "navbar_toquiz": "Partecipa ad un quiz",
 
@@ -32,5 +32,7 @@
     "generic_api_error": "Si è verificato un errore, riprovare",
 
     "login_error": "Credenziali errate, riprovare",
-    "login_success": "Benvenuto, {username}"
+    "login_success": "Benvenuto, {username}",
+
+    "create_question_title": "Titolo domanda"
 }

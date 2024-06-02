@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <div class="stepper-container">
         <ul class="nav nav-pills mb-3 d-flex justify-content-center" id="pills-tab" role="tablist">
             <li v-for="(step, index) in stepsConfig" :key="index" class="nav-item d-flex flex-reverse"
                 role="presentation">
                 <div class="step-content">
-                    <button class="btn rounded-circle mx-0 mb-3 p-3 disabled"
+                    <button class="btn rounded-circle mx-0 mb-2 p-2 mt-2 disabled"
                         :class="{ 'btn-primary': index === currentStep, 'btn-outline-secondary': index !== currentStep }"
                         :id="'pills-' + index + '-tab'" data-bs-toggle="pill" :data-bs-target="'#pills-' + index"
                         type="button" role="tab" :aria-controls="'pills-' + index"
@@ -20,11 +20,7 @@
             <div v-for="(step, index) in stepsConfig" :key="index" class="tab-pane fade"
                 :class="{ show: index === currentStep, active: index === currentStep }" :id="'pills-' + index"
                 role="tabpanel" :aria-labelledby="'pills-' + index + '-tab'">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <slot :name="'step-' + index"></slot>
-                    </div>
-                </div>
+                <slot :name="'step-' + index"></slot>
             </div>
         </div>
     </div>
@@ -95,5 +91,11 @@ div.step-content{
         cursor: unset;
         opacity: unset;
     }
+}
+
+.stepper-container{
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
 }
 </style>

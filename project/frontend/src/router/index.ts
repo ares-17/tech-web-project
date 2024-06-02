@@ -1,4 +1,4 @@
-import CreateQuiz from '@/views/CreateQuiz.vue';
+import NewCreateQuiz from '@/views/NewCreateQuiz.vue';
 import QuizQuestions from '@/views/QuizQuestions.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '@/views/HomeView.vue';
@@ -24,7 +24,7 @@ const router = createRouter({
     {
       path: '/create-quiz',
       name: 'create-quiz',
-      component: CreateQuiz
+      component: NewCreateQuiz
     },
     {
       path: "/quiz/:code",

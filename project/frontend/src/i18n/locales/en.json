@@ -32,5 +32,7 @@
     "generic_api_error": "An error occurred, please try again",
 
     "login_error": "Incorrect credentials, try again",
-    "login_success": "Welcome, {username}"
+    "login_success": "Welcome, {username}",
+
+    "create_question_title": "Question's title"
 }

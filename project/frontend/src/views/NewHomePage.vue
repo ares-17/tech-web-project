@@ -1,5 +1,4 @@
 <template>
-    <div class="container-fluid container-page">
         <div class="row">
             <div class="title-col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <h1 class="title mt-3">
@@ -23,13 +22,12 @@
                         </div>
                         
                         <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 mb-3 mx-auto my-3">
-                            <button class="btn btn-primary w-100">{{ $t('home_create_new_quiz') }}</button>
+                            <button class="btn btn-primary w-100" @click="toNewQuiz">{{ $t('home_create_new_quiz') }}</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
     <Toast ref="toastService" />
 
@@ -63,10 +61,15 @@ export default {
                 .catch(() => toastService.value?.show(i18n.global.t('home_error_id')));
         }
 
+        function toNewQuiz(){
+            router.push({ name: 'create-quiz' });
+        }
+
         return {
             code,
             getQuizByCode,
-            toastService
+            toastService,
+            toNewQuiz
         }
     },
     component: {
@@ -77,23 +80,6 @@ export default {
 </script>
 
 <style scoped>
-img.img-carte {
-    max-width: 18vw;
-    height: auto;
-}
-
-.container-page {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    background-image: url('../assets/wallapper-poker.jpg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    height: 50rem;
-    padding-top: 10rem;
-}
-
 @media (min-width: 1200px) {
     .title-col{
         margin-left: 5rem;
