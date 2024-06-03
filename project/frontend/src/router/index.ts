@@ -1,7 +1,6 @@
 import NewCreateQuiz from '@/views/NewCreateQuiz.vue';
 import QuizQuestions from '@/views/QuizQuestions.vue';
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import NewHomePage from '@/views/NewHomePage.vue';
 

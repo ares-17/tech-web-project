@@ -3,11 +3,18 @@
         <div class="card h-100 w-100 text-bg-light ">
             <div class="card-header header-domande">Sezione domande del quiz</div>
             <div class="card-body d-flex justify-center align-center h-100 w-100">
-                <v-window v-model="currentWindow" show-arrows class="h-100 w-100 ">
-                    <v-window-item v-for="n in windowsRef" :key="n">
+                <v-window v-model="currentWindow" class="h-100 w-100 ">
+                    <v-window-item v-for="step in windowsRef" :key="step">
                         <v-card class="d-flex flex-column h-100 text-bg-light">
-                            <h2 class="text-center mb-4 mt-1">Domanda {{ n }} di {{ windowsRef }}</h2>
-                            <CreateQuestionComponent />
+                            <h2 class="text-center mb-4 mt-1">
+                                {{ $t('create_question_num_title', { current: step, total: windowsRef }) }}
+                            </h2>
+                            <CreateQuestionComponent 
+                                :index="step"
+                                :total="windowsRef"
+                                @click:complete="q => onClickComplete(step -1, q)"
+                                @click:next="q => onClickNextWindow(step -1, q)"
+                                @click:prev="q => onClickPrevWindow(step -1, q)"/>
                         </v-card>
                     </v-window-item>
                 </v-window>
@@ -15,9 +22,9 @@
         </div>
     </div>
     <div v-else class="card h-100 text-bg-light">
-        <div class="card-header">Sezione domande del quiz</div>
+        <div class="card-header header-domande">Sezione domande del quiz</div>
         <div class="card-body d-flex justify-center align-center h-100">
-            <span>Seleziona il numero di domande per poterle modificare</span>
+            <span>Seleziona il numero di domande del quiz</span>
         </div>
     </div>
 </template>
@@ -25,6 +32,8 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue';
 import CreateQuestionComponent from './CreateQuestionComponent.vue';
+import type { QuestionDto } from '@/api/models';
+import type { Ref } from 'vue';
 
 export default defineComponent({
     name: 'CreateQuestionsWindows',
@@ -35,14 +44,45 @@ export default defineComponent({
             default: 0
         }
     },
+    emits: ['complete'],
     setup(props, { emit }) {
-        const currentWindow = ref(1);
-        const windowsRef = ref(props.windows);
-        watch(() => props.windows, () => windowsRef.value = props.windows);
+        const currentWindow = ref(0);
+        const windowsRef = ref(Number(props.windows));
+        watch(() => props.windows, () => {
+            windowsRef.value = Number(props.windows);
+            currentWindow.value = 0;
+        });
+
+        const questions: Ref<Partial<QuestionDto>[]> = ref([]);
+
+        function onClickPrevWindow(index: number, question: QuestionDto){
+            questions.value[index] = question;
+            if(currentWindow.value === 0){
+                return;
+            }
+            currentWindow.value -= 1; 
+        }
+
+        function onClickNextWindow(index: number, question: QuestionDto){
+            questions.value[index] = question;
+            if(currentWindow.value === Number(windowsRef.value) - 1){
+                return;
+            }
+            currentWindow.value += 1; 
+        }
+
+        function onClickComplete(index: number, question: QuestionDto){
+            questions.value[index] = question;
+            emit('complete', questions.value);
+        }
 
         return {
             windowsRef,
-            currentWindow
+            currentWindow,
+            onClickPrevWindow,
+            onClickComplete,
+            onClickNextWindow,
+            questions
         }
     },
     components: {
@@ -64,7 +104,7 @@ div.v-window-item {
     height: 100%;
 }
 
-div.header-domande{
+div.header-domande {
     height: 5rem;
     display: flex;
     align-items: center;

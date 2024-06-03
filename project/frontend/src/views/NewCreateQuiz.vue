@@ -5,20 +5,43 @@
                 <div class="stepper-container mx-auto">
                     <v-stepper hide-actions :items="steps" v-model="currentStep" class="text-bg-light">
                         <template v-slot:item.1>
-                            <FirstStepNewQuiz @next="onNextFirstStep" @update:counter="onUpdateValuesFirstStep"/>
+                            <FirstStepNewQuiz 
+                                @next="onNextFirstStep" 
+                                @update:counter="onUpdateValuesFirstStep"/>
                         </template>
                         <template v-slot:item.2>
-                            <PreviewStepNewQuiz :prev-values="firstStepValues" @prev="currentStep = 1" />
+                            <PreviewStepNewQuiz v-if="firstStepValues" :prev-values="firstStepValues" @prev="currentStep = 1" />
                         </template>
                     </v-stepper>
                 </div>
             </div>
 
             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-3 mx-auto">
-               <CreateQuestionsWindows :windows="firstStepValues?.numQuestions"/>
+               <CreateQuestionsWindows 
+                    :windows="firstStepValues?.numQuestions"
+                    @complete="onCompleteQuestions"
+                />
             </div>
         </div>
     </div>
+
+    <v-dialog
+      v-model="showDialog"
+      width="auto">
+      <v-card
+        max-width="500"
+        prepend-icon="mdi-alert"
+        :text="$t('create_quiz_dialog_text')"
+        :title="$t('create_quiz_dialog_title')">
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn :text="$t('create_quiz_dialog_close_btn')" @click="hideConfirmDialog"></v-btn>
+        <v-btn :text="$t('create_quiz_dialog_ok_btn')" @click="createQuiz"></v-btn>
+      </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-snackbar v-model="snackbar" timeout="5000">{{ snackbarText }}</v-snackbar>
 </template>
 
 <script lang="ts">
@@ -30,7 +53,9 @@ import PreviewStepNewQuiz from '@/components/create-quiz/PreviewStepNewQuiz.vue'
 import CreateQuestionsWindows from '@/components/create-quiz/CreateQuestionsWindows.vue';
 import i18n from '@/i18n/i18n';
 import { v4 as uuidv4 } from 'uuid';
-import { ref, type Ref } from 'vue';
+import { inject, ref, type Ref } from 'vue';
+import type { QuestionDto, QuizDto } from '@/api/models';
+import type { QuizApi } from '@/api';
 
 export default {
     name: 'NewCreateQuiz',
@@ -42,10 +67,23 @@ export default {
         ]);
         const firstStepValues: Ref<any> = ref();
         const currentStep = ref(1);
+        const showDialog = ref(false);
+        const snackbar = ref(false);
+        const questions: Ref<QuestionDto[]> = ref([]);
+        const snackbarText = ref('');
+        const quizApi = inject('QuizApi') as QuizApi;
 
         function onNextFirstStep(value: any) {
             firstStepValues.value = value;
             currentStep.value = 2;
+        }
+
+        function showConfirmDialog(){
+            showDialog.value = true;
+        }
+
+        function hideConfirmDialog(){
+            showDialog.value = false;
         }
 
         /*
@@ -60,7 +98,51 @@ export default {
         */
 
         function onUpdateValuesFirstStep(value: any){
-            firstStepValues.value = value;
+            //firstStepValues.value = value;
+        }
+
+        function onCompleteQuestions(values: QuestionDto[]){
+            if(hasErrors(values)){
+                return;
+            }
+            questions.value = values;
+            showConfirmDialog();
+        }
+
+        function hasErrors(questions: QuestionDto[]){
+            return !firstStepValues.value ||
+                isEmptyString(firstStepValues.value?.title) || 
+                isEmptyString(firstStepValues.value?.description) || 
+                !questions ||
+                questions?.length !== Number(firstStepValues.value?.numQuestions)
+        }
+
+        function isEmptyString(str: string){
+            return !str || str?.trim() === ''; 
+        }
+
+        function createQuiz(){
+            hideConfirmDialog();
+            const quiz: QuizDto = {
+                questions: questions.value,
+                title: firstStepValues.value.title,
+                description: firstStepValues.value.description,
+                isOpen: false,
+                maxErrors: 0
+            };
+            quizApi.createQuiz({ quizDto: quiz })
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(e => {
+                    //snackbarText.value = e;
+                    //snackbar.value = true;
+                    
+                })
+        }
+
+        function showSnackbar(){
+
         }
 
         return {
@@ -69,7 +151,13 @@ export default {
             onNextFirstStep,
             currentStep,
             firstStepValues,
-            onUpdateValuesFirstStep
+            onUpdateValuesFirstStep,
+            onCompleteQuestions,
+            showDialog,
+            hideConfirmDialog,
+            createQuiz,
+            snackbar,
+            snackbarText
         };
     },
     components: {

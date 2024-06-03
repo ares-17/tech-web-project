@@ -7,22 +7,26 @@
                     con i tuoi amici!
                 </h1>
             </div>
-            <div class="input-col col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3 mt-3">
-                <div class="input-container bg-transparent">
-                    <div class="">
-                        <label for="quizInput" class="form-label" style="color: white;">{{ $t('logToQuiz_title') }}</label>
-                        <div class="row">
-                            <div class="col-12 col-md-9 col-sm-9 col-lg-9 col-xl-9 mb-2 mx-auto my-auto">
-                                <input type="text" class="form-control" id="quizInput" v-model="code">
-                            </div>
-                            <div class="col-12 col-md-3 col-sm-3 col-lg-3 mb-3 col-xl-3 mb-2 mx-auto my-auto">
-                                <button class="btn btn-primary w-100" @click="getQuizByCode"><i
-                                        class="bi bi-arrow-right"></i></button>
+            <div class="input-col col-10 col-sm-10 col-md-10 col-lg-6 col-xl-6 mt-3">
+                <div class="input-container bg-transparent w-100">
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-6 mb-2 h-100">
+                            <v-text-field :label="$t('logToQuiz_title')" 
+                                variant="solo-filled" class=""
+                                v-model="code" 
+                                append-inner-icon='mdi-send'
+                                required 
+                                hide-details="auto" 
+                                @click:append-inner="getQuizByCode"
+                            ></v-text-field>
+                            <div class="w-100 d-flex justify-content-center">
+                                <span class="text-center my-auto mx-auto or">oppure</span>
                             </div>
                         </div>
-                        
-                        <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 mb-3 mx-auto my-3">
-                            <button class="btn btn-primary w-100" @click="toNewQuiz">{{ $t('home_create_new_quiz') }}</button>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-6 mb-3 my-3">
+                            <v-btn size="large" block @click="toNewQuiz">{{ $t('home_create_new_quiz') }}</v-btn>
                         </div>
                     </div>
                 </div>
@@ -80,25 +84,6 @@ export default {
 </script>
 
 <style scoped>
-@media (min-width: 1200px) {
-    .title-col{
-        margin-left: 5rem;
-    }
-
-    .input-col{
-        margin-left: 5rem;
-    }
-
-    h1.title{
-        margin-top: 2rem;
-        font-size: 4rem;
-        color: white;
-        font-weight: unset;
-        font-family: Poppins;
-        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-    }
-}
-
 @media (min-width: 992px) { 
     .title-col{
         margin-left: 5rem;
@@ -112,7 +97,7 @@ export default {
         margin-top: 2rem;
         font-size: 4rem;
         color: white;
-        font-weight: unset;
+        font-weight: 600;
         font-family: Poppins;
         text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     }
@@ -130,16 +115,20 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        margin: auto;
     }
 
     h1.title{
         font-size: xx-large;
         color: white;
-        font-weight: unset;
+        font-weight: 600;
         font-family: Poppins;
         text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     }
 }
-
+span.or{
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
 
 </style>

@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import { createPinia } from 'pinia'
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import '@mdi/font/css/materialdesignicons.css';
 
 import App from './App.vue'
 import router from './router';
@@ -19,7 +19,6 @@ const app = createApp(App);
 const vuetify = createVuetify({
     components,
     directives,
-
 })
 
 app.use(createPinia())

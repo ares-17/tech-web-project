@@ -7,7 +7,7 @@
     "createquiz_titlequiz": "Titolo",
     "createquiz_description": "Descrizione",
     "createquiz_view_preview": "Vedi l'anteprima",
-    "createquiz_numQuestions": "Numero domande: ",
+    "createquiz_numQuestions": "Numero domande",
     "validators_minlength": "Inserire un testo di almeno 3 caratteri",
     "validators_numRange": "Il valore inserito non è incluso nel range [{min}, {max}]",
     "createquiz_title_preview": "Anteprima",
@@ -34,5 +34,18 @@
     "login_error": "Credenziali errate, riprovare",
     "login_success": "Benvenuto, {username}",
 
-    "create_question_title": "Titolo domanda"
+    "create_question_title": "Titolo domanda",
+
+    "craete_question_answer1": "Testo risposta 1",
+    "craete_question_answer2": "Testo risposta 2",
+    "craete_question_answer3": "Testo risposta 3",
+    "craete_question_answer4": "Testo risposta 4",
+    "create_question_num_title": "Domanda {current} di {total}",
+
+    "createquiz_max_errors": "Numero errori",
+
+    "create_quiz_dialog_text": "Proseguendo non sarai più in grado di modificare i valori inseriti",
+    "create_quiz_dialog_title": "Sei sicuro di voler continuare?",
+    "create_quiz_dialog_close_btn": "Anulla",
+    "create_quiz_dialog_ok_btn": "Conferma"
 }

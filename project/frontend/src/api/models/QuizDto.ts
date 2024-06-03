@@ -55,7 +55,8 @@ export interface QuizDto {
      * @type {string}
      * @memberof QuizDto
      */
-    createdBy: string;
+    // TODO non necessario
+    createdBy?: string;
     /**
      * 
      * @type {number}
@@ -67,7 +68,8 @@ export interface QuizDto {
      * @type {boolean}
      * @memberof QuizDto
      */
-    isOpen?: boolean;
+    // TODO NECESSARIO
+    isOpen: boolean;
     /**
      * 
      * @type {Array<QuestionDto>}

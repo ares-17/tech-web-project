@@ -34,5 +34,18 @@
     "login_error": "Incorrect credentials, try again",
     "login_success": "Welcome, {username}",
 
-    "create_question_title": "Question's title"
+    "create_question_title": "Question's title",
+
+    "craete_question_answer1": "Text of answer 1",
+    "craete_question_answer2": "Text of answer 2",
+    "craete_question_answer3": "Text of answer 3",
+    "craete_question_answer4": "Text of answer 4",
+    "create_question_num_title": "Question {current} of {total}",
+
+    "createquiz_max_errors": "Number errors",
+
+    "create_quiz_dialog_text": "As you continue, you will no longer be able to change the values entered",
+    "create_quiz_dialog_title": "Are you sure you want to continue?",
+    "create_quiz_dialog_close_btn": "Cancel",
+    "create_quiz_dialog_ok_btn": "Confirm"
 }

@@ -1,44 +1,42 @@
 <template>
     <div class="row">
-        <h2 class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 mb-4 mx-auto text-center">{{ $t('createquiz_title') }}</h2>
+        <h2 class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 mb-4 mx-auto text-center">{{ $t('createquiz_title') }}
+        </h2>
         <form @submit.prevent="onNext">
-            <div class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-12 mb-3 mx-auto">
-                <v-text-field :label="$t('createquiz_titlequiz')" variant="outlined" 
-                    ref="values.title" v-model="values.title" required
-                    hide-details="auto"
-                    :rules="[minLength]"
-                ></v-text-field>
+            <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 mb-3 mx-auto">
+                <v-text-field :label="$t('createquiz_titlequiz')" variant="outlined" ref="values.title"
+                    v-model="values.title" required hide-details="auto" :rules="[minLength]"></v-text-field>
             </div>
             <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 mb-3 mx-auto">
-                <v-text-field :label="$t('createquiz_description')" variant="outlined" 
-                    ref="values.description" v-model="values.description" required
-                    hide-details="auto"
-                    :rules="[minLength]"
-                ></v-text-field>
+                <v-text-field :label="$t('createquiz_description')" variant="outlined" ref="values.description"
+                    v-model="values.description" required hide-details="auto" :rules="[minLength]"></v-text-field>
             </div>
-            <div class="row mb-3">
-                <div class="col-6 col-sm-6 col-lg-3 col-md-6 col-xl-6 ms-auto my-auto">
-                    <p class="my-auto">{{ $t('createquiz_numQuestions') }}</p>
+            <div class="row">
+                <div class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-6 mb-3">
+                    <v-text-field type="number" :label="$t('createquiz_numQuestions')" 
+                        :rules="[rangeQuestions]"
+                        variant="outlined" ref="values.numQuestions"
+                        v-model="values.numQuestions" required hide-details="auto"></v-text-field>
                 </div>
-                <div class="col-6 col-sm-6 col-lg-3 col-md-6 col-xl-6 me-auto d-flex justify-content-end">
-                    <Integer 
-                        :counter="values.numQuestions" 
-                        @update:counter="onUpdateCounter" />
-                </div>
-            </div>
-            <div class="row mb-3"
-                v-if="confirmClicked && !Validators.numRange((values?.numQuestions || 0)?.toString(), { max: 30, min: 1 })">
-                <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 mb-3 mx-auto">
-                    <p class="text-danger">{{ $t('validators_numRange', { min: 1, max: 30 }) }}</p>
+                <div class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-6 mb-3">
+                    <v-text-field type="number" 
+                        :disabled="!values.numQuestions || values.numQuestions < 0 || values.numQuestions > 30"
+                        :label="$t('createquiz_max_errors')" 
+                        :rules="[rangeMaxErrors]"
+                        variant="outlined" ref="values.numMaxErrors"
+                        v-model="values.numMaxErrors" required hide-details="auto"></v-text-field>
                 </div>
             </div>
-
-            <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 mb-3 pt-3 mx-auto d-flex justify-content-between">
-                <button type="button" class="btn btn-outline-secondary" disabled>{{$t('question_component_back')}}</button>
-                <button type="submit" class="btn btn-primary">{{$t('question_component_next')}}</button>
-            </div>
+            <v-divider></v-divider>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" variant="flat" type="submit">
+                    {{ $t('question_component_next') }}
+                </v-btn>
+            </v-card-actions>
         </form>
     </div>
+    
 </template>
 
 <script lang="ts">
@@ -46,47 +44,63 @@ import { Validators } from '@/utils/Validators';
 import { defineComponent, ref, type Ref } from 'vue';
 import Integer from '../Integer.vue';
 import i18n from '@/i18n/i18n';
+import type { QuizCreation } from '@/api/models/QuizCreation';
 
 export default defineComponent({
     name: 'FirstStepNewQuiz',
     emits: ['next', 'update:counter'],
     setup(_, { emit }) {
-        const values: Ref<{ numQuestions?: number, title?: string, description?: string }> = ref({
-            numQuestions: 1
-        });
-        emit('update:counter', values.value);
-        const confirmClicked = ref(false);
+        const values: Ref<QuizCreation> = ref({
 
-        function onNext(){
-            confirmClicked.value = true;
-            if(hasNoErrors()){
+        });
+
+        function onNext() {
+            if (hasNoErrors()) {
+                emit('update:counter', values.value.numQuestions);
                 emit('next', values.value);
             }
         }
 
         function hasNoErrors(): boolean {
-            return !!values.value?.title && !!values.value?.description &&
+            return !!values.value?.title && 
+                !!values.value?.description &&
+                (values.value?.numMaxErrors !== undefined && values.value.numMaxErrors !== null) &&
+                (values.value?.numQuestions !== undefined && values.value.numQuestions !== null) &&
                 Validators.minLength(values.value.title) &&
                 Validators.minLength(values.value.description) &&
-                Validators.numRange((values.value?.numQuestions || 0).toString(), { min: 1, max: 30 })
+                Validators.numRange((values.value?.numQuestions || 0).toString(), { min: 1, max: 30 }) &&
+                values.value.numMaxErrors > -1 && values.value.numMaxErrors < values.value.numQuestions;
         }
 
-        function minLength(value: any){
+        function minLength(value: any) {
             return Validators.minLength(value) || i18n.global.t('validators_minlength');
         }
 
-        function onUpdateCounter(val: number){
+        function onUpdateCounter(val: number) {
             values.value.numQuestions = val;
-            emit('update:counter', values.value);
+        }
+
+        function rangeQuestions(value: number | undefined | null){
+            return (!!value && value < 31 && value > 0) || 
+                i18n.global.t('validators_numRange', { min: 1, max: 30 });
+        }
+
+        function rangeMaxErrors(value: number | undefined | null){
+            return (!!value && 
+                values.value?.numQuestions && 
+                value < values.value?.numQuestions &&
+                value > -1) || 
+                i18n.global.t('validators_numRange', { min: 0, max: values.value?.numQuestions });
         }
 
         return {
             values,
             Validators,
-            confirmClicked,
             minLength,
             onNext,
-            onUpdateCounter
+            onUpdateCounter,
+            rangeQuestions,
+            rangeMaxErrors
         }
     },
     components: {

@@ -1,39 +1,50 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-        <div class="container-fluid pb-2 mx-3">
-            <router-link class="navbar-brand" to="/">
-                <img width="120" height="120" class="logo" src="/src/assets/logo.png" alt="external-help-website-development-xnimrodx-lineal-color-xnimrodx"/>   
-            </router-link>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/create-quiz">{{ $t('navbar_createquizz') }}</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link me-2" to="/register">{{ $t('navbar_signup') }}</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/login">{{ $t('navbar_signin') }}</router-link>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <v-app-bar>
+      <v-app-bar-title>
+        <router-link class="nav-link m-3" to="/">SmartQuiz</router-link>
+      </v-app-bar-title>
+      <v-spacer></v-spacer>
+      <template v-slot:append>
+        <router-link class="nav-link m-3 d-none d-md-flex" to="/login">{{ $t('navbar_signin') }}</router-link>
+        <router-link class="nav-link m-3 d-none d-md-flex" to="/register">{{ $t('navbar_signup') }}</router-link>
+        <v-btn icon class="d-flex d-md-none" @click="drawer = true">
+          <v-icon>mdi-menu</v-icon>
+        </v-btn>
+      </template>
+    </v-app-bar>
+
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+      temporary
+      class="d-md-none"
+    >
+      <v-list>
+        <v-list-item>
+          <router-link class="nav-link m-3" to="/login">{{ $t('navbar_signin') }}</router-link>
+        </v-list-item>
+        <v-list-item>
+          <router-link class="nav-link m-3" to="/register">{{ $t('navbar_signup') }}</router-link>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
     
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
 export default defineComponent({
     name: 'Navbar',
     components: {
         RouterLink
+    },
+    setup(){
+        const drawer = ref(false);
+        return {
+            drawer
+        }
     }
 });
 </script>
@@ -54,4 +65,23 @@ export default defineComponent({
 .logo{
     border-radius: 50%;
 }
+
+.nav-link{
+  font-weight: 600;
+}
+
+.nav-link:hover{
+  text-decoration: underline;
+}
+.v-app-bar-title{
+  font-weight: 500;
+  font-size: x-large;
+  text-transform: uppercase;
+}
+.v-app-bar.v-toolbar{
+    background: #0000001f;
+    color: white;
+}
+
+
 </style>

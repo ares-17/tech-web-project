@@ -15,6 +15,8 @@
     "codegen": "openapi-generator-cli generate -i /home/aress/Documenti/projects/tech-web/tech-web-project/project/backend/src/main/resources/techweb.yaml -g typescript-fetch -o ./src/open-api --additional-properties=modelPropertyNaming=camelCase,withSeparateModelsAndApi=true,modelSuffix=Model,apiSuffix=Api,typescriptThreePlus=true,supportsES6=true"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.5.2",
+    "@mdi/font": "^7.4.47",
     "@openapitools/openapi-generator-cli": "^2.13.4",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
