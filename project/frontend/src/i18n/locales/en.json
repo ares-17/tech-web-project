@@ -8,8 +8,12 @@
     "createquiz_description": "Description",
     "createquiz_view_preview": "See the preview",
     "createquiz_numQuestions": "Number of questions: ",
+
     "validators_minlength": "Enter text at least 3 characters long",
     "validators_numRange": "The value entered is not included in the range [{min}, {max}]",
+    "validation_email": "Enter a congruous email",
+    "validation_pwd": "The password must contain at least 7 characters",
+
     "createquiz_title_preview": "Preview",
     "create_quiz_step1": "Fill data",
     "create_quiz_step2": "Preview",
@@ -47,5 +51,13 @@
     "create_quiz_dialog_text": "As you continue, you will no longer be able to change the values entered",
     "create_quiz_dialog_title": "Are you sure you want to continue?",
     "create_quiz_dialog_close_btn": "Cancel",
-    "create_quiz_dialog_ok_btn": "Confirm"
+    "create_quiz_dialog_ok_btn": "Confirm",
+    
+    "dialog_login_title": "Login",
+    "dialog_signup_title": "Register",
+
+    "navbar_welcome": "Welcome {username}",
+
+    "create_quiz_dialog_title_homepage": "Login",
+    "create_quiz_dialog_text_homepage": "You must be authenticated to create a quiz. You will be redirected to the login page"
 }

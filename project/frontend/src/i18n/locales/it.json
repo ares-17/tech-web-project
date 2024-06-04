@@ -8,8 +8,12 @@
     "createquiz_description": "Descrizione",
     "createquiz_view_preview": "Vedi l'anteprima",
     "createquiz_numQuestions": "Numero domande",
+
     "validators_minlength": "Inserire un testo di almeno 3 caratteri",
     "validators_numRange": "Il valore inserito non è incluso nel range [{min}, {max}]",
+    "validation_email": "Inserire una email congrua",
+    "validation_pwd": "La password deve contentere almeno 7 caratteri",
+
     "createquiz_title_preview": "Anteprima",
     "create_quiz_step1": "Inserisci i dati",
     "create_quiz_step2": "Anteprima",
@@ -46,6 +50,14 @@
 
     "create_quiz_dialog_text": "Proseguendo non sarai più in grado di modificare i valori inseriti",
     "create_quiz_dialog_title": "Sei sicuro di voler continuare?",
-    "create_quiz_dialog_close_btn": "Anulla",
-    "create_quiz_dialog_ok_btn": "Conferma"
+    "create_quiz_dialog_close_btn": "Annulla",
+    "create_quiz_dialog_ok_btn": "Conferma",
+
+    "dialog_login_title": "Effettua il Login",
+    "dialog_signup_title": "Registrati",
+
+    "navbar_welcome": "Benvenuto {username}",
+
+    "create_quiz_dialog_title_homepage": "Effettua il login",
+    "create_quiz_dialog_text_homepage": "Per creare un quiz è necessario essere autenticati. Verrai reindirizzato verso la pagina di login"
 }

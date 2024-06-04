@@ -45,9 +45,6 @@
 </template>
 
 <script lang="ts">
-import Integer from '@/components/Integer.vue';
-import Stepper from '@/components/Stepper.vue';
-import Toast from '@/components/Toast.vue';
 import FirstStepNewQuiz from '@/components/create-quiz/FirstStepNewQuiz.vue';
 import PreviewStepNewQuiz from '@/components/create-quiz/PreviewStepNewQuiz.vue';
 import CreateQuestionsWindows from '@/components/create-quiz/CreateQuestionsWindows.vue';
@@ -60,7 +57,6 @@ import type { QuizApi } from '@/api';
 export default {
     name: 'NewCreateQuiz',
     setup() {
-        const toastService: Ref<typeof Toast | null> = ref(null);
         const steps = ref([
             i18n.global.t('createquiz_title'),
             i18n.global.t('createquiz_title_preview'),
@@ -137,7 +133,7 @@ export default {
                 .catch(e => {
                     //snackbarText.value = e;
                     //snackbar.value = true;
-                    
+
                 })
         }
 
@@ -146,7 +142,6 @@ export default {
         }
 
         return {
-            toastService,
             steps,
             onNextFirstStep,
             currentStep,
@@ -161,9 +156,6 @@ export default {
         };
     },
     components: {
-        Integer,
-        Stepper,
-        Toast,
         FirstStepNewQuiz,
         PreviewStepNewQuiz,
         CreateQuestionsWindows

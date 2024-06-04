@@ -29,7 +29,6 @@
 <script lang="ts">
 import Utils from '@/utils/Utils';
 import { defineComponent, ref, type PropType, type Ref } from 'vue';
-import Integer from '../Integer.vue';
 
 export default defineComponent({
   name: 'FirstStepNewQuiz',
@@ -54,7 +53,6 @@ export default defineComponent({
     }
   },
   components: {
-    Integer
   }
 })
 </script>

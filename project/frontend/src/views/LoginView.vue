@@ -1,76 +1,129 @@
 <template>
-    <div class="container mt-5 pt-5">
-        <div class="card p-4 shadow">
-            <div class="card-body">
-                <h2 class="card-title text-center mb-4">Login</h2>
-                <form>
-                    <div class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-6 mb-3 mx-auto">
-                        <label for="username" class="form-label">{{ $t('createquiz_titlequiz') }}</label>
-                        <input type="text" class="form-control" id="username" v-model="request.username">
-                        <div v-if="submitted && !Validators.minLength(request.username || '')">
-                            <p class="text-danger">{{ $t('validators_minlength') }}</p>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-6 mb-3 mx-auto">
-                        <label for="description" class="form-label">{{ $t('createquiz_description') }}</label>
-                        <input type="password" class="form-control" v-model="request.password"></input>
-                        <div v-if="submitted && !Validators.minLength(request.password || '')">
-                            <p class="text-danger">{{ $t('validators_minlength') }}</p>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-6 mb-3 mx-auto">
-                        <button type="button" class="btn btn-primary w-100" @click="handleLogin">Login</button>
-                    </div>
+    <div class="row mx-auto">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 mx-auto">
+            <v-card class="px-5 py-3 main-dialog-card" :title="$t('dialog_login_title')">
+                <form @submit.prevent="onComplete">
+                    <v-text-field 
+                        v-model="email"
+                        density="compact" 
+                        placeholder="myBeatifulMail@gmail.com" 
+                        label="Account"
+                        prepend-inner-icon="mdi-email-outline" 
+                        variant="outlined" 
+                        class="my-3"
+                        required
+                        :rules="[emailValidation]"
+                        ></v-text-field>
+
+                    <v-text-field 
+                        v-model="pwd"
+                        :append-inner-icon="isPwdVisibile ? 'mdi-eye-off' : 'mdi-eye'" 
+                        label="Password"
+                        :type="isPwdVisibile ? 'text' : 'password'" 
+                        density="compact" 
+                        placeholder="WhatAStrongPwd!"
+                        prepend-inner-icon="mdi-lock-outline" 
+                        variant="outlined"
+                        @click:append-inner="isPwdVisibile = !isPwdVisibile"
+                        required
+                        :rules="[pwdValidation]"
+                        ></v-text-field>
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                        <v-btn :text="$t('create_quiz_dialog_ok_btn')"
+                            class="mx-auto" block
+                            type="submit" variant="outlined"></v-btn>
+                    </v-card-actions>
                 </form>
-            </div>
+            </v-card>
         </div>
     </div>
 
-    <Toast ref="toastService" />
 </template>
 
 <script lang="ts">
 import type { AuthApi } from '@/api';
-import type { CustomerDto } from '@/api/models';
-import Toast from '@/components/Toast.vue';
 import i18n from '@/i18n/i18n';
+import { useUserStore } from '@/stores/userStore';
 import { Validators } from '@/utils/Validators';
 import { inject, ref, type Ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
-    name: 'LoginView',
     setup() {
-        const request: Ref<Partial<CustomerDto>> = ref({
-            isLogged: false,
-            isAnonymous: false
-        });
-        const submitted = ref(false);
-        const authAPI: AuthApi = inject('AuthApi')!;
-        const toastService: Ref<typeof Toast | null> = ref(null);
+        const isPwdVisibile = ref(false);
+        const showDialogState = ref(false);
+        const authAPI = inject('AuthApi') as AuthApi;
+        const email: Ref<string | undefined> = ref(undefined);
+        const pwd: Ref<string | undefined> = ref(undefined);
+        const userStore = useUserStore();
+        const router = useRouter();
 
-        function handleLogin() {
-            submitted.value = true;
-            authAPI.login({ customerDto: request.value as CustomerDto })
-                .then(response => {
-                    toastService.value?.show(i18n.global.t('login_success', { username: request?.value?.username }));
-                })
-                .catch(_ => {
-                    toastService.value?.showError(i18n.global.t('login_error'));
-                });
+        function emailValidation(value: string){
+            return Validators.email(value) || i18n.global.t('validation_email');
+        }
+
+        function pwdValidation(value: string){
+            return Validators.password(value)|| i18n.global.t('validation_pwd');
+        }
+
+        function onComplete() {
+            if(!pwd.value || !email.value || !Validators.email(email.value) || !Validators.password(pwd.value)){
+                return;
+            }
+            
+            authAPI.login({ customerDto: {
+                password: pwd.value,
+                username: email.value,
+                isAnonymous: false, // TODO
+                isLogged: true // TODO
+            }})
+            .then(res => {
+                userStore.setUser(res, email.value!);
+                router.push('/');
+            })
+            .catch(e => console.log(e));
         }
 
         return {
-            request,
-            handleLogin,
-            submitted,
-            Validators,
-            toastService
+            isPwdVisibile,
+            onComplete,
+            showDialogState,
+            email,
+            pwd,
+            emailValidation,
+            pwdValidation,
         }
     },
     components: {
-        Toast
+
     }
 }
 </script>
+<style>
+@media (max-width: 992px) {
+    .main-dialog-card{
+        min-width: 80vw;
+    }
+}
+@media (min-width: 992px) {
+    .main-dialog-card{
+        min-width: 50vw;
+    }
+}
+@media (min-width: 1200px) {
+    .main-dialog-card{
+        min-width: 40vw;
+    }
+}
+@media (min-width: 1400px) {
+    .main-dialog-card{
+        min-width: 30vw;
+    }
+}
 
-<style></style>
+.v-card-item{
+    padding: 1rem;
+}
+
+</style>

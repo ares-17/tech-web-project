@@ -1,6 +1,7 @@
-import i18n from "@/i18n/i18n";
 
 export class Validators {
+
+    static emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
     static minLength(value: string, min = 3) {
         return (value?.length > min);
@@ -14,5 +15,13 @@ export class Validators {
             console.log(e)
             return false;
         }
+    }
+
+    static email(value: string){
+        return (Validators.emailRegex.test(value));
+    }
+
+    static password(value: string){
+        return (value !== undefined && value !== null && value.trim().length >= 7);
     }
 }

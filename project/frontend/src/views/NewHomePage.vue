@@ -17,6 +17,7 @@
                                 append-inner-icon='mdi-send'
                                 required 
                                 hide-details="auto" 
+                                :rules="[validateUUID]"
                                 @click:append-inner="getQuizByCode"
                             ></v-text-field>
                             <div class="w-100 d-flex justify-content-center">
@@ -26,22 +27,41 @@
                     </div>
                     <div class="row">
                         <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-6 mb-3 my-3">
-                            <v-btn size="large" block @click="toNewQuiz">{{ $t('home_create_new_quiz') }}</v-btn>
+                            <v-btn size="large" block @click="toNewQuiz">
+                                {{ $t('home_create_new_quiz') }}
+                                <v-dialog
+                                    v-model="dialogLogin"
+                                    width="auto">
+                                    <template v-slot:default="{ isActive }">
+                                        <v-card
+                                            max-width="500"
+                                            prepend-icon="mdi-alert"
+                                            :text="$t('create_quiz_dialog_text_homepage')"
+                                            :title="$t('create_quiz_dialog_title_homepage')">
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn :text="$t('create_quiz_dialog_close_btn')" 
+                                                @click="() => isActive.value = false"></v-btn>
+                                            <v-btn :text="$t('create_quiz_dialog_ok_btn')" 
+                                                @click="goToLogin"></v-btn>
+                                        </v-card-actions>
+                                        </v-card>
+                                    </template>
+                                </v-dialog>
+                            </v-btn>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-    <Toast ref="toastService" />
 
 </template>
 
 <script lang="ts">
 import type { QuizApi } from '@/api/QuizApi';
 import HelloComponent from '@/components/HelloComponent.vue';
-import Toast from '@/components/Toast.vue';
-import i18n from '@/i18n/i18n';
+import { useUserStore } from '@/stores/userStore';
 import type { Ref } from 'vue';
 import { inject, ref } from 'vue';
 import { useRouter, type Router } from 'vue-router';
@@ -51,33 +71,48 @@ export default {
     setup() {
         const code: Ref<string | undefined> = ref();
         const quizApi = inject('QuizApi') as QuizApi;
-        const toastService: Ref<typeof Toast | null> = ref(null);
         const router: Router = useRouter();
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        const userStore = useUserStore();
+        const dialogLogin = ref(false);
 
         function getQuizByCode() {
-            if (!code.value) {
+            if (!code.value || !uuidRegex.test(code.value)) {
                 return;
             }
             quizApi.getQuizById({ uidQuiz: code.value })
                 .then(() => {
                     router.push({ name: 'quiz-istance', params: { code: code.value } })
                 })
-                .catch(() => toastService.value?.show(i18n.global.t('home_error_id')));
+                .catch(() => {});
         }
 
         function toNewQuiz(){
+            if(!userStore.isAuthenticated()){
+                dialogLogin.value = true;
+                return;
+            }
             router.push({ name: 'create-quiz' });
+        }
+
+        function validateUUID(value: string){
+            return uuidRegex.test(value) || 'Formato del codice errato';
+        }
+
+        function goToLogin(){
+            router.push({ name: 'login' });
         }
 
         return {
             code,
             getQuizByCode,
-            toastService,
-            toNewQuiz
+            toNewQuiz,
+            validateUUID,
+            goToLogin,
+            dialogLogin
         }
     },
     component: {
-        Toast,
         HelloComponent
     }
 };

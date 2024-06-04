@@ -42,7 +42,6 @@
 <script lang="ts">
 import { Validators } from '@/utils/Validators';
 import { defineComponent, ref, type Ref } from 'vue';
-import Integer from '../Integer.vue';
 import i18n from '@/i18n/i18n';
 import type { QuizCreation } from '@/api/models/QuizCreation';
 
@@ -104,7 +103,6 @@ export default defineComponent({
         }
     },
     components: {
-        Integer
     }
 })
 </script>
