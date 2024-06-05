@@ -50,10 +50,9 @@
 </template>
 
 <script lang="ts">
-import type { AuthApi } from '@/api';
+import type { AuthApi, UserApi } from '@/api';
 import i18n from '@/i18n/i18n';
 import { useSessionStore } from '@/stores/sessionStore';
-import Utils from '@/utils/Utils';
 import { Validators } from '@/utils/Validators';
 import { inject, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -67,6 +66,7 @@ export default {
         const pwd: Ref<string | undefined> = ref(undefined);
         const sessionStore = useSessionStore();
         const router = useRouter();
+        const userAPI = inject('UserApi') as UserApi;
 
         function emailValidation(value: string){
             return Validators.email(value) || i18n.global.t('validation_email');
@@ -91,6 +91,8 @@ export default {
                 sessionStore.saveToSessionStorage('token', res.token!);
                 sessionStore.saveToSessionStorage('expiresIn', res.expiresIn!.toString());
                 sessionStore.saveToSessionStorage('username', email.value!);
+                userAPI.getCustomerById({ idCustomer: '1110000' })
+                    .then(res => console.log(res));
                 router.push('/');
             })
             .catch(e => console.log(e));

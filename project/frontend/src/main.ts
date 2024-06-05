@@ -1,18 +1,20 @@
-import { createApp } from 'vue';
-import 'bootstrap/dist/css/bootstrap.css';
-import { createPinia } from 'pinia'
 import '@mdi/font/css/materialdesignicons.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import { createPinia } from 'pinia';
+import { createApp } from 'vue';
 
-import App from './App.vue'
-import router from './router';
+import App from './App.vue';
+import { AuthApi, QuestionsApi, QuizApi, ScoreApi, UserApi } from './api';
 import i18n from './i18n/i18n';
-import { QuestionsApi, QuizApi, ScoreApi, UserApi, AuthApi } from './api';
+import router from './router';
 
 // Vuetify
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/components';
+import * as directives from 'vuetify/directives';
+import 'vuetify/styles';
+import { Configuration } from './api/models/runtime';
+import TokenMiddleware from './middlewares/TokenMiddleware';
 
 const app = createApp(App);
 
@@ -26,11 +28,15 @@ app.use(vuetify)
 app.use(router)
 app.use(i18n)
 
-app.provide('QuestionsApi', new QuestionsApi());
-app.provide('QuizApi', new QuizApi());
-app.provide('UserApi', new UserApi());
-app.provide('ScoreApi', new ScoreApi());
-app.provide('AuthApi', new AuthApi());
+const defaultConfig = new Configuration({
+    middleware: [new TokenMiddleware()]
+});
+
+app.provide('QuestionsApi', new QuestionsApi(defaultConfig));
+app.provide('QuizApi', new QuizApi(defaultConfig));
+app.provide('UserApi', new UserApi(defaultConfig));
+app.provide('ScoreApi', new ScoreApi(defaultConfig));
+app.provide('AuthApi', new AuthApi(defaultConfig));
 
 app.mount('#app');
 

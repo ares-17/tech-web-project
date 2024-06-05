@@ -335,7 +335,6 @@ components:
         - title
         - maxErrors
         - questions
-        - createdBy
 
     CustomerDto:
       type: object
@@ -351,7 +350,6 @@ components:
         password:
           type: string
       required:
-        - isAnonymous
         - username
         - password
 
@@ -387,8 +385,6 @@ components:
           format: int64
           example: 3
       required:
-        - customerId
-        - quizId
         - score
 
     QuestionDto:
@@ -406,7 +402,6 @@ components:
             $ref: '#/components/schemas/AnswerDto'
       required:
         - title
-        - idQuiz
         - answers
 
     AnswerDto:
@@ -423,8 +418,6 @@ components:
         idQuiz:
           type: string
       required:
-        - idQuiz
-        - idQuestion
         - text
         - isCorrect
 
