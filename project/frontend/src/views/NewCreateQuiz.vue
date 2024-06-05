@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-3 mx-auto">
                 <div class="stepper-container mx-auto">
-                    <v-stepper hide-actions :items="steps" v-model="currentStep" class="text-bg-light">
+                    <v-stepper hide-actions :items="steps" v-model="currentStep" class="text-bg-light" elevation="16">
                         <template v-slot:item.1>
                             <FirstStepNewQuiz 
                                 @next="onNextFirstStep" 

@@ -1,38 +1,48 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
+import { ref } from 'vue';
+import { RouterView, useRouter } from 'vue-router';
 import Navbar from './components/Navbar.vue';
+
+const router = useRouter();
+const isInHomePage = ref(false);
+
+router.beforeEach((to, _) => {
+  isInHomePage.value = to.path === '/'
+})
 </script>
 
 <template>
-  <v-layout class="rounded rounded-md">
+  <v-layout class="rounded rounded-md" :class="{ 'image-background': isInHomePage }">
     <Navbar /> 
-    <main class="page-content content-wrapper">
-      <div class="main-div">
-        <div class="container-fluid container-page">
+    <v-main class="page-content content-wrapper">
+        <div class="container-fluid container-page" >
           <router-view />
         </div>
-      </div>
-    </main>
+    </v-main>
   </v-layout>
 </template>
 
 <style scoped>
-div.main-div {
-  position: absolute;
-  top: 0vw;
+.v-layout {
+  background-color:  #6fa7e2; /* Tonalità di blu */
+  margin: 0;
   width: 100%;
+  min-height: fit-content;
 }
 
-.container-page {
+.container-page{
   width: 100%;
   margin: 0;
   padding: 0;
-  background-image: url('./assets/wallpaper-quiz.jpg');
+  padding-top: 10rem;
+  padding-bottom: 20rem;
+}
+
+.image-background {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  height: 120vw;
-  padding-top: 10rem;
+  background-image: url('src/assets/young-woman-holding-thought-bubble.jpg');
 }
 
 </style>

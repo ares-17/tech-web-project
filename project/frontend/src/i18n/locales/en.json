@@ -53,11 +53,17 @@
     "create_quiz_dialog_close_btn": "Cancel",
     "create_quiz_dialog_ok_btn": "Confirm",
     
-    "dialog_login_title": "Login",
+    "dialog_login_title": "Welcome!",
     "dialog_signup_title": "Register",
 
     "navbar_welcome": "Welcome {username}",
 
     "create_quiz_dialog_title_homepage": "Login",
-    "create_quiz_dialog_text_homepage": "You must be authenticated to create a quiz. You will be redirected to the login page"
+    "create_quiz_dialog_text_homepage": "You must be authenticated to create a quiz. You will be redirected to the login page",
+
+    "quiz_deatails_qrcode_gen": "Generate QRcode",
+    "dialog_qrcode_title": "QRcode generated",
+    "dialog_qrcode_text": "Have your friends scan the qrcode to share the quiz! Or copy the link to share it",
+
+    "go_back_btn": "Go back"
 }

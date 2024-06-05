@@ -1,13 +1,15 @@
-import NewCreateQuiz from '@/views/NewCreateQuiz.vue';
-import { createRouter, createWebHistory } from 'vue-router';
+import { useSessionStore } from '@/stores/sessionStore';
 import LoginView from '@/views/LoginView.vue';
-import QuizIstance from '@/views/QuizIstance.vue';
+import NewCreateQuiz from '@/views/NewCreateQuiz.vue';
 import NewHomePage from '@/views/NewHomePage.vue';
-import { useUserStore } from '@/stores/userStore';
+import QuizIstance from '@/views/QuizIstance.vue';
+import RegisterView from '@/views/RegisterView.vue';
+import { createRouter, createWebHistory } from 'vue-router';
 
 const authGuard = (to: any, from: any) => {
-  const userStore = useUserStore();
-  if(!userStore.isAuthenticated()){
+  const sessionStorage = useSessionStore();
+  if(!sessionStorage.getFromSessionStorage('token') ||
+      !sessionStorage.getFromSessionStorage('expiresIn')){
     return '/login'
   }
 }
@@ -29,6 +31,11 @@ const router = createRouter({
       component: LoginView
     },
     {
+      path: '/register',
+      name: 'register',
+      component: RegisterView
+    },
+    {
       path: '/create-quiz',
       name: 'create-quiz',
       component: NewCreateQuiz,
@@ -37,6 +44,7 @@ const router = createRouter({
     {
       path: '/quiz/:id',
       name: 'quiz-istance',
+      props: true,
       component: QuizIstance,
     }
   ]

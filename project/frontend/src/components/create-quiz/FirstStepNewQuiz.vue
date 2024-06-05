@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <h2 class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 mb-4 mx-auto text-center">{{ $t('createquiz_title') }}
+        <h2 class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 mb-4 p-3 mx-auto text-center">{{ $t('createquiz_title') }}
         </h2>
         <form @submit.prevent="onNext">
             <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 mb-3 mx-auto">

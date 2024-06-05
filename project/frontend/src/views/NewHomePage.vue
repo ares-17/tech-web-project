@@ -55,15 +55,14 @@
             </div>
         </div>
 
-
 </template>
 
 <script lang="ts">
 import type { QuizApi } from '@/api/QuizApi';
 import HelloComponent from '@/components/HelloComponent.vue';
-import { useUserStore } from '@/stores/userStore';
+import { useSessionStore } from '@/stores/sessionStore';
 import type { Ref } from 'vue';
-import { inject, ref } from 'vue';
+import { inject, onBeforeUnmount, ref } from 'vue';
 import { useRouter, type Router } from 'vue-router';
 
 export default {
@@ -73,8 +72,10 @@ export default {
         const quizApi = inject('QuizApi') as QuizApi;
         const router: Router = useRouter();
         const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-        const userStore = useUserStore();
+        const sessionStore = useSessionStore();
         const dialogLogin = ref(false);
+        const isLogged = ref(false);
+        const subscription = sessionStore.isLoggedSubject.subscribe(val => isLogged.value = val);
 
         function getQuizByCode() {
             if (!code.value || !uuidRegex.test(code.value)) {
@@ -88,7 +89,7 @@ export default {
         }
 
         function toNewQuiz(){
-            if(!userStore.isAuthenticated()){
+            if(!isLogged.value){
                 dialogLogin.value = true;
                 return;
             }
@@ -102,6 +103,8 @@ export default {
         function goToLogin(){
             router.push({ name: 'login' });
         }
+
+        onBeforeUnmount(() => subscription.unsubscribe());
 
         return {
             code,

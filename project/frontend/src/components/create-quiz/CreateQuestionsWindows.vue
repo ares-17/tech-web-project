@@ -1,6 +1,6 @@
 <template>
     <div v-if="windowsRef && windowsRef !== 0" class="h-100">
-        <div class="card h-100 w-100 text-bg-light ">
+        <div class="card h-100 w-100 text-bg-light elevated">
             <div class="card-header header-domande">Sezione domande del quiz</div>
             <div class="card-body d-flex justify-center align-center h-100 w-100">
                 <v-window v-model="currentWindow" class="h-100 w-100 ">
@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    <div v-else class="card h-100 text-bg-light">
+    <div v-else class="card h-100 text-bg-light elevated">
         <div class="card-header header-domande">Sezione domande del quiz</div>
         <div class="card-body d-flex justify-center align-center h-100">
             <span>Seleziona il numero di domande del quiz</span>
@@ -109,5 +109,9 @@ div.header-domande {
     display: flex;
     align-items: center;
     box-shadow: 0px 3px 1px -2px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 2px 2px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 1px 5px 0px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12));
+}
+
+.elevated{
+    box-shadow: 0px 8px 10px -5px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 16px 24px 2px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 6px 30px 5px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12)) !important;;
 }
 </style>

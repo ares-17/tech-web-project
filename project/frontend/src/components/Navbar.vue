@@ -36,43 +36,46 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, type Ref } from 'vue';
-import { RouterLink, useRouter } from 'vue-router';
-import UserSignInDialog from '@/components/UserSignInDialog.vue';
-import UserSignUpDialog from '@/components/UserSignUpDialog.vue';
-import { useUserStore } from '@/stores/userStore';
-import type { AuthenticationDto } from '@/api/models';
 import router from '@/router';
+import { useSessionStore } from '@/stores/sessionStore';
+import { defineComponent, onBeforeUnmount, ref, type Ref } from 'vue';
+import { RouterLink, useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'Navbar',
   setup() {
     const drawer = ref(false);
-    const userStore = useUserStore();
     const isLogged = ref(false);
     const username: Ref<string | undefined> = ref(undefined);
     const router = useRouter();
+    const sessionStore = useSessionStore();
 
-    const listener = (newVal?: AuthenticationDto, name?: string) => {
-      isLogged.value = !!newVal && !!newVal.token;
-      username.value = name;
-    }
-
-    userStore.addEventListener((newVal?: AuthenticationDto, name?: string) => {
-      isLogged.value = !!newVal && !!newVal.token;
-      username.value = name;
-    });
+    const subscriptionIsLogged = sessionStore.isLoggedSubject
+      .subscribe(value => {
+        isLogged.value = value;
+      });
+      
+    const subSessionStorage = sessionStore.sessionStorageSubject
+      .subscribe(values => {
+        if(values && values['username']){
+          username.value = sessionStore.getFromSessionStorage('username') as string;
+        }
+      })
 
     function logout(){
-      userStore.removeEventListener(listener);
-      isLogged.value = false;
-      userStore.clean();
+      sessionStore.removeSessionStorageItem('token');
+      sessionStore.removeSessionStorageItem('expiresIn');
+      sessionStore.removeSessionStorageItem('username');
       router.push('/');
     }
 
+    onBeforeUnmount(() => {
+      subscriptionIsLogged.unsubscribe();
+      subSessionStorage.unsubscribe();
+    });
+
     return {
       drawer,
-      userStore,
       isLogged,
       logout,
       username,
@@ -81,8 +84,6 @@ export default defineComponent({
   },
   components: {
     RouterLink,
-    UserSignInDialog,
-    UserSignUpDialog
   },
 });
 </script>
