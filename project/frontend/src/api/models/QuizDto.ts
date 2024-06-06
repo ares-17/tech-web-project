@@ -12,13 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../models/runtime';
-import type { QuestionDto } from '../models/QuestionDto';
+import { mapValues } from '../../open-api/runtime';
+import type { QuestionDto } from './QuestionDto';
 import {
     QuestionDtoFromJSON,
     QuestionDtoFromJSONTyped,
     QuestionDtoToJSON,
-} from '../models/QuestionDto';
+} from './QuestionDto';
 
 /**
  * 
@@ -55,7 +55,6 @@ export interface QuizDto {
      * @type {string}
      * @memberof QuizDto
      */
-    // TODO non necessario
     createdBy?: string;
     /**
      * 
@@ -68,8 +67,7 @@ export interface QuizDto {
      * @type {boolean}
      * @memberof QuizDto
      */
-    // TODO NECESSARIO
-    isOpen: boolean;
+    isOpen?: boolean;
     /**
      * 
      * @type {Array<QuestionDto>}
@@ -83,7 +81,6 @@ export interface QuizDto {
  */
 export function instanceOfQuizDto(value: object): value is QuizDto {
     if (!('title' in value) || value['title'] === undefined) return false;
-    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
     if (!('maxErrors' in value) || value['maxErrors'] === undefined) return false;
     if (!('questions' in value) || value['questions'] === undefined) return false;
     return true;
@@ -103,7 +100,7 @@ export function QuizDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): Q
         'title': json['title'],
         'description': json['description'] == null ? undefined : json['description'],
         'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
-        'createdBy': json['createdBy'],
+        'createdBy': json['createdBy'] == null ? undefined : json['createdBy'],
         'maxErrors': json['maxErrors'],
         'isOpen': json['isOpen'] == null ? undefined : json['isOpen'],
         'questions': ((json['questions'] as Array<any>).map(QuestionDtoFromJSON)),

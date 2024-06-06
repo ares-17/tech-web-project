@@ -1,9 +1,7 @@
 package com.unina.techweb.service;
 
-import com.unina.techweb.dto.ScoreDto;
-import com.unina.techweb.entities.Customer;
-import com.unina.techweb.entities.Quiz;
-import com.unina.techweb.entities.Score;
+import com.unina.techweb.dto.*;
+import com.unina.techweb.entities.*;
 import com.unina.techweb.repository.CustomerRepository;
 import com.unina.techweb.repository.QuizRepository;
 import com.unina.techweb.repository.ScoreRepository;
@@ -12,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ScoreService {
@@ -22,35 +18,65 @@ public class ScoreService {
     private final ScoreRepository scoreRepository;
     private final QuizRepository quizRepository;
     private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
 
     @Autowired
-    ScoreService(ScoreRepository scoreRepository, QuizRepository quizRepository, CustomerRepository customerRepository){
+    ScoreService(ScoreRepository scoreRepository, QuizRepository quizRepository, CustomerRepository customerRepository, CustomerService customerService){
         this.scoreRepository = scoreRepository;
         this.quizRepository = quizRepository;
         this.customerRepository = customerRepository;
+        this.customerService = customerService;
     }
 
 
     @Transactional
-    public void completeQuiz(ScoreDto dto){
-        if(dto == null || dto.getQuizId() == null ||
-                dto.getCustomerId() == null ||
-                dto.getScore() < 0){
-            throw new IllegalArgumentException("parametri inseriti non validi per completeQuiz");
+    public void completeQuiz(QuizResponseDto dto){
+        if(dto == null || dto.getId() == null ||
+            dto.getQuestions() == null ||
+            dto.getQuestions().isEmpty()){
+            throw new IllegalArgumentException("Parametri inseriti non validi per completeQuiz");
         }
 
-        Quiz quiz = this.quizRepository.findById(UUID.fromString(dto.getQuizId()))
+        Quiz quiz = this.quizRepository.findById(UUID.fromString(dto.getId()))
                 .orElseThrow(() -> new IllegalArgumentException("Quiz non trovato"));
-        Customer customer = this.customerRepository.findById(UUID.fromString(dto.getCustomerId()))
-                .orElseThrow(() -> new IllegalArgumentException("Utente non trovato"));
 
+        Customer customer = (dto.getIsCustomerAnonymous()) ?
+                this.customerService.getOrCreateAnonymousCustomer() :
+                this.customerRepository.findById(UUID.fromString(dto.getIdCustomer()))
+                    .orElseThrow(() -> new IllegalArgumentException("Utente non trovato"));
 
         Score score = new Score();
         score.setQuiz(quiz);
         score.setCustomer(customer);
-        score.setScore(dto.getScore());
+        score.setScore(calculateScore(dto, quiz));
         score.setCompletedat(Calendar.getInstance().toInstant());
         this.scoreRepository.save(score);
+    }
+
+    private int calculateScore(QuizResponseDto dto, Quiz entity){
+        if(entity.getQuestions().size() != dto.getQuestions().size()){
+            throw new IllegalArgumentException("Il numero di domande risposte al quiz non è sufficiente");
+        }
+
+        var ordedQuestions = entity.getQuestions().stream()
+            .sorted(Comparator.comparing(Question::getId))
+                .toList();
+
+        var ordedQuestionResponses = dto.getQuestions().stream()
+            .sorted(Comparator.comparing(QuestionResponseDto::getId)).toList();
+
+        int score = 0;
+        for(int i = 0; i < ordedQuestions.size(); i++){
+            score = isAnswerRight(ordedQuestionResponses.get(i) ,ordedQuestions.get(i));
+        }
+
+        return score;
+    }
+
+    private int isAnswerRight(QuestionResponseDto response, Question dto){
+        return dto.getAnswers().stream()
+                .map(Answer::getText)
+                .anyMatch(text -> text.equals(response.getAnswer())) ? 1 : 0;
     }
 
     public List<ScoreDto> getScoresByQuiz(String idQuiz) {

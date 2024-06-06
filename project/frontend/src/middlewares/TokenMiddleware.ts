@@ -14,7 +14,6 @@ export default class TokenMiddleware implements Middleware {
             (context.init.headers as any)['Accept'] = '*/*';
             (context.init.headers as any)['Host'] = 'localhost:8084';
         }
-        console.log(context);
         return context;
     }
 }

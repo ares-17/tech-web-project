@@ -1,15 +1,12 @@
 package com.unina.techweb.controller;
 
 import com.unina.techweb.controller.api.QuizApi;
-import com.unina.techweb.dto.CustomerDto;
 import com.unina.techweb.dto.QuizDto;
 import com.unina.techweb.service.QuizService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Slf4j
 @RestController

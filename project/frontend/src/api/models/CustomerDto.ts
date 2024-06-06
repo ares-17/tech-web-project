@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../models/runtime';
+import { mapValues } from '../../open-api/runtime';
 /**
  * 
  * @export
@@ -42,7 +42,7 @@ export interface CustomerDto {
      * @type {boolean}
      * @memberof CustomerDto
      */
-    isAnonymous: boolean;
+    isAnonymous?: boolean;
     /**
      * 
      * @type {string}
@@ -56,7 +56,6 @@ export interface CustomerDto {
  */
 export function instanceOfCustomerDto(value: object): value is CustomerDto {
     if (!('username' in value) || value['username'] === undefined) return false;
-    if (!('isAnonymous' in value) || value['isAnonymous'] === undefined) return false;
     if (!('password' in value) || value['password'] === undefined) return false;
     return true;
 }
@@ -74,7 +73,7 @@ export function CustomerDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'id': json['id'] == null ? undefined : json['id'],
         'username': json['username'],
         'isLogged': json['isLogged'] == null ? undefined : json['isLogged'],
-        'isAnonymous': json['isAnonymous'],
+        'isAnonymous': json['isAnonymous'] == null ? undefined : json['isAnonymous'],
         'password': json['password'],
     };
 }

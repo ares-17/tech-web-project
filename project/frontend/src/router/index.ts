@@ -4,6 +4,7 @@ import NewCreateQuiz from '@/views/NewCreateQuiz.vue';
 import NewHomePage from '@/views/NewHomePage.vue';
 import QuizIstance from '@/views/QuizIstance.vue';
 import RegisterView from '@/views/RegisterView.vue';
+import TakeQuiz from '@/views/TakeQuiz.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const authGuard = (to: any, from: any) => {
@@ -46,6 +47,12 @@ const router = createRouter({
       name: 'quiz-istance',
       props: true,
       component: QuizIstance,
+    },
+    {
+      path: '/take-quiz/:id',
+      name: 'take-quiz',
+      props: true,
+      component: TakeQuiz
     }
   ]
 });

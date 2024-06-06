@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from './runtime';
+import { mapValues } from '../../open-api/runtime';
 /**
  * 
  * @export
@@ -42,7 +42,6 @@ export interface AnswerDto {
      * @type {string}
      * @memberof AnswerDto
      */
-    // TODO: modificare open api
     idQuestion?: string;
     /**
      * 
@@ -58,8 +57,6 @@ export interface AnswerDto {
 export function instanceOfAnswerDto(value: object): value is AnswerDto {
     if (!('text' in value) || value['text'] === undefined) return false;
     if (!('isCorrect' in value) || value['isCorrect'] === undefined) return false;
-    if (!('idQuestion' in value) || value['idQuestion'] === undefined) return false;
-    if (!('idQuiz' in value) || value['idQuiz'] === undefined) return false;
     return true;
 }
 
@@ -76,8 +73,8 @@ export function AnswerDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'id': json['id'] == null ? undefined : json['id'],
         'text': json['text'],
         'isCorrect': json['isCorrect'],
-        'idQuestion': json['idQuestion'],
-        'idQuiz': json['idQuiz'],
+        'idQuestion': json['idQuestion'] == null ? undefined : json['idQuestion'],
+        'idQuiz': json['idQuiz'] == null ? undefined : json['idQuiz'],
     };
 }
 

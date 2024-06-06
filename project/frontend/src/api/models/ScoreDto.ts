@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from './runtime';
+import { mapValues } from '../../open-api/runtime';
 /**
  * 
  * @export
@@ -24,7 +24,7 @@ export interface ScoreDto {
      * @type {string}
      * @memberof ScoreDto
      */
-    customerId: string;
+    customerId?: string;
     /**
      * 
      * @type {string}
@@ -48,7 +48,7 @@ export interface ScoreDto {
      * @type {string}
      * @memberof ScoreDto
      */
-    quizId: string;
+    quizId?: string;
     /**
      * 
      * @type {string}
@@ -97,8 +97,6 @@ export interface ScoreDto {
  * Check if a given object implements the ScoreDto interface.
  */
 export function instanceOfScoreDto(value: object): value is ScoreDto {
-    if (!('customerId' in value) || value['customerId'] === undefined) return false;
-    if (!('quizId' in value) || value['quizId'] === undefined) return false;
     if (!('score' in value) || value['score'] === undefined) return false;
     return true;
 }
@@ -113,11 +111,11 @@ export function ScoreDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     }
     return {
         
-        'customerId': json['customerId'],
+        'customerId': json['customerId'] == null ? undefined : json['customerId'],
         'customerUsername': json['customerUsername'] == null ? undefined : json['customerUsername'],
         'customerIslogged': json['customerIslogged'] == null ? undefined : json['customerIslogged'],
         'customerIsanonymous': json['customerIsanonymous'] == null ? undefined : json['customerIsanonymous'],
-        'quizId': json['quizId'],
+        'quizId': json['quizId'] == null ? undefined : json['quizId'],
         'quizTitle': json['quizTitle'] == null ? undefined : json['quizTitle'],
         'quizDescription': json['quizDescription'] == null ? undefined : json['quizDescription'],
         'quizCreatedat': json['quizCreatedat'] == null ? undefined : json['quizCreatedat'],

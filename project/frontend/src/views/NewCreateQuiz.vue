@@ -53,6 +53,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { inject, ref, type Ref } from 'vue';
 import type { QuestionDto, QuizDto } from '@/api/models';
 import type { QuizApi } from '@/api';
+import { useSessionStore } from '@/stores/sessionStore';
+import { useRouter } from 'vue-router';
 
 export default {
     name: 'NewCreateQuiz',
@@ -68,6 +70,8 @@ export default {
         const questions: Ref<QuestionDto[]> = ref([]);
         const snackbarText = ref('');
         const quizApi = inject('QuizApi') as QuizApi;
+        const sessionStorage = useSessionStore();
+        const router = useRouter();
 
         function onNextFirstStep(value: any) {
             firstStepValues.value = value;
@@ -123,22 +127,18 @@ export default {
                 questions: questions.value,
                 title: firstStepValues.value.title,
                 description: firstStepValues.value.description,
-                isOpen: false,
-                maxErrors: 0
+                maxErrors: firstStepValues.value.numMaxErrors,
+                createdBy: sessionStorage.getFromSessionStorage('idCustomer') as string,
+                isOpen: true
             };
             quizApi.createQuiz({ quizDto: quiz })
                 .then(res => {
-                    console.log(res);
+                    router.push({ name: 'quiz-istance', params: { id: res.id! } });
                 })
                 .catch(e => {
                     //snackbarText.value = e;
                     //snackbar.value = true;
-
                 })
-        }
-
-        function showSnackbar(){
-
         }
 
         return {

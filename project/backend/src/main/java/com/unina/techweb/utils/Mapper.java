@@ -4,16 +4,30 @@ import com.unina.techweb.dto.*;
 import com.unina.techweb.entities.*;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.time.ZoneOffset;
+import java.util.*;
 
 public class Mapper {
 
+    public static UUID safeUUIDFromString(String str){
+        return (str == null) ? null : UUID.fromString(str);
+    }
+
+    public static String stringFromUUID(UUID uuid){
+        return (uuid == null) ? null : uuid.toString();
+    }
+
+    public static Comparator<UUID> compareUUID(){
+        return (a, b) -> {
+            var stringA = stringFromUUID(a);
+            var stringB = stringFromUUID(b);
+            return stringA.compareTo(stringB);
+        };
+    }
+
     public static Answer mapAnswerDtoToAnswer(AnswerDto answerDto, Question question){
         var answer = new Answer();
-        answer.setId(answerDto.getId());
+        answer.setId(safeUUIDFromString(answerDto.getId()));
         answer.setText(answerDto.getText());
         answer.setIscorrect(answerDto.getIsCorrect());
         answer.setUidquestion(question);
@@ -22,7 +36,7 @@ public class Mapper {
 
     public static Question mapQuestionDtoToQuestion(QuestionDto questionDto, Quiz quiz){
         var question = new Question();
-        question.setId(questionDto.getId());
+        question.setId(safeUUIDFromString(questionDto.getId()));
         question.setUidquiz(quiz);
         question.setTitle(questionDto.getTitle());
 
@@ -39,31 +53,31 @@ public class Mapper {
                 List.of();
 
         return new QuestionDto(
-                question.getId(),
+                question.getId().toString(),
                 question.getTitle(),
-                question.getUidquiz().getId(),
+                question.getUidquiz().getId().toString(),
                 answersDto
         );
     }
 
     private static AnswerDto mapAnswerToDto(Answer answer, UUID idQuiz) {
         return new AnswerDto(
-                answer.getId(),
+                stringFromUUID(answer.getId()),
                 answer.getText(),
                 answer.getIscorrect(),
-                answer.getUidquestion().getId(),
-                idQuiz
+                stringFromUUID(answer.getUidquestion().getId()),
+                idQuiz.toString()
         );
     }
 
     public static QuizDto mapQuizToQuizDTO(Quiz quiz, List<QuestionDto> questions){
         return new QuizDto(
-                quiz.getId(),
+                stringFromUUID(quiz.getId()),
                 quiz.getTitle(),
                 quiz.getDescription(),
-                quiz.getCreatedat(),
-                quiz.getCreatedby().getId(),
-                quiz.getMaxerrors(),
+                quiz.getCreatedat().atOffset(ZoneOffset.UTC),
+                stringFromUUID(quiz.getCreatedby().getId()),
+                Long.parseLong(quiz.getMaxerrors().toString()),
                 quiz.getIsopen(),
                 questions
         );
@@ -74,10 +88,10 @@ public class Mapper {
         quiz.setTitle(quizDto.getTitle());
         quiz.setDescription(quizDto.getDescription());
         quiz.setCreatedat(Instant.now());
-        quiz.setMaxerrors(quizDto.getMaxErrors());
+        quiz.setMaxerrors(Integer.parseInt(quizDto.getMaxErrors().toString()));
         quiz.setIsopen(quizDto.getIsOpen());
         quiz.setCreatedby(customer);
-        quiz.setId(quizDto.getId());
+        quiz.setId(safeUUIDFromString(quizDto.getId()));
 
         Set<Question> questions = new HashSet<>(quizDto.getQuestions().stream()
                 .map(q -> Mapper.mapQuestionDtoToQuestion(q, quiz)).toList());
@@ -88,7 +102,7 @@ public class Mapper {
 
     public static CustomerDto mapCustomerToCustomerDto(Customer customer) {
         return new CustomerDto(
-                customer.getId(),
+                stringFromUUID(customer.getId()),
                 customer.getUsername(),
                 customer.getIslogged(),
                 customer.getIsanonymous(),
@@ -101,25 +115,25 @@ public class Mapper {
         entity.setIsanonymous(customer.getIsAnonymous());
         entity.setIslogged(customer.getIsLogged());
         entity.setUsername(customer.getUsername());
-        entity.setId(customer.getId());
+        entity.setId(safeUUIDFromString(customer.getId()));
         entity.setPassword(customer.getPassword());
         return entity;
     }
 
     public static ScoreDto mapScoreQuizCustomerToScoreCustomerDto(Score entity){
         return new ScoreDto(
-                entity.getCustomer().getId().toString(),
+                stringFromUUID(entity.getCustomer().getId()),
                 entity.getCustomer().getUsername(),
                 entity.getCustomer().getIslogged(),
                 entity.getCustomer().getIsanonymous(),
-                entity.getQuiz().getId().toString(),
+                stringFromUUID(entity.getQuiz().getId()),
                 entity.getQuiz().getTitle(),
                 entity.getQuiz().getDescription(),
-                entity.getQuiz().getCreatedat(),
+                entity.getQuiz().getCreatedat().toString(),
                 entity.getQuiz().getMaxerrors(),
                 entity.getQuiz().getIsopen(),
-                entity.getScore(),
-                entity.getCompletedat()
+                entity.getCompletedat().atOffset(ZoneOffset.UTC),
+                Long.parseLong(entity.getScore().toString())
         );
     }
 }

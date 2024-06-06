@@ -65,5 +65,12 @@
     "dialog_qrcode_title": "QRcode generated",
     "dialog_qrcode_text": "Have your friends scan the qrcode to share the quiz! Or copy the link to share it",
 
-    "go_back_btn": "Go back"
+    "go_back_btn": "Go back",
+
+    "quiz_istance_num_questions": "Questions' number",
+    "quiz_istance_errors": "Number of errors allowed",
+    "quiz_istance_num_created_by": "Maker",
+    "quiz_istance_created_at": "Creation date",
+    "quiz_istance_no_scores": "No scores recorded",
+    "quiz_deatails_play": "Take the quiz"
 }

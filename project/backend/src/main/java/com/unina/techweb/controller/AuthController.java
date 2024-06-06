@@ -6,13 +6,12 @@ import com.unina.techweb.dto.CustomerDto;
 import com.unina.techweb.entities.Customer;
 import com.unina.techweb.service.AuthenticationService;
 import com.unina.techweb.service.JwtService;
-import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,11 +31,15 @@ public class AuthController implements AuthApi {
     @Override
     public ResponseEntity<AuthenticationDto> login(CustomerDto customerDto) {
         Customer authenticatedUser = authenticationService.authenticate(customerDto);
+
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("username", authenticatedUser.getUsername());
         String jwtToken = jwtService.generateToken(extraClaims, authenticatedUser);
-        AuthenticationDto dto = new AuthenticationDto(jwtToken, jwtService.getExpirationTime());
-        return ResponseEntity.ok(dto);
+
+        return ResponseEntity.ok(new AuthenticationDto(
+                BigDecimal.valueOf(jwtService.getExpirationTime()),
+                jwtToken,
+                authenticatedUser.getId().toString()));
     }
 
     @Override

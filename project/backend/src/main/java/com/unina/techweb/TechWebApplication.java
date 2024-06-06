@@ -5,8 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import java.util.List;
-
 @SpringBootApplication
 @ComponentScan(basePackages = { "com.unina.techweb.controller", "com.unina.techweb.repository", "com.unina.techweb.service", "com.unina.techweb.config", "com.unina.techweb.middleware"})
 @CrossOrigin("localhost:5173")

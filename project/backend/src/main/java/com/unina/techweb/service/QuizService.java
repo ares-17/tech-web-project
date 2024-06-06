@@ -36,17 +36,17 @@ public class QuizService {
 
     @Transactional
     public QuizDto createQuiz(@RequestBody @Valid QuizDto quizDto) {
-        Customer customer = this.customerRepository.findById(quizDto.getCreatedById())
+        Customer customer = this.customerRepository.findById(UUID.fromString(quizDto.getCreatedBy()))
                 .orElseThrow(IllegalArgumentException::new);
         Quiz quiz = Mapper.mapQuizDTOToQuiz(quizDto, customer);
         var id = this.quizRepository.save(quiz).getId();
 
         return new QuizDto(
-                id,
+                id.toString(),
                 quizDto.getTitle(),
                 quizDto.getDescription(),
                 quizDto.getCreatedAt(),
-                quizDto.getCreatedById(),
+                quizDto.getCreatedBy(),
                 quizDto.getMaxErrors(),
                 quiz.getIsopen(),
                 quizDto.getQuestions()

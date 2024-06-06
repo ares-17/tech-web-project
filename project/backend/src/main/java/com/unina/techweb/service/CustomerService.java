@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -52,11 +53,26 @@ public class CustomerService {
 
         var id = customerRepository.save(customer).getId();
         return new CustomerDto(
-                id,
+                id.toString(),
                 customerDto.getUsername(),
                 customerDto.getIsLogged(),
                 customerDto.getIsAnonymous(),
                 "" // password is not needed
                 );
+    }
+
+    @Transactional
+    public Customer getOrCreateAnonymousCustomer(){
+        Optional<Customer> customer = this.customerRepository.findByUsername("Anonymous");
+        if(customer.isPresent()){
+            return customer.get();
+        }
+        Customer anonymous = new Customer();
+        anonymous.setPassword("");
+        anonymous.setIsanonymous(true);
+        anonymous.setIslogged(false);
+        anonymous.setUsername("Anonymous");
+
+        return customerRepository.save(anonymous);
     }
 }

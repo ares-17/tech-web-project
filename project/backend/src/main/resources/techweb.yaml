@@ -175,7 +175,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ScoreDto'
+              $ref: '#/components/schemas/QuizResponseDto'
       responses:
         '200':
           description: Quiz completato con successo
@@ -429,6 +429,31 @@ components:
           format: long
         token:
           type: string
+        idCustomer:
+          type: string
+
+    QuizResponseDto:
+      type: object
+      properties:
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionResponseDto'
+        id:
+          type: string
+        isCustomerAnonymous:
+          type: boolean
+        idCustomer:
+          type: string
+
+    QuestionResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+        answer:
+          type: string
+
 
     Problem:
       type: object

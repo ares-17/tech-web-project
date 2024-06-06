@@ -88,11 +88,7 @@ export default {
                 isLogged: true // TODO
             }})
             .then(res => {
-                sessionStore.saveToSessionStorage('token', res.token!);
-                sessionStore.saveToSessionStorage('expiresIn', res.expiresIn!.toString());
-                sessionStore.saveToSessionStorage('username', email.value!);
-                userAPI.getCustomerById({ idCustomer: '1110000' })
-                    .then(res => console.log(res));
+                sessionStore.saveUserToSessionStorage(res, email.value!);
                 router.push('/');
             })
             .catch(e => console.log(e));

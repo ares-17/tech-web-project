@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../models/runtime';
+import { mapValues } from '../../open-api/runtime';
 /**
  * 
  * @export
@@ -31,6 +31,12 @@ export interface AuthenticationDto {
      * @memberof AuthenticationDto
      */
     token?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthenticationDto
+     */
+    idCustomer?: string;
 }
 
 /**
@@ -52,6 +58,7 @@ export function AuthenticationDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'expiresIn': json['expiresIn'] == null ? undefined : json['expiresIn'],
         'token': json['token'] == null ? undefined : json['token'],
+        'idCustomer': json['idCustomer'] == null ? undefined : json['idCustomer'],
     };
 }
 
@@ -63,6 +70,7 @@ export function AuthenticationDtoToJSON(value?: AuthenticationDto | null): any {
         
         'expiresIn': value['expiresIn'],
         'token': value['token'],
+        'idCustomer': value['idCustomer'],
     };
 }
 

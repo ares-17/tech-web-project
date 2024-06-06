@@ -2,6 +2,7 @@ package com.unina.techweb.controller;
 
 import com.unina.techweb.controller.api.ScoreApi;
 import com.unina.techweb.dto.ScoreDto;
+import com.unina.techweb.dto.QuizResponseDto;
 import com.unina.techweb.service.ScoreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class ScoreController implements ScoreApi {
     }
 
     @Override
-    public ResponseEntity<Void> completeQuiz(ScoreDto dto) {
+    public ResponseEntity<Void> completeQuiz(QuizResponseDto dto) {
         this.scoreService.completeQuiz(dto);
         return ResponseEntity.ok().build();
     }
