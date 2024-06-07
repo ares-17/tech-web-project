@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 @Service
 public class ScoreService {
@@ -58,25 +59,27 @@ public class ScoreService {
             throw new IllegalArgumentException("Il numero di domande risposte al quiz non è sufficiente");
         }
 
-        var ordedQuestions = entity.getQuestions().stream()
-            .sorted(Comparator.comparing(Question::getId))
-                .toList();
+        List<Question> questionsList = new ArrayList<>(entity.getQuestions().stream().toList());
+        List<QuestionResponseDto> dtoQuestionsList = new ArrayList<>(dto.getQuestions());
 
-        var ordedQuestionResponses = dto.getQuestions().stream()
-            .sorted(Comparator.comparing(QuestionResponseDto::getId)).toList();
+        questionsList.sort(Comparator.comparing(q -> Mapper.stringFromUUID(q.getId())));
+        dtoQuestionsList.sort(Comparator.comparing(QuestionResponseDto::getId));
 
-        int score = 0;
-        for(int i = 0; i < ordedQuestions.size(); i++){
-            score = isAnswerRight(ordedQuestionResponses.get(i) ,ordedQuestions.get(i));
-        }
-
-        return score;
+        return IntStream.range(0, questionsList.size())
+            .map(i -> isAnswerRight(dtoQuestionsList.get(i), questionsList.get(i)))
+            .sum();
     }
 
     private int isAnswerRight(QuestionResponseDto response, Question dto){
-        return dto.getAnswers().stream()
-                .map(Answer::getText)
-                .anyMatch(text -> text.equals(response.getAnswer())) ? 1 : 0;
+        var answersList = dto.getAnswers().stream().toList();
+        if(answersList.size() == 1){
+            return answersList.get(0).getText().equals(response.getAnswer()) ? 1 : 0;
+        }
+
+        return answersList.stream()
+            .filter(Answer::getIscorrect)
+            .mapToInt(a -> a.getText().equals(response.getAnswer()) ? 1 : 0)
+            .sum();
     }
 
     public List<ScoreDto> getScoresByQuiz(String idQuiz) {

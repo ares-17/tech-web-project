@@ -85,17 +85,6 @@ export default {
             showDialog.value = false;
         }
 
-        /*
-        function copyToClip() {
-            navigator.clipboard.writeText(linkToQuiz.value as string)
-                .then(() => {
-                })
-                .catch((error) => {
-                    console.error('Errore durante la copia del testo nella clipboard:', error);
-                });
-        }
-        */
-
         function onUpdateValuesFirstStep(value: any){
             //firstStepValues.value = value;
         }

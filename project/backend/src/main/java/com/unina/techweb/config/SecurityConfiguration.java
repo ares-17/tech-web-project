@@ -44,7 +44,10 @@ public class SecurityConfiguration {
                                 "/swagger-resources/**",
                                 "/v2/api-docs",
                                 "/webjars/**",
-                                "/v3/api-docs/**"
+                                "/v3/api-docs/**",
+                                "/score/customers/{idQuiz}",
+                                "/user/{idCustomer}",
+                                "/score/complete"
                         ).permitAll()
                         .requestMatchers("/quiz/{idQuiz}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/quiz").authenticated()

@@ -1,7 +1,7 @@
 <template>
-    <div class="row">
+    <div class="row m-0">
         <div v-if="quizDetails"
-            class="ps-5 col-12 col-10 col-sm-10 col-md-10 col-lg-6 col-xl-6 mx-auto mt-3 order-md-first order-sm-first">
+            class="ps-5 col-12 col-sm-12 col-md-12 col-lg-8 col-xl-6 mx-auto mt-3 order-md-first order-sm-first">
             <v-card class="text-bg-light p-5 w-100" elevation="16">
                 <div class="input-container bg-transparent w-100">
                     <div class="pb-5">
@@ -86,7 +86,7 @@
     </div>
 
     <v-dialog v-model="stateQrCodeDialog" width="auto">
-        <v-card max-width="500" :text="$t('dialog_qrcode_text')" :title="$t('dialog_qrcode_title')">
+        <v-card :text="$t('dialog_qrcode_text')" :title="$t('dialog_qrcode_title')">
             <div class="w-100 d-flex">
                 <canvas ref="canvas" class="mx-auto"></canvas>
             </div>
@@ -192,7 +192,7 @@ export default {
         }
 
         function goToQuiz(){
-
+            router.push({ name: 'take-quiz', params: { id: props.id }});
         }
 
         return {

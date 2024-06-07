@@ -57,6 +57,15 @@ export const useSessionStore = defineStore('sessionStore', () => {
     isLoggedSubject.next(isLoggedIn(getAllSessionStorage()));
   }
 
+  function removeUser(){
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('expiresIn');
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('idCustomer');
+    sessionStorageSubject.next(getAllSessionStorage());
+    isLoggedSubject.next(isLoggedIn(getAllSessionStorage()));
+  }
+
   function cryptAndSave(key: any, value: any, secretKey: any){
     const encryptedVal = CryptoJS.AES.encrypt(value, secretKey).toString();
     sessionStorage.setItem(key, encryptedVal);
@@ -77,6 +86,7 @@ export const useSessionStore = defineStore('sessionStore', () => {
     removeSessionStorageItem,
     isLoggedSubject,
     sessionStorageSubject,
-    saveUserToSessionStorage
+    saveUserToSessionStorage,
+    removeUser
   };
 });

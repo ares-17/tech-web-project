@@ -45,11 +45,12 @@
 </template>
 
 <script lang="ts">
-import type { QuizApi } from '@/api';
+import { ScoreApi, type QuizApi } from '@/api';
 import type { QuestionDto, QuizDto } from '@/api/models';
 import type { QuestionResponseDto } from '@/api/models/QuestionResponseDto';
 import type { QuizResponseDto } from '@/api/models/QuizResponseDto';
 import CreateQuestionsWindows from '@/components/create-quiz/CreateQuestionsWindows.vue';
+import { useSessionStore } from '@/stores/sessionStore';
 import Utils from '@/utils/Utils';
 import { inject, onMounted, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -65,7 +66,9 @@ export default {
     setup(props) {
         const quizApi = inject('QuizApi') as QuizApi;
         const router = useRouter();
+        const scoreApi = inject('ScoreApi') as ScoreApi;
         const quiz: Ref<QuizDto | undefined> = ref();
+        const sessionStorage = useSessionStore();
 
         onMounted(() => {
             quizApi.getQuizById({ uidQuiz: props.id })
@@ -92,11 +95,19 @@ export default {
         }
 
         function onCompleteQuestions(questions: QuestionDto[]) {
+            const idCustomer = (sessionStorage.getFromSessionStorage('idCustomer')) ?
+                sessionStorage.getFromSessionStorage('idCustomer') as string :
+                undefined;
+
             const quizResponseDto: QuizResponseDto = {
                 id: quiz.value?.id,
-                questions: questions.map(questionToQuestionResponseDto)
+                questions: questions.map(questionToQuestionResponseDto),
+                isCustomerAnonymous: !idCustomer,
+                idCustomer
             };
-            console.log(quizResponseDto);
+            scoreApi.completeQuiz({ quizResponseDto })
+                .then(() => router.push('/'))
+                .catch((e) => console.log(e));
         }
 
         return {

@@ -83,7 +83,7 @@ export default {
             }
             quizApi.getQuizById({ uidQuiz: code.value })
                 .then(() => {
-                    router.push({ name: 'quiz-istance', params: { code: code.value } })
+                    router.push({ name: 'quiz-istance', params: { id: code.value } })
                 })
                 .catch(() => {});
         }

@@ -65,9 +65,7 @@ export default defineComponent({
       })
 
     function logout(){
-      sessionStore.removeSessionStorageItem('token');
-      sessionStore.removeSessionStorageItem('expiresIn');
-      sessionStore.removeSessionStorageItem('username');
+      sessionStore.removeUser();
       router.push('/');
     }
 
