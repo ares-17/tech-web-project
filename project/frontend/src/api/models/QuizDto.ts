@@ -64,12 +64,6 @@ export interface QuizDto {
     maxErrors: number;
     /**
      * 
-     * @type {boolean}
-     * @memberof QuizDto
-     */
-    isOpen?: boolean;
-    /**
-     * 
      * @type {Array<QuestionDto>}
      * @memberof QuizDto
      */
@@ -102,7 +96,6 @@ export function QuizDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): Q
         'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
         'createdBy': json['createdBy'] == null ? undefined : json['createdBy'],
         'maxErrors': json['maxErrors'],
-        'isOpen': json['isOpen'] == null ? undefined : json['isOpen'],
         'questions': ((json['questions'] as Array<any>).map(QuestionDtoFromJSON)),
     };
 }
@@ -119,7 +112,6 @@ export function QuizDtoToJSON(value?: QuizDto | null): any {
         'createdAt': value['createdAt'] == null ? undefined : ((value['createdAt']).toISOString()),
         'createdBy': value['createdBy'],
         'maxErrors': value['maxErrors'],
-        'isOpen': value['isOpen'],
         'questions': ((value['questions'] as Array<any>).map(QuestionDtoToJSON)),
     };
 }

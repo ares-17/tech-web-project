@@ -30,8 +30,6 @@ public class AuthenticationService {
         var dtoWithEncodePwd = new CustomerDto(
                 input.getId(),
                 input.getUsername(),
-                input.getIsLogged(),
-                input.getIsAnonymous(),
                 passwordEncoder.encode(input.getPassword())
         );
         Customer customer = Mapper.mapCustomerDtoToCustomer(dtoWithEncodePwd);

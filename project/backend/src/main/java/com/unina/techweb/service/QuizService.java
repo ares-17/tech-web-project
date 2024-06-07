@@ -48,7 +48,6 @@ public class QuizService {
                 quizDto.getCreatedAt(),
                 quizDto.getCreatedBy(),
                 quizDto.getMaxErrors(),
-                quiz.getIsopen(),
                 quizDto.getQuestions()
         );
     }

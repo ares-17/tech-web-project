@@ -27,14 +27,6 @@ public class Customer implements UserDetails {
     @Column(name = "username", nullable = false)
     private String username;
 
-    @NotNull
-    @Column(name = "islogged", nullable = false)
-    private Boolean islogged = false;
-
-    @NotNull
-    @Column(name = "isanonymous", nullable = false)
-    private Boolean isanonymous = false;
-
     @Size(max = 255)
     @NotNull
     @Column(name = "password", nullable = false)

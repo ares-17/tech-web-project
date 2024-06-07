@@ -47,16 +47,12 @@ public class CustomerService {
     @Transactional
     public CustomerDto createCustomer(CustomerDto customerDto) {
         var customer = new Customer();
-        customer.setIsanonymous(customerDto.getIsAnonymous());
-        customer.setIslogged(customerDto.getIsLogged());
         customer.setUsername(customerDto.getUsername());
 
         var id = customerRepository.save(customer).getId();
         return new CustomerDto(
                 id.toString(),
                 customerDto.getUsername(),
-                customerDto.getIsLogged(),
-                customerDto.getIsAnonymous(),
                 "" // password is not needed
                 );
     }
@@ -69,8 +65,6 @@ public class CustomerService {
         }
         Customer anonymous = new Customer();
         anonymous.setPassword("");
-        anonymous.setIsanonymous(true);
-        anonymous.setIslogged(false);
         anonymous.setUsername("Anonymous");
 
         return customerRepository.save(anonymous);

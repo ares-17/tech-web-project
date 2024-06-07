@@ -25,11 +25,6 @@ public class ScoreDto {
   @JsonProperty("customerUsername")
   private String customerUsername;
 
-  @JsonProperty("customerIslogged")
-  private Boolean customerIslogged;
-
-  @JsonProperty("customerIsanonymous")
-  private Boolean customerIsanonymous;
 
   @JsonProperty("quizId")
   private String quizId;
@@ -45,9 +40,6 @@ public class ScoreDto {
 
   @JsonProperty("quizMaxerrors")
   private Integer quizMaxerrors;
-
-  @JsonProperty("quizIsopen")
-  private Boolean quizIsopen;
 
   @JsonProperty("completedaAt")
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -94,48 +86,11 @@ public class ScoreDto {
     this.customerUsername = customerUsername;
   }
 
-  public ScoreDto customerIslogged(Boolean customerIslogged) {
-    this.customerIslogged = customerIslogged;
-    return this;
-  }
 
-  /**
-   * Get customerIslogged
-   * @return customerIslogged
-   */
 
-  @Schema(name = "customerIslogged", required = false)
-  public Boolean getCustomerIslogged() {
-    return customerIslogged;
-  }
 
-  public void setCustomerIslogged(Boolean customerIslogged) {
-    this.customerIslogged = customerIslogged;
-  }
 
-  public ScoreDto customerIsanonymous(Boolean customerIsanonymous) {
-    this.customerIsanonymous = customerIsanonymous;
-    return this;
-  }
 
-  /**
-   * Get customerIsanonymous
-   * @return customerIsanonymous
-   */
-
-  @Schema(name = "customerIsanonymous", required = false)
-  public Boolean getCustomerIsanonymous() {
-    return customerIsanonymous;
-  }
-
-  public void setCustomerIsanonymous(Boolean customerIsanonymous) {
-    this.customerIsanonymous = customerIsanonymous;
-  }
-
-  public ScoreDto quizId(String quizId) {
-    this.quizId = quizId;
-    return this;
-  }
 
   /**
    * Get quizId
@@ -227,29 +182,8 @@ public class ScoreDto {
     this.quizMaxerrors = quizMaxerrors;
   }
 
-  public ScoreDto quizIsopen(Boolean quizIsopen) {
-    this.quizIsopen = quizIsopen;
-    return this;
-  }
 
-  /**
-   * Get quizIsopen
-   * @return quizIsopen
-   */
 
-  @Schema(name = "quizIsopen", required = false)
-  public Boolean getQuizIsopen() {
-    return quizIsopen;
-  }
-
-  public void setQuizIsopen(Boolean quizIsopen) {
-    this.quizIsopen = quizIsopen;
-  }
-
-  public ScoreDto completedaAt(OffsetDateTime completedaAt) {
-    this.completedaAt = completedaAt;
-    return this;
-  }
 
   /**
    * Get completedaAt
@@ -295,21 +229,18 @@ public class ScoreDto {
     ScoreDto scoreDto = (ScoreDto) o;
     return Objects.equals(this.customerId, scoreDto.customerId) &&
             Objects.equals(this.customerUsername, scoreDto.customerUsername) &&
-            Objects.equals(this.customerIslogged, scoreDto.customerIslogged) &&
-            Objects.equals(this.customerIsanonymous, scoreDto.customerIsanonymous) &&
             Objects.equals(this.quizId, scoreDto.quizId) &&
             Objects.equals(this.quizTitle, scoreDto.quizTitle) &&
             Objects.equals(this.quizDescription, scoreDto.quizDescription) &&
             Objects.equals(this.quizCreatedat, scoreDto.quizCreatedat) &&
             Objects.equals(this.quizMaxerrors, scoreDto.quizMaxerrors) &&
-            Objects.equals(this.quizIsopen, scoreDto.quizIsopen) &&
             Objects.equals(this.completedaAt, scoreDto.completedaAt) &&
             Objects.equals(this.score, scoreDto.score);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(customerId, customerUsername, customerIslogged, customerIsanonymous, quizId, quizTitle, quizDescription, quizCreatedat, quizMaxerrors, quizIsopen, completedaAt, score);
+    return Objects.hash(customerId, customerUsername, quizId, quizTitle, quizDescription, quizCreatedat, quizMaxerrors, completedaAt, score);
   }
 
   @Override
@@ -318,14 +249,11 @@ public class ScoreDto {
     sb.append("class ScoreDto {\n");
     sb.append("    customerId: ").append(toIndentedString(customerId)).append("\n");
     sb.append("    customerUsername: ").append(toIndentedString(customerUsername)).append("\n");
-    sb.append("    customerIslogged: ").append(toIndentedString(customerIslogged)).append("\n");
-    sb.append("    customerIsanonymous: ").append(toIndentedString(customerIsanonymous)).append("\n");
     sb.append("    quizId: ").append(toIndentedString(quizId)).append("\n");
     sb.append("    quizTitle: ").append(toIndentedString(quizTitle)).append("\n");
     sb.append("    quizDescription: ").append(toIndentedString(quizDescription)).append("\n");
     sb.append("    quizCreatedat: ").append(toIndentedString(quizCreatedat)).append("\n");
     sb.append("    quizMaxerrors: ").append(toIndentedString(quizMaxerrors)).append("\n");
-    sb.append("    quizIsopen: ").append(toIndentedString(quizIsopen)).append("\n");
     sb.append("    completedaAt: ").append(toIndentedString(completedaAt)).append("\n");
     sb.append("    score: ").append(toIndentedString(score)).append("\n");
     sb.append("}");

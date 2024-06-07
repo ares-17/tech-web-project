@@ -78,7 +78,6 @@ public class Mapper {
                 quiz.getCreatedat().atOffset(ZoneOffset.UTC),
                 stringFromUUID(quiz.getCreatedby().getId()),
                 Long.parseLong(quiz.getMaxerrors().toString()),
-                quiz.getIsopen(),
                 questions
         );
     }
@@ -89,7 +88,6 @@ public class Mapper {
         quiz.setDescription(quizDto.getDescription());
         quiz.setCreatedat(Instant.now());
         quiz.setMaxerrors(Integer.parseInt(quizDto.getMaxErrors().toString()));
-        quiz.setIsopen(quizDto.getIsOpen());
         quiz.setCreatedby(customer);
         quiz.setId(safeUUIDFromString(quizDto.getId()));
 
@@ -104,16 +102,12 @@ public class Mapper {
         return new CustomerDto(
                 stringFromUUID(customer.getId()),
                 customer.getUsername(),
-                customer.getIslogged(),
-                customer.getIsanonymous(),
                 customer.getPassword()
         );
     }
 
     public static Customer mapCustomerDtoToCustomer(CustomerDto customer) {
         var entity = new Customer();
-        entity.setIsanonymous(customer.getIsAnonymous());
-        entity.setIslogged(customer.getIsLogged());
         entity.setUsername(customer.getUsername());
         entity.setId(safeUUIDFromString(customer.getId()));
         entity.setPassword(customer.getPassword());
@@ -124,14 +118,11 @@ public class Mapper {
         return new ScoreDto(
                 stringFromUUID(entity.getCustomer().getId()),
                 entity.getCustomer().getUsername(),
-                entity.getCustomer().getIslogged(),
-                entity.getCustomer().getIsanonymous(),
                 stringFromUUID(entity.getQuiz().getId()),
                 entity.getQuiz().getTitle(),
                 entity.getQuiz().getDescription(),
                 entity.getQuiz().getCreatedat().toString(),
                 entity.getQuiz().getMaxerrors(),
-                entity.getQuiz().getIsopen(),
                 entity.getCompletedat().atOffset(ZoneOffset.UTC),
                 Long.parseLong(entity.getScore().toString())
         );

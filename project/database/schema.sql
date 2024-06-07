@@ -3,9 +3,7 @@
 CREATE TABLE Customer (
     uid UUID PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    isLogged BOOLEAN NOT NULL,
-    isAnonymous BOOLEAN NOT NULL
+    password VARCHAR(255) NOT NULL
 );
 
 -- Create the table for Quiz
@@ -16,7 +14,6 @@ CREATE TABLE Quiz (
     createdAt TIMESTAMP,
     createdBy UUID NOT NULL,
     maxErrors INT NOT NULL,
-    isOpen BOOLEAN,
     FOREIGN KEY (createdBy) REFERENCES Customer(uid)
 );
 

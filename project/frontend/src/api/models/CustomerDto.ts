@@ -33,18 +33,6 @@ export interface CustomerDto {
     username: string;
     /**
      * 
-     * @type {boolean}
-     * @memberof CustomerDto
-     */
-    isLogged?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CustomerDto
-     */
-    isAnonymous?: boolean;
-    /**
-     * 
      * @type {string}
      * @memberof CustomerDto
      */
@@ -72,8 +60,6 @@ export function CustomerDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean
         
         'id': json['id'] == null ? undefined : json['id'],
         'username': json['username'],
-        'isLogged': json['isLogged'] == null ? undefined : json['isLogged'],
-        'isAnonymous': json['isAnonymous'] == null ? undefined : json['isAnonymous'],
         'password': json['password'],
     };
 }
@@ -86,8 +72,6 @@ export function CustomerDtoToJSON(value?: CustomerDto | null): any {
         
         'id': value['id'],
         'username': value['username'],
-        'isLogged': value['isLogged'],
-        'isAnonymous': value['isAnonymous'],
         'password': value['password'],
     };
 }

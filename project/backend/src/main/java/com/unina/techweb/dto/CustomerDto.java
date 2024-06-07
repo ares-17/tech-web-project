@@ -1,18 +1,19 @@
 package com.unina.techweb.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.Generated;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-
 import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import jakarta.annotation.Generated;
+import lombok.AllArgsConstructor;
 
 /**
  * CustomerDto
  */
 @AllArgsConstructor
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-06-05T18:03:26.214085516+02:00[Europe/Rome]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-06-07T16:05:10.821464250+02:00[Europe/Rome]")
 public class CustomerDto {
 
   @JsonProperty("id")
@@ -20,12 +21,6 @@ public class CustomerDto {
 
   @JsonProperty("username")
   private String username;
-
-  @JsonProperty("isLogged")
-  private Boolean isLogged;
-
-  @JsonProperty("isAnonymous")
-  private Boolean isAnonymous;
 
   @JsonProperty("password")
   private String password;
@@ -68,44 +63,6 @@ public class CustomerDto {
     this.username = username;
   }
 
-  public CustomerDto isLogged(Boolean isLogged) {
-    this.isLogged = isLogged;
-    return this;
-  }
-
-  /**
-   * Get isLogged
-   * @return isLogged
-  */
-  
-  @Schema(name = "isLogged", required = false)
-  public Boolean getIsLogged() {
-    return isLogged;
-  }
-
-  public void setIsLogged(Boolean isLogged) {
-    this.isLogged = isLogged;
-  }
-
-  public CustomerDto isAnonymous(Boolean isAnonymous) {
-    this.isAnonymous = isAnonymous;
-    return this;
-  }
-
-  /**
-   * Get isAnonymous
-   * @return isAnonymous
-  */
-  
-  @Schema(name = "isAnonymous", required = false)
-  public Boolean getIsAnonymous() {
-    return isAnonymous;
-  }
-
-  public void setIsAnonymous(Boolean isAnonymous) {
-    this.isAnonymous = isAnonymous;
-  }
-
   public CustomerDto password(String password) {
     this.password = password;
     return this;
@@ -136,14 +93,12 @@ public class CustomerDto {
     CustomerDto customerDto = (CustomerDto) o;
     return Objects.equals(this.id, customerDto.id) &&
         Objects.equals(this.username, customerDto.username) &&
-        Objects.equals(this.isLogged, customerDto.isLogged) &&
-        Objects.equals(this.isAnonymous, customerDto.isAnonymous) &&
         Objects.equals(this.password, customerDto.password);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, username, isLogged, isAnonymous, password);
+    return Objects.hash(id, username, password);
   }
 
   @Override
@@ -152,8 +107,6 @@ public class CustomerDto {
     sb.append("class CustomerDto {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    username: ").append(toIndentedString(username)).append("\n");
-    sb.append("    isLogged: ").append(toIndentedString(isLogged)).append("\n");
-    sb.append("    isAnonymous: ").append(toIndentedString(isAnonymous)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("}");
     return sb.toString();

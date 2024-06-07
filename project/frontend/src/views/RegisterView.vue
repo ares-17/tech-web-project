@@ -3,11 +3,20 @@
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-8 mx-auto">
             <v-card class="p-4 main-dialog-card" elevation="16">
                 <div class="row">
-                    <div class="col-6">
-                        <v-img width="auto" height="auto" src="/src/assets/6183517_3071357.jpg"></v-img>
+                    <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-sm-12">
+                        <v-img width="auto" height="auto" lazy-src="/src/assets/4957136_4957136.jpg" src="/src/assets/6183517_3071357.jpg">
+                            <template v-slot:placeholder>
+                                <div class="d-flex align-center justify-center fill-height">
+                                    <v-progress-circular
+                                    color="grey-lighten-4"
+                                    indeterminate
+                                    ></v-progress-circular>
+                                </div>
+                            </template>
+                        </v-img>
                     </div>
-                    <div class="col-6 my-auto p-4">
-                        <h2 class="mb-4 pb-4">{{ $t('dialog_login_title') }}</h2>
+                    <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-sm-12 my-auto p-4">
+                        <h2 class="mb-4 pb-4">{{ $t('dialog_signup_title') }}</h2>
                         <form @submit.prevent="onComplete">
                             <v-text-field 
                                 v-model="email"
@@ -36,9 +45,9 @@
                                 ></v-text-field>
                             <v-divider class="my-2"></v-divider>
                             <v-card-actions>
-                                <v-btn :text="$t('create_quiz_dialog_ok_btn')"
+                                <v-btn color="primary" :text="$t('create_quiz_dialog_ok_btn')"
                                     class="mx-auto" block
-                                    type="submit" variant="outlined"></v-btn>
+                                    type="submit" variant="flat"></v-btn>
                             </v-card-actions>
                         </form>
                     </div>
@@ -50,8 +59,9 @@
 </template>
 
 <script lang="ts">
-import type { AuthApi } from '@/api';
+import type { AuthApi, UserApi } from '@/api';
 import i18n from '@/i18n/i18n';
+import { useSessionStore } from '@/stores/sessionStore';
 import { Validators } from '@/utils/Validators';
 import { inject, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -63,8 +73,9 @@ export default {
         const authAPI = inject('AuthApi') as AuthApi;
         const email: Ref<string | undefined> = ref(undefined);
         const pwd: Ref<string | undefined> = ref(undefined);
-        //const userStore = useUserStore();
+        const sessionStore = useSessionStore();
         const router = useRouter();
+        const userAPI = inject('UserApi') as UserApi;
 
         function emailValidation(value: string){
             return Validators.email(value) || i18n.global.t('validation_email');
@@ -79,13 +90,12 @@ export default {
                 return;
             }
             
-            authAPI.login({ customerDto: {
+            authAPI.register({ customerDto: {
                 password: pwd.value,
-                username: email.value,
-                isAnonymous: false, // TODO
-                isLogged: true // TODO
+                username: email.value
             }})
             .then(res => {
+                sessionStore.saveUserToSessionStorage(res, email.value!);
                 router.push('/');
             })
             .catch(e => console.log(e));

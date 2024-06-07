@@ -128,16 +128,12 @@ export default {
                 description: firstStepValues.value.description,
                 maxErrors: firstStepValues.value.numMaxErrors,
                 createdBy: sessionStorage.getFromSessionStorage('idCustomer') as string,
-                isOpen: true
             };
             quizApi.createQuiz({ quizDto: quiz })
                 .then(res => {
                     router.push({ name: 'quiz-istance', params: { id: res.id! } });
                 })
-                .catch(e => {
-                    //snackbarText.value = e;
-                    //snackbar.value = true;
-                })
+                .catch(e => console.log(e));
         }
 
         return {

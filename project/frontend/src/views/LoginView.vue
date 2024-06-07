@@ -93,8 +93,6 @@ export default {
             authAPI.login({ customerDto: {
                 password: pwd.value,
                 username: email.value,
-                isAnonymous: false, // TODO
-                isLogged: true // TODO
             }})
             .then(res => {
                 sessionStore.saveUserToSessionStorage(res, email.value!);

@@ -45,7 +45,4 @@ public class Quiz {
     @Column(name = "maxerrors", nullable = false)
     private Integer maxerrors;
 
-    @Column(name = "isopen")
-    private Boolean isopen;
-
 }

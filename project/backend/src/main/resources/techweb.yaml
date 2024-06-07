@@ -322,9 +322,6 @@ components:
           type: integer
           format: int64
           example: 3
-        isOpen:
-          type: boolean
-          example: true
         questions:
           type: array
           items:
@@ -343,10 +340,6 @@ components:
           type: string
         username:
           type: string
-        isLogged:
-          type: boolean
-        isAnonymous:
-          type: boolean
         password:
           type: string
       required:

@@ -1,23 +1,26 @@
 package com.unina.techweb.dto;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.Generated;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-
+import com.unina.techweb.dto.QuestionDto;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
+import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import jakarta.annotation.Generated;
 
 /**
  * QuizDto
  */
 @AllArgsConstructor
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-06-05T18:03:26.214085516+02:00[Europe/Rome]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-06-07T16:05:10.821464250+02:00[Europe/Rome]")
 public class QuizDto {
 
   @JsonProperty("id")
@@ -38,9 +41,6 @@ public class QuizDto {
 
   @JsonProperty("maxErrors")
   private Long maxErrors;
-
-  @JsonProperty("isOpen")
-  private Boolean isOpen;
 
   @JsonProperty("questions")
   @Valid
@@ -160,25 +160,6 @@ public class QuizDto {
     this.maxErrors = maxErrors;
   }
 
-  public QuizDto isOpen(Boolean isOpen) {
-    this.isOpen = isOpen;
-    return this;
-  }
-
-  /**
-   * Get isOpen
-   * @return isOpen
-  */
-  
-  @Schema(name = "isOpen", example = "true", required = false)
-  public Boolean getIsOpen() {
-    return isOpen;
-  }
-
-  public void setIsOpen(Boolean isOpen) {
-    this.isOpen = isOpen;
-  }
-
   public QuizDto questions(List<QuestionDto> questions) {
     this.questions = questions;
     return this;
@@ -218,13 +199,12 @@ public class QuizDto {
         Objects.equals(this.createdAt, quizDto.createdAt) &&
         Objects.equals(this.createdBy, quizDto.createdBy) &&
         Objects.equals(this.maxErrors, quizDto.maxErrors) &&
-        Objects.equals(this.isOpen, quizDto.isOpen) &&
         Objects.equals(this.questions, quizDto.questions);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, description, createdAt, createdBy, maxErrors, isOpen, questions);
+    return Objects.hash(id, title, description, createdAt, createdBy, maxErrors, questions);
   }
 
   @Override
@@ -237,7 +217,6 @@ public class QuizDto {
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    createdBy: ").append(toIndentedString(createdBy)).append("\n");
     sb.append("    maxErrors: ").append(toIndentedString(maxErrors)).append("\n");
-    sb.append("    isOpen: ").append(toIndentedString(isOpen)).append("\n");
     sb.append("    questions: ").append(toIndentedString(questions)).append("\n");
     sb.append("}");
     return sb.toString();
