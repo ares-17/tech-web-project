@@ -4,7 +4,16 @@
             <v-card class="p-4 main-dialog-card" elevation="16">
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-sm-12">
-                        <v-img width="auto" height="auto" src="/src/assets/4957136_4957136.jpg"></v-img>
+                        <v-img width="auto" height="auto" lazy-src="/src/assets/4957136_4957136.jpg" src="/src/assets/4957136_4957136.jpg">
+                            <template v-slot:placeholder>
+                                <div class="d-flex align-center justify-center fill-height">
+                                    <v-progress-circular
+                                    color="grey-lighten-4"
+                                    indeterminate
+                                    ></v-progress-circular>
+                                </div>
+                            </template>
+                        </v-img>
                     </div>
                     <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-sm-12 my-auto p-4">
                         <h2 class="mb-4 pb-4">{{ $t('dialog_login_title') }}</h2>

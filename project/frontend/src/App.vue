@@ -7,30 +7,30 @@ const router = useRouter();
 const isInHomePage = ref(false);
 
 router.beforeEach((to, _) => {
-  isInHomePage.value = to.path === '/'
+  isInHomePage.value = to.path === '/';
 })
 </script>
 
 <template>
-  <v-layout :class="{ 'image-background': isInHomePage }">
-    <Navbar /> 
-    <v-main class="page-content content-wrapper">
-        <div class="container-fluid container-page" >
-          <router-view />
-        </div>
+  <v-layout ref="imageBackground" :class="{ 'image-background': isInHomePage }">
+    <Navbar />
+    <v-main class="page-content content-wrapper pt-0">
+      <div class="container-fluid container-page ">
+        <router-view />
+      </div>
     </v-main>
   </v-layout>
 </template>
 
 <style scoped>
 .v-layout {
-  background-color:  #6fa7e2; /* Tonalità di blu */
+  background-color: #6fa7e2;
   margin: 0;
   width: 100%;
   min-height: fit-content;
 }
 
-.container-page{
+.container-page {
   width: 100%;
   margin: 0;
   padding: 0;
@@ -42,7 +42,7 @@ router.beforeEach((to, _) => {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-image: url('src/assets/mystery-box-with-gifts-concept.jpg');
+  background-image: url('./assets/mystery-box-with-gifts-concept.jpg');
+  height: 100vh;
 }
-
 </style>

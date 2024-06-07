@@ -20,14 +20,15 @@
                                 :rules="[validateUUID]"
                                 @click:append-inner="getQuizByCode"
                             ></v-text-field>
-                            <div class="w-100 d-flex justify-content-center">
-                                <span class="text-center my-auto mx-auto or">oppure</span>
-                            </div>
+                        </div>
+                        <div class="col-12 col-md-8 col-sm-12 col-lg-8 col-xl-8 mb-2 h-100">
+                            <v-divider>oppure</v-divider>
                         </div>
                     </div>
+                    
                     <div class="row">
                         <div class="col-12 col-md-8 col-sm-12 col-lg-8 col-xl-8 mb-3 my-3">
-                            <v-btn size="large" block @click="toNewQuiz">
+                            <v-btn size="large" block @click="toNewQuiz" variant="flat" elevation="4">
                                 {{ $t('home_create_new_quiz') }}
                                 <v-dialog
                                     v-model="dialogLogin"
@@ -132,7 +133,6 @@ export default {
     h1.title{
         margin-top: 2rem;
         font-size: 4rem;
-        color: white;
         font-weight: 600;
         font-family: Poppins;
         text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
@@ -142,7 +142,6 @@ export default {
 @media (max-width: 992px){
     .title-col{
         display: flex;
-        justify-content: center;
         align-items: center;
         padding-left: 1rem;
     }
@@ -156,7 +155,6 @@ export default {
 
     h1.title{
         font-size: xx-large;
-        color: white;
         font-weight: 600;
         font-family: Poppins;
         text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;

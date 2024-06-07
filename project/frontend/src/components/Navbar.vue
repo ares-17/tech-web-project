@@ -2,7 +2,7 @@
   <v-app-bar>
     <v-app-bar-title>
       <router-link class="nav-link m-3 d-none d-md-flex" to="/">SmartQuiz</router-link>
-      <v-btn class="d-md-none" icon="mdi-home" variant="text" @click="router.push('/')"></v-btn>
+      <v-btn class="d-lg-none" icon="mdi-home" variant="text" @click="router.push('/')"></v-btn>
     </v-app-bar-title>
     <v-spacer></v-spacer>
     <template v-slot:append>
@@ -97,9 +97,7 @@ export default defineComponent({
 }
 
 .navbar-nav .nav-link {
-  color: white;
-  font-size: medium;
-  font-weight: 600;
+  font-size: larger;
   font-stretch: expanded;
   line-height: 1.25rem;
 }
@@ -110,6 +108,9 @@ export default defineComponent({
 
 .nav-link {
   font-weight: 600;
+  font-stretch: expanded;
+  line-height: 1.25rem;
+  text-transform: uppercase; 
 }
 
 .nav-link:hover {
@@ -117,13 +118,11 @@ export default defineComponent({
 }
 
 .v-app-bar-title {
-  font-weight: 500;
   font-size: x-large;
   text-transform: uppercase;
 }
 
 .v-app-bar.v-toolbar {
   background: #0000001f;
-  color: white;
 }
 </style>
