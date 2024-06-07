@@ -1,4 +1,4 @@
-import type { AuthenticationDto } from '@/open-api';
+import type { AuthenticationDto } from '@/api/models';
 import CryptoJS from 'crypto-js';
 import { defineStore } from 'pinia';
 import { BehaviorSubject } from 'rxjs';

@@ -55,7 +55,7 @@ import { inject, onMounted, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default {
-    name: 'NewCreateQuiz',
+    name: 'CreateQuiz',
     props: {
         id: {
             type: String,

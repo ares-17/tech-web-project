@@ -1,7 +1,7 @@
 import { useSessionStore } from '@/stores/sessionStore';
 import LoginView from '@/views/LoginView.vue';
-import NewCreateQuiz from '@/views/NewCreateQuiz.vue';
-import NewHomePage from '@/views/NewHomePage.vue';
+import CreateQuiz from '@/views/CreateQuiz.vue';
+import HomePage from '@/views/HomePage.vue';
 import QuizIstance from '@/views/QuizIstance.vue';
 import RegisterView from '@/views/RegisterView.vue';
 import TakeQuiz from '@/views/TakeQuiz.vue';
@@ -24,7 +24,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: NewHomePage
+      component: HomePage
     },
     {
       path: '/login',
@@ -39,7 +39,7 @@ const router = createRouter({
     {
       path: '/create-quiz',
       name: 'create-quiz',
-      component: NewCreateQuiz,
+      component: CreateQuiz,
       beforeEnter: authGuard
     },
     {

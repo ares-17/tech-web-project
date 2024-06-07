@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { mapValues } from './runtime';
 import type { QuestionResponseDto } from './QuestionResponseDto';
 import {
     QuestionResponseDtoFromJSON,
