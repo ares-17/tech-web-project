@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../../open-api/runtime';
+import { mapValues } from './runtime';
 import type { QuestionDto } from './QuestionDto';
 import {
     QuestionDtoFromJSON,

@@ -38,6 +38,7 @@
 <script lang="ts">
 import type { QuizApi } from '@/api';
 import type { QuestionDto, QuizDto } from '@/api/models';
+import type { QuestionResponseDto } from '@/api/models/QuestionResponseDto';
 import type { QuizResponseDto } from '@/api/models/QuizResponseDto';
 import CreateQuestionsWindows from '@/components/create-quiz/CreateQuestionsWindows.vue';
 import Utils from '@/utils/Utils';
@@ -63,14 +64,30 @@ export default {
                 .catch(e => console.log(e));            
         })
 
-        function onCompleteQuestions(questions: QuestionDto[]){
-            console.log('completed');
-            console.log(questions);
+        function questionToQuestionResponseDto(question: QuestionDto): QuestionResponseDto{
+            if(!question){
+                throw new Error('Question in questionToQuestionResponseDto is null');
+            }
+            if(!question.answers || question.answers?.length === 0){
+                throw new Error('Answers array in questionToQuestionResponseDto is null');
+            }
 
+            const answer = (question.answers?.length === 1) ? 
+                question.answers[0].text : 
+                question.answers?.find(a => !!a.isCorrect)?.text;
+            
+            return {
+                answer,
+                id: question.id
+            }
+        }
+
+        function onCompleteQuestions(questions: QuestionDto[]){
             const quizResponseDto: QuizResponseDto = {
                 id: quiz.value?.id,
-                questions: []
+                questions: questions.map(questionToQuestionResponseDto)
             };
+            console.log(quizResponseDto);
         }
 
         return {

@@ -53,8 +53,8 @@ public class Mapper {
                 List.of();
 
         return new QuestionDto(
-                question.getId().toString(),
                 question.getTitle(),
+                stringFromUUID(question.getId()),
                 question.getUidquiz().getId().toString(),
                 answersDto
         );

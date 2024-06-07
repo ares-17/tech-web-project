@@ -1,17 +1,18 @@
 <template>
     <div class="row w-100">
-        <div class="col-12">
+        <div class="col-12" v-if="!question">
             <v-radio-group v-model="typeOfQuest" :mandatory="true" inline @update:model-value="resetAnswers">
                 <v-radio label="Risposta singola" value="open" class="me-2"></v-radio>
                 <v-radio label="Risposte multiple" value="closed"></v-radio>
             </v-radio-group>
         </div>
 
-        <v-divider :thickness="2"></v-divider>
+        <v-divider></v-divider>
 
         <form @submit.prevent="onConfirmQuestion">
             <div class="col-12">
                 <v-text-field :label="$t('create_question_title')" variant="outlined" class="mb-3 ms-1"
+                    :readonly="!!question"
                     v-model="questionRef.title" required hide-details="auto" :rules="[minLength]"></v-text-field>
                 <div v-if="typeOfQuest === 'open'">
                     <v-textarea label="Label" variant="outlined" required :rules="[minLength]" class="ms-1"
@@ -20,38 +21,58 @@
                 <div v-else class="w-100">
                     <v-radio-group @update:model-value="onClickRadio" row :mandatory="true">
                         <div class="col-12">
-                            <v-radio :value="0" class="d-flex align-center">
+                            <v-radio :value="0" class="d-flex align-center" required>
                                 <template v-slot:label>
-                                    <v-text-field variant="outlined" required :rules="[minLength]"
-                                        @update:model-value="val => updateAnswer(0, val)"
-                                        :label="$t('craete_question_answer1')" class="ml-3 w-100 mt-2"></v-text-field>
+                                    <div v-if="!question">
+                                        <v-text-field variant="outlined" required :rules="[minLength]"
+                                            @update:model-value="val => updateAnswer(0, val)"
+                                            :label="$t('craete_question_answer1')" class="ml-3 w-100 mt-2"></v-text-field>
+                                    </div>
+                                    <div v-else class="ml-3 w-100 py-4">
+                                        <span >{{ question?.answers[0]?.text }}</span>
+                                    </div>
                                 </template>
                             </v-radio>
                         </div>
                         <div class="col-12">
-                            <v-radio :value="1" class="d-flex align-center">
+                            <v-radio :value="1" class="d-flex align-center" required>
                                 <template v-slot:label>
+                                    <div v-if="!question">
                                     <v-text-field variant="outlined" required :rules="[minLength]"
                                         @update:model-value="val => updateAnswer(1, val)"
                                         :label="$t('craete_question_answer2')" class="ml-3 w-100 mt-2"></v-text-field>
+                                    </div>
+                                    <div v-else class="ml-3 w-100 py-4">
+                                        <span >{{ question?.answers[1]?.text }}</span>
+                                    </div>
                                 </template>
                             </v-radio>
                         </div>
                         <div class="col-12">
-                            <v-radio :value="2" class="d-flex align-center">
+                            <v-radio :value="2" class="d-flex align-center" required>
                                 <template v-slot:label>
+                                    <div v-if="!question">
                                     <v-text-field variant="outlined" required :rules="[minLength]"
                                         @update:model-value="val => updateAnswer(2, val)"
                                         :label="$t('craete_question_answer3')" class="ml-3 w-100 mt-2"></v-text-field>
+                                    </div>
+                                    <div v-else class="ml-3 w-100 py-4">
+                                        <span >{{ question?.answers[2]?.text }}</span>
+                                    </div>
                                 </template>
                             </v-radio>
                         </div>
                         <div class="col-12">
-                            <v-radio :value="3" class="d-flex align-center">
+                            <v-radio :value="3" class="d-flex align-center" required>
                                 <template v-slot:label>
+                                    <div v-if="!question">
                                     <v-text-field variant="outlined" required :rules="[minLength]"
                                         @update:model-value="val => updateAnswer(3, val)"
                                         :label="$t('craete_question_answer4')" class="ml-3 w-100 mt-2"></v-text-field>
+                                    </div>
+                                    <div v-else class="ml-3 w-100 py-4">
+                                        <span >{{ question?.answers[3]?.text }}</span>
+                                    </div>
                                 </template>
                             </v-radio>
                         </div>
@@ -82,7 +103,7 @@
 import type { QuestionDto } from '@/api/models';
 import i18n from '@/i18n/i18n';
 import { Validators } from '@/utils/Validators';
-import { defineComponent, ref, type Ref } from 'vue';
+import { defineComponent, ref, type PropType, type Ref } from 'vue';
 import { VRadio, VRadioGroup } from 'vuetify/components';
 
 export default defineComponent({
@@ -96,12 +117,18 @@ export default defineComponent({
             type: Number,
             requried: true,
             default: 0
+        },
+        question: {
+            type: Object as PropType<QuestionDto>,
+            required: false
         }
     },
     emits: ['click:prev', 'click:next', 'click:complete'],
     setup(props, { emit }) {
-        const typeOfQuest: Ref<'open' | 'closed'> = ref('open');
-        const questionRef: Ref<Partial<QuestionDto>> = ref({});
+        const questionRef: Ref<Partial<QuestionDto>> = ref(props.question || {});
+        const typeOfQuest: Ref<'open' | 'closed'> = (!!props.question?.answers) ? 
+            ref((props.question?.answers?.length === 1) ? 'open' : 'closed') : 
+            ref('open');
         const submitted = ref(false);
 
         const correctAnswer: Ref<undefined | number> = ref(undefined);

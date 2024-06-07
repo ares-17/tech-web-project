@@ -3,8 +3,8 @@
         <div class="card h-100 w-100 text-bg-light elevated">
             <div class="card-header header-domande">Sezione domande del quiz</div>
             <div class="card-body d-flex justify-center align-center h-100 w-100">
-                <v-window v-model="currentWindow" class="h-100 w-100 ">
-                    <v-window-item v-for="step in windowsRef" :key="step">
+                <v-window v-model="currentWindow" class="h-100 w-100" v-if="!quiz">
+                    <v-window-item v-for="step in windowsRef" :key="step" >
                         <v-card class="d-flex flex-column h-100 text-bg-light">
                             <h2 class="text-center mb-4 mt-1">
                                 {{ $t('create_question_num_title', { current: step, total: windowsRef }) }}
@@ -15,6 +15,23 @@
                                 @click:complete="q => onClickComplete(step -1, q)"
                                 @click:next="q => onClickNextWindow(step -1, q)"
                                 @click:prev="q => onClickPrevWindow(step -1, q)"/>
+                        </v-card>
+                    </v-window-item>
+                </v-window>
+
+                <v-window v-model="currentWindow" class="h-100 w-100" v-else>
+                    <v-window-item v-for="(question, i) in quiz.questions" :key="question.id" >
+                        <v-card class="d-flex flex-column h-100 text-bg-light">
+                            <h2 class="text-center mb-4 mt-1">
+                                {{ $t('create_question_num_title', { current: i + 1, total: quiz.questions?.length }) }}
+                            </h2>
+                            <CreateQuestionComponent 
+                                :question="question"
+                                :index="(i + 1)"
+                                :total="quiz.questions?.length"
+                                @click:complete="q => onClickComplete(i, q)"
+                                @click:next="q => onClickNextWindow(i, q)"
+                                @click:prev="q => onClickPrevWindow(i, q)"/>
                         </v-card>
                     </v-window-item>
                 </v-window>
@@ -32,8 +49,8 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue';
 import CreateQuestionComponent from './CreateQuestionComponent.vue';
-import type { QuestionDto } from '@/api/models';
-import type { Ref } from 'vue';
+import type { QuestionDto, QuizDto } from '@/api/models';
+import type { PropType, Ref } from 'vue';
 
 export default defineComponent({
     name: 'CreateQuestionsWindows',
@@ -42,6 +59,10 @@ export default defineComponent({
             type: Number,
             required: false,
             default: 0
+        },
+        quiz: {
+            type: Object as PropType<QuizDto>,
+            required: false
         }
     },
     emits: ['complete'],
