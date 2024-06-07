@@ -12,7 +12,7 @@ router.beforeEach((to, _) => {
 </script>
 
 <template>
-  <v-layout class="rounded rounded-md" :class="{ 'image-background': isInHomePage }">
+  <v-layout :class="{ 'image-background': isInHomePage }">
     <Navbar /> 
     <v-main class="page-content content-wrapper">
         <div class="container-fluid container-page" >
@@ -42,7 +42,7 @@ router.beforeEach((to, _) => {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-image: url('src/assets/young-woman-holding-thought-bubble.jpg');
+  background-image: url('src/assets/mystery-box-with-gifts-concept.jpg');
 }
 
 </style>

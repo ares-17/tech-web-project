@@ -1,5 +1,5 @@
 <template>
-        <div class="row">
+        <div class="row main-row">
             <div class="title-col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                 <h1 class="title mt-3">
                     Divertiti creando quiz
@@ -10,7 +10,7 @@
             <div class="input-col col-10 col-sm-10 col-md-10 col-lg-6 col-xl-6 mt-3">
                 <div class="input-container bg-transparent w-100">
                     <div class="row">
-                        <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-6 mb-2 h-100">
+                        <div class="col-12 col-md-8 col-sm-12 col-lg-8 col-xl-8 mb-2 h-100">
                             <v-text-field :label="$t('logToQuiz_title')" 
                                 variant="solo-filled" class=""
                                 v-model="code" 
@@ -26,7 +26,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-6 mb-3 my-3">
+                        <div class="col-12 col-md-8 col-sm-12 col-lg-8 col-xl-8 mb-3 my-3">
                             <v-btn size="large" block @click="toNewQuiz">
                                 {{ $t('home_create_new_quiz') }}
                                 <v-dialog
@@ -59,7 +59,6 @@
 
 <script lang="ts">
 import type { QuizApi } from '@/api/QuizApi';
-import HelloComponent from '@/components/HelloComponent.vue';
 import { useSessionStore } from '@/stores/sessionStore';
 import type { Ref } from 'vue';
 import { inject, onBeforeUnmount, ref } from 'vue';
@@ -116,7 +115,6 @@ export default {
         }
     },
     component: {
-        HelloComponent
     }
 };
 </script>
@@ -124,11 +122,11 @@ export default {
 <style scoped>
 @media (min-width: 992px) { 
     .title-col{
-        margin-left: 5rem;
+        padding-left: 5rem;
     }
 
     .input-col{
-        margin-left: 5rem;
+        padding-left: 5rem;
     }
 
     h1.title{
@@ -146,14 +144,14 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-left: 1rem;
+        padding-left: 1rem;
     }
 
     .input-col{
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: auto;
+        padding: auto;
     }
 
     h1.title{
@@ -169,4 +167,7 @@ span.or{
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
+.main-row{
+    margin: 0;
+}
 </style>

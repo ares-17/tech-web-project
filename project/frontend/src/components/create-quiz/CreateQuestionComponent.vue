@@ -23,10 +23,10 @@
                         <div class="col-12">
                             <v-radio :value="0" class="d-flex align-center" required>
                                 <template v-slot:label>
-                                    <div v-if="!question">
+                                    <div v-if="!question" class="w-100">
                                         <v-text-field variant="outlined" required :rules="[minLength]"
                                             @update:model-value="val => updateAnswer(0, val)"
-                                            :label="$t('craete_question_answer1')" class="ml-3 w-100 mt-2"></v-text-field>
+                                            :label="$t('craete_question_answer1')" class="ml-3 mt-2"></v-text-field>
                                     </div>
                                     <div v-else class="ml-3 w-100 py-4">
                                         <span >{{ question?.answers[0]?.text }}</span>
@@ -37,10 +37,10 @@
                         <div class="col-12">
                             <v-radio :value="1" class="d-flex align-center" required>
                                 <template v-slot:label>
-                                    <div v-if="!question">
+                                    <div v-if="!question" class="w-100">
                                     <v-text-field variant="outlined" required :rules="[minLength]"
                                         @update:model-value="val => updateAnswer(1, val)"
-                                        :label="$t('craete_question_answer2')" class="ml-3 w-100 mt-2"></v-text-field>
+                                        :label="$t('craete_question_answer2')" class="ml-3 mt-2"></v-text-field>
                                     </div>
                                     <div v-else class="ml-3 w-100 py-4">
                                         <span >{{ question?.answers[1]?.text }}</span>
@@ -51,10 +51,10 @@
                         <div class="col-12">
                             <v-radio :value="2" class="d-flex align-center" required>
                                 <template v-slot:label>
-                                    <div v-if="!question">
+                                    <div v-if="!question" class="w-100">
                                     <v-text-field variant="outlined" required :rules="[minLength]"
                                         @update:model-value="val => updateAnswer(2, val)"
-                                        :label="$t('craete_question_answer3')" class="ml-3 w-100 mt-2"></v-text-field>
+                                        :label="$t('craete_question_answer3')" class="ml-3 mt-2"></v-text-field>
                                     </div>
                                     <div v-else class="ml-3 w-100 py-4">
                                         <span >{{ question?.answers[2]?.text }}</span>
@@ -65,10 +65,10 @@
                         <div class="col-12">
                             <v-radio :value="3" class="d-flex align-center" required>
                                 <template v-slot:label>
-                                    <div v-if="!question">
+                                    <div v-if="!question" class="w-100">
                                     <v-text-field variant="outlined" required :rules="[minLength]"
                                         @update:model-value="val => updateAnswer(3, val)"
-                                        :label="$t('craete_question_answer4')" class="ml-3 w-100 mt-2"></v-text-field>
+                                        :label="$t('craete_question_answer4')" class="ml-3 mt-2"></v-text-field>
                                     </div>
                                     <div v-else class="ml-3 w-100 py-4">
                                         <span >{{ question?.answers[3]?.text }}</span>

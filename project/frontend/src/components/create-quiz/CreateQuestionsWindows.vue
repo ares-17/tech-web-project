@@ -1,12 +1,11 @@
 <template>
     <div v-if="windowsRef && windowsRef !== 0" class="h-100">
-        <div class="card h-100 w-100 text-bg-light elevated">
-            <div class="card-header header-domande">Sezione domande del quiz</div>
+        <div class="card h-100 w-100 text-bg-light elevated p-4">
             <div class="card-body d-flex justify-center align-center h-100 w-100">
                 <v-window v-model="currentWindow" class="h-100 w-100" v-if="!quiz">
                     <v-window-item v-for="step in windowsRef" :key="step" >
                         <v-card class="d-flex flex-column h-100 text-bg-light">
-                            <h2 class="text-center mb-4 mt-1">
+                            <h2 class="mb-4 mt-1 ">
                                 {{ $t('create_question_num_title', { current: step, total: windowsRef }) }}
                             </h2>
                             <CreateQuestionComponent 

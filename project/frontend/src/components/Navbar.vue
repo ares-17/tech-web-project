@@ -15,8 +15,10 @@
       </div>
       <div v-else class="d-flex align-items-center">
         <span class="mx-5 d-none d-md-block">{{ $t('navbar_welcome', { username })  }}</span>
-        <v-btn prepend-icon="mdi-exit-to-app" class="mx-3" variant="outlined" @click="logout">
-        <span class="d-none d-md-block">Logout</span></v-btn>
+        <v-btn class="mx-3" variant="outlined" @click="logout">
+          <span class="d-none d-md-block">Logout</span>
+          <v-icon icon="mdi-exit-to-app"></v-icon>
+        </v-btn>
       </div>
     </template>
   </v-app-bar>

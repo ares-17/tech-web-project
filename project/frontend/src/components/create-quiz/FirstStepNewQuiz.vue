@@ -1,15 +1,16 @@
 <template>
     <div class="row">
-        <h2 class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 mb-4 p-3 mx-auto text-center">{{ $t('createquiz_title') }}
-        </h2>
+        <h2 class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 mb-4 p-3 mx-auto">{{ $t('createquiz_title') }}</h2>
         <form @submit.prevent="onNext">
-            <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 mb-3 mx-auto">
-                <v-text-field :label="$t('createquiz_titlequiz')" variant="outlined" ref="values.title"
-                    v-model="values.title" required hide-details="auto" :rules="[minLength]"></v-text-field>
-            </div>
-            <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-12 mb-3 mx-auto">
-                <v-text-field :label="$t('createquiz_description')" variant="outlined" ref="values.description"
-                    v-model="values.description" required hide-details="auto" :rules="[minLength]"></v-text-field>
+            <div class="row">
+                <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-6 mb-3 ">
+                    <v-text-field :label="$t('createquiz_titlequiz')" variant="outlined" ref="values.title"
+                        v-model="values.title" required hide-details="auto" :rules="[minLength]"></v-text-field>
+                </div>
+                <div class="col-12 col-md-12 col-sm-12 col-lg-12 col-xl-6 mb-3">
+                    <v-text-field :label="$t('createquiz_description')" variant="outlined" ref="values.description"
+                        v-model="values.description" required hide-details="auto" :rules="[minLength]"></v-text-field>
+                </div>
             </div>
             <div class="row">
                 <div class="col-12 col-md-12 col-sm-12 col-lg-6 col-xl-6 mb-3">

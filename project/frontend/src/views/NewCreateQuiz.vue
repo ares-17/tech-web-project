@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-3 mx-auto">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3 mx-auto">
                 <div class="stepper-container mx-auto">
                     <v-stepper hide-actions :items="steps" v-model="currentStep" class="text-bg-light" elevation="16">
                         <template v-slot:item.1>
@@ -16,7 +16,7 @@
                 </div>
             </div>
 
-            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-3 mx-auto">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3 mx-auto" v-if="firstStepValues?.numQuestions && firstStepValues?.numQuestions > 0">
                <CreateQuestionsWindows 
                     :windows="firstStepValues?.numQuestions"
                     @complete="onCompleteQuestions"
@@ -45,15 +45,14 @@
 </template>
 
 <script lang="ts">
+import type { QuizApi } from '@/api';
+import type { QuestionDto, QuizDto } from '@/api/models';
+import CreateQuestionsWindows from '@/components/create-quiz/CreateQuestionsWindows.vue';
 import FirstStepNewQuiz from '@/components/create-quiz/FirstStepNewQuiz.vue';
 import PreviewStepNewQuiz from '@/components/create-quiz/PreviewStepNewQuiz.vue';
-import CreateQuestionsWindows from '@/components/create-quiz/CreateQuestionsWindows.vue';
 import i18n from '@/i18n/i18n';
-import { v4 as uuidv4 } from 'uuid';
-import { inject, ref, type Ref } from 'vue';
-import type { QuestionDto, QuizDto } from '@/api/models';
-import type { QuizApi } from '@/api';
 import { useSessionStore } from '@/stores/sessionStore';
+import { inject, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default {
