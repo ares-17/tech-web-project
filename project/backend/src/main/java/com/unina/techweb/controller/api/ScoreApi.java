@@ -5,8 +5,8 @@
  */
 package com.unina.techweb.controller.api;
 
-import com.unina.techweb.dto.ScoreDto;
 import com.unina.techweb.dto.QuizResponseDto;
+import com.unina.techweb.dto.ScoreDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

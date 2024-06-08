@@ -15,6 +15,7 @@ import * as directives from 'vuetify/directives';
 import 'vuetify/styles';
 import { Configuration } from './api/models/runtime';
 import TokenMiddleware from './middlewares/TokenMiddleware';
+import LoaderMiddleware from './middlewares/LoaderMiddleware';
 
 const app = createApp(App);
 
@@ -29,7 +30,10 @@ app.use(router)
 app.use(i18n)
 
 const defaultConfig = new Configuration({
-    middleware: [new TokenMiddleware()]
+    middleware: [
+        new TokenMiddleware(), 
+        new LoaderMiddleware()
+    ]
 });
 
 app.provide('QuestionsApi', new QuestionsApi(defaultConfig));

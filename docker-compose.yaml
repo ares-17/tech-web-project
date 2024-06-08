@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  postgres:
+  postgres_prova:
     image: postgres:latest
-    container_name: my_postgres_db
+    container_name: my_postgres_prova
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mysecretpassword

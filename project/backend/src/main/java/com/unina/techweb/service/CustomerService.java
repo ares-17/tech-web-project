@@ -46,6 +46,11 @@ public class CustomerService {
 
     @Transactional
     public CustomerDto createCustomer(CustomerDto customerDto) {
+        Optional<Customer> existAnotherSameCustomer = this.customerRepository.findByUsername(customerDto.getUsername());
+        if(existAnotherSameCustomer.isPresent()){
+            throw new IllegalArgumentException("Username già registrato");
+        }
+
         var customer = new Customer();
         customer.setUsername(customerDto.getUsername());
 

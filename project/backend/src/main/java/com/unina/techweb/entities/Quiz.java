@@ -33,6 +33,7 @@ public class Quiz {
     @Column(name = "createdat")
     private Instant createdat;
 
+    @OrderBy("id ASC")
     @OneToMany(mappedBy = "uidquiz", orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<Question> questions = new LinkedHashSet<>();
 

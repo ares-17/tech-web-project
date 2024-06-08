@@ -1,6 +1,8 @@
 package com.unina.techweb.service;
 
-import com.unina.techweb.dto.*;
+import com.unina.techweb.dto.QuestionResponseDto;
+import com.unina.techweb.dto.QuizResponseDto;
+import com.unina.techweb.dto.ScoreDto;
 import com.unina.techweb.entities.*;
 import com.unina.techweb.repository.CustomerRepository;
 import com.unina.techweb.repository.QuizRepository;

@@ -106,7 +106,7 @@ export default {
                 idCustomer
             };
             scoreApi.completeQuiz({ quizResponseDto })
-                .then(() => router.push('/'))
+                .then(() => router.push({ name: 'quiz-istance', params: { id: props.id } }))
                 .catch((e) => console.log(e));
         }
 

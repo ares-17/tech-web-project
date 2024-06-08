@@ -1,12 +1,11 @@
 package com.unina.techweb.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-
 import jakarta.annotation.Generated;
 import lombok.AllArgsConstructor;
+
+import java.util.Objects;
 
 /**
  * QuestionResponseDto

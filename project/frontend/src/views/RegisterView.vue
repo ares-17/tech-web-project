@@ -4,7 +4,7 @@
             <v-card class="p-4 main-dialog-card" elevation="16">
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-sm-12">
-                        <v-img width="auto" height="auto" lazy-src="/src/assets/4957136_4957136.jpg" src="/src/assets/6183517_3071357.jpg">
+                        <v-img width="auto" height="auto" lazy-src="/4957136_4957136.jpg" src="/6183517_3071357.jpg">
                             <template v-slot:placeholder>
                                 <div class="d-flex align-center justify-center fill-height">
                                     <v-progress-circular

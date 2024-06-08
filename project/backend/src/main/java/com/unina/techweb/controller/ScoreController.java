@@ -1,8 +1,8 @@
 package com.unina.techweb.controller;
 
 import com.unina.techweb.controller.api.ScoreApi;
-import com.unina.techweb.dto.ScoreDto;
 import com.unina.techweb.dto.QuizResponseDto;
+import com.unina.techweb.dto.ScoreDto;
 import com.unina.techweb.service.ScoreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

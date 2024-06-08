@@ -1,20 +1,17 @@
 package com.unina.techweb.dto;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.unina.techweb.dto.QuestionDto;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Generated;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import lombok.AllArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-
-import jakarta.annotation.Generated;
+import java.util.Objects;
 
 /**
  * QuizDto
