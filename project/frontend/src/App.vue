@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { RouterView, useRouter } from 'vue-router';
 import Navbar from './components/Navbar.vue';
+import LoaderComponent from './components/LoaderComponent.vue';
 
 const router = useRouter();
 const isInHomePage = ref(false);
@@ -19,6 +20,7 @@ router.beforeEach((to, _) => {
         <router-view />
       </div>
     </v-main>
+    <LoaderComponent />
   </v-layout>
 </template>
 
