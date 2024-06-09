@@ -50,6 +50,12 @@ export interface QuizResponseDto {
      * @memberof QuizResponseDto
      */
     idCustomer?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof QuizResponseDto
+     */
+    nonAuthenticableUsername?: string;
 }
 
 /**
@@ -73,6 +79,7 @@ export function QuizResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         'id': json['id'] == null ? undefined : json['id'],
         'isCustomerAnonymous': json['isCustomerAnonymous'] == null ? undefined : json['isCustomerAnonymous'],
         'idCustomer': json['idCustomer'] == null ? undefined : json['idCustomer'],
+        'nonAuthenticableUsername': json['nonAuthenticableUsername'] == null ? undefined : json['nonAuthenticableUsername'],
     };
 }
 
@@ -86,6 +93,7 @@ export function QuizResponseDtoToJSON(value?: QuizResponseDto | null): any {
         'id': value['id'],
         'isCustomerAnonymous': value['isCustomerAnonymous'],
         'idCustomer': value['idCustomer'],
+        'nonAuthenticableUsername': value['nonAuthenticableUsername'],
     };
 }
 

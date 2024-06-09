@@ -72,6 +72,11 @@
     "quiz_istance_num_created_by": "Creatore",
     "quiz_istance_created_at": "Data creazione",
     "quiz_istance_no_scores": "Nessun punteggio registrato",
-    "quiz_deatails_play": "Partecipa al quiz"
+    "quiz_deatails_play": "Partecipa al quiz",
+
+    "dialog_takequiz_username_title": "Inserisci l'username",
+    "dialog_takequiz_username_text": "Inserisci l'username per completare il quiz oppure rimani anonimo",
+    "dialog_takequiz_username_anonymous_btn": "Rimani anonimo",
+    "dialog_takequiz_title_input": "Username"
 
 }

@@ -42,6 +42,28 @@
 
         </div>
     </div>
+
+    <v-dialog v-model="usernameDialog" width="auto" persistent>
+        <template v-slot:default="{ isActive }">
+            <v-card max-width="500" prepend-icon="mdi-alert" :text="$t('dialog_takequiz_username_text')"
+                :title="$t('dialog_takequiz_username_title')">
+                <v-form @submit.prevent="onAddUsername">
+                    <div class="row m-3">
+                        <div class="col-12">
+                            <v-text-field :label="$t('dialog_takequiz_title_input')" variant="outlined"
+                            v-model="usernameNotLogged" required hide-details="auto" :rules="[minLength]"></v-text-field>
+                        </div>
+                    </div>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn :text="$t('dialog_takequiz_username_anonymous_btn')" @click="onStayAnonymous"></v-btn>
+                        <v-btn :text="$t('create_quiz_dialog_ok_btn')" color="primary" type="submit"></v-btn>
+                    </v-card-actions>
+                </v-form>
+            </v-card>
+        </template>
+    </v-dialog>
+
 </template>
 
 <script lang="ts">
@@ -50,8 +72,10 @@ import type { QuestionDto, QuizDto } from '@/api/models';
 import type { QuestionResponseDto } from '@/api/models/QuestionResponseDto';
 import type { QuizResponseDto } from '@/api/models/QuizResponseDto';
 import CreateQuestionsWindows from '@/components/create-quiz/CreateQuestionsWindows.vue';
+import i18n from '@/i18n/i18n';
 import { useSessionStore } from '@/stores/sessionStore';
 import Utils from '@/utils/Utils';
+import { Validators } from '@/utils/Validators';
 import { inject, onMounted, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -70,9 +94,16 @@ export default {
         const quiz: Ref<QuizDto | undefined> = ref();
         const sessionStorage = useSessionStore();
 
+        const usernameDialog = ref(false);
+        const usernameNotLogged: Ref<string | undefined> = ref();
+        const USERNAME_ANONYMOUS = 'Anonymous';
+
         onMounted(() => {
             quizApi.getQuizById({ uidQuiz: props.id })
-                .then(res => quiz.value = res)
+                .then(res => {
+                    quiz.value = res;
+                    usernameDialog.value = (!sessionStorage.getFromSessionStorage('idCustomer'))
+                })
                 .catch(e => console.log(e));
         })
 
@@ -94,6 +125,21 @@ export default {
             }
         }
 
+        function minLength(value: any) {
+            return Validators.minLength(value) || i18n.global.t('validators_minlength');
+        }
+
+        function onAddUsername(){
+            if(usernameNotLogged.value && Validators.minLength(usernameNotLogged.value)){
+                usernameDialog.value = false;
+            }
+        }
+
+        function onStayAnonymous(){
+            usernameDialog.value = false;
+            usernameNotLogged.value = USERNAME_ANONYMOUS;
+        }
+
         function onCompleteQuestions(questions: QuestionDto[]) {
             const idCustomer = (sessionStorage.getFromSessionStorage('idCustomer')) ?
                 sessionStorage.getFromSessionStorage('idCustomer') as string :
@@ -103,7 +149,10 @@ export default {
                 id: quiz.value?.id,
                 questions: questions.map(questionToQuestionResponseDto),
                 isCustomerAnonymous: !idCustomer,
-                idCustomer
+                idCustomer,
+                nonAuthenticableUsername: (usernameNotLogged.value?.trim() !== '' && usernameNotLogged.value !== USERNAME_ANONYMOUS) ? 
+                    usernameNotLogged.value : 
+                    undefined
             };
             scoreApi.completeQuiz({ quizResponseDto })
                 .then(() => router.push({ name: 'quiz-istance', params: { id: props.id } }))
@@ -113,7 +162,12 @@ export default {
         return {
             quiz,
             Utils,
-            onCompleteQuestions
+            onCompleteQuestions,
+            usernameDialog,
+            minLength,
+            usernameNotLogged,
+            onAddUsername,
+            onStayAnonymous
         };
     },
     components: {

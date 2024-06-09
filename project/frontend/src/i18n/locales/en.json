@@ -72,5 +72,11 @@
     "quiz_istance_num_created_by": "Maker",
     "quiz_istance_created_at": "Creation date",
     "quiz_istance_no_scores": "No scores recorded",
-    "quiz_deatails_play": "Take the quiz"
+    "quiz_deatails_play": "Take the quiz",
+
+    "dialog_takequiz_username_title": "Insert username",
+    "dialog_takequiz_username_text": "Enter your username to complete the quiz or remain anonymous",
+    "dialog_takequiz_username_anonymous_btn": "Stay anonimous",
+    "dialog_takequiz_title_input": "Username"
+
 }

@@ -101,7 +101,7 @@
 
 <script lang="ts">
 import type { QuizApi, ScoreApi, UserApi } from '@/api';
-import type { QuizDto, ScoreDto } from '@/api/models';
+import type { ScoreDto } from '@/api/models';
 import Utils from '@/utils/Utils';
 import QRCode from 'qrcode';
 import { inject, onMounted, ref, type Ref } from 'vue';

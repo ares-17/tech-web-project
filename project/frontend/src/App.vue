@@ -4,6 +4,7 @@ import { RouterView, useRouter } from 'vue-router';
 import Navbar from './components/Navbar.vue';
 import LoaderComponent from './components/LoaderComponent.vue';
 import ErrorSnackbar from './components/ErrorSnackbar.vue';
+import FooterComponent from './components/FooterComponent.vue';
 
 const router = useRouter();
 const isInHomePage = ref(false);
@@ -16,14 +17,16 @@ router.beforeEach((to, _) => {
 <template>
   <v-layout ref="imageBackground" :class="{ 'image-background': isInHomePage }">
     <Navbar />
-    <v-main class="page-content content-wrapper pt-0">
-      <div class="container-fluid container-page ">
-        <router-view />
+    <v-main class="page-content pt-0">
+      <div class="container-fluid container-page">
+        <router-view :key="$route.path"/>
       </div>
     </v-main>
-    <LoaderComponent />
-    <ErrorSnackbar />
+    <FooterComponent />
   </v-layout>
+  
+  <LoaderComponent />
+  <ErrorSnackbar />
 </template>
 
 <style scoped>
@@ -32,6 +35,7 @@ router.beforeEach((to, _) => {
   margin: 0;
   width: 100%;
   min-height: fit-content;
+  flex-direction: column;
 }
 
 .container-page {

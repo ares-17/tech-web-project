@@ -65,15 +65,15 @@ public class CustomerService {
     }
 
     @Transactional
-    public Customer getOrCreateAnonymousCustomer(){
-        Optional<Customer> customer = this.customerRepository.findByUsername("Anonymous");
-        if(customer.isPresent()){
-            return customer.get();
-        }
-        Customer anonymous = new Customer();
-        anonymous.setPassword("");
-        anonymous.setUsername("Anonymous");
+    public Customer createNonAuthenticableUser(final String username) {
+        Optional<Customer> customer = this.customerRepository.findByUsername(username);
+        return customer.orElseGet(() -> {
+            Customer user = new Customer();
+            user.setPassword("");
+            user.setUsername(username);
 
-        return customerRepository.save(anonymous);
+            return customerRepository.save(user);
+        });
+
     }
 }

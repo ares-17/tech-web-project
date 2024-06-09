@@ -35,12 +35,17 @@
 </template>
 
 <script lang="ts">
+import { useLoaderHandling } from '@/stores/loaderHandling';
 import { defineComponent, ref } from 'vue';
 
 
 export default defineComponent({
     setup(){
-      const dialog = ref(true);
+      const loaderHandling = useLoaderHandling();
+      const dialog = ref(false);
+
+      loaderHandling.loaderSubject
+        .subscribe(val => dialog.value = val);
 
       return {
         dialog
@@ -50,7 +55,4 @@ export default defineComponent({
 
 </script>
 <style scoped>
-#main-loader{
-  visibility: hidden;
-}
 </style>

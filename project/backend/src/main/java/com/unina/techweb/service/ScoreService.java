@@ -32,9 +32,24 @@ public class ScoreService {
         this.customerService = customerService;
     }
 
+    private Customer getCustomerQuizResponseDto(final QuizResponseDto dto){
+        if(dto.getNonAuthenticableUsername() == null &&
+                dto.getIsCustomerAnonymous() == null &&
+                dto.getIdCustomer() == null){
+            throw new IllegalArgumentException("Parametri inseriti non validi per completeQuiz");
+        }
+        if(dto.getIdCustomer() != null && !dto.getIdCustomer().isEmpty()){
+            return this.customerRepository.findById(UUID.fromString(dto.getIdCustomer()))
+                .orElseThrow(() -> new NotFoundException("Utente non trovato"));
+        }
+        if(dto.getNonAuthenticableUsername() != null){
+            return this.customerService.createNonAuthenticableUser(dto.getNonAuthenticableUsername());
+        }
+        return this.customerService.createNonAuthenticableUser("Anonymous");
+    }
 
     @Transactional
-    public void completeQuiz(QuizResponseDto dto){
+    public void completeQuiz(final QuizResponseDto dto){
         if(dto == null || dto.getId() == null ||
             dto.getQuestions() == null ||
             dto.getQuestions().isEmpty()){
@@ -44,10 +59,7 @@ public class ScoreService {
         Quiz quiz = this.quizRepository.findById(UUID.fromString(dto.getId()))
                 .orElseThrow(() -> new NotFoundException("Quiz non trovato"));
 
-        Customer customer = (dto.getIsCustomerAnonymous()) ?
-                this.customerService.getOrCreateAnonymousCustomer() :
-                this.customerRepository.findById(UUID.fromString(dto.getIdCustomer()))
-                    .orElseThrow(() -> new NotFoundException("Utente non trovato"));
+        Customer customer = getCustomerQuizResponseDto(dto);
 
         Score score = new Score();
         score.setQuiz(quiz);

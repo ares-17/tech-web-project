@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +13,8 @@ import java.util.Objects;
 /**
  * QuizResponseDto
  */
-
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-06-06T14:26:27.070404138+02:00[Europe/Rome]")
+@AllArgsConstructor
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-06-09T17:02:03.900075473+02:00[Europe/Rome]")
 public class QuizResponseDto {
 
   @JsonProperty("questions")
@@ -28,6 +29,9 @@ public class QuizResponseDto {
 
   @JsonProperty("idCustomer")
   private String idCustomer;
+
+  @JsonProperty("nonAuthenticableUsername")
+  private String nonAuthenticableUsername;
 
   public QuizResponseDto questions(List<QuestionResponseDto> questions) {
     this.questions = questions;
@@ -113,6 +117,25 @@ public class QuizResponseDto {
     this.idCustomer = idCustomer;
   }
 
+  public QuizResponseDto nonAuthenticableUsername(String nonAuthenticableUsername) {
+    this.nonAuthenticableUsername = nonAuthenticableUsername;
+    return this;
+  }
+
+  /**
+   * Get nonAuthenticableUsername
+   * @return nonAuthenticableUsername
+  */
+  
+  @Schema(name = "nonAuthenticableUsername", required = false)
+  public String getNonAuthenticableUsername() {
+    return nonAuthenticableUsername;
+  }
+
+  public void setNonAuthenticableUsername(String nonAuthenticableUsername) {
+    this.nonAuthenticableUsername = nonAuthenticableUsername;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -125,12 +148,13 @@ public class QuizResponseDto {
     return Objects.equals(this.questions, quizResponseDto.questions) &&
         Objects.equals(this.id, quizResponseDto.id) &&
         Objects.equals(this.isCustomerAnonymous, quizResponseDto.isCustomerAnonymous) &&
-        Objects.equals(this.idCustomer, quizResponseDto.idCustomer);
+        Objects.equals(this.idCustomer, quizResponseDto.idCustomer) &&
+        Objects.equals(this.nonAuthenticableUsername, quizResponseDto.nonAuthenticableUsername);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(questions, id, isCustomerAnonymous, idCustomer);
+    return Objects.hash(questions, id, isCustomerAnonymous, idCustomer, nonAuthenticableUsername);
   }
 
   @Override
@@ -141,6 +165,7 @@ public class QuizResponseDto {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    isCustomerAnonymous: ").append(toIndentedString(isCustomerAnonymous)).append("\n");
     sb.append("    idCustomer: ").append(toIndentedString(idCustomer)).append("\n");
+    sb.append("    nonAuthenticableUsername: ").append(toIndentedString(nonAuthenticableUsername)).append("\n");
     sb.append("}");
     return sb.toString();
   }
