@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { RouterView, useRouter } from 'vue-router';
 import Navbar from './components/Navbar.vue';
 import LoaderComponent from './components/LoaderComponent.vue';
+import ErrorSnackbar from './components/ErrorSnackbar.vue';
 
 const router = useRouter();
 const isInHomePage = ref(false);
@@ -21,6 +22,7 @@ router.beforeEach((to, _) => {
       </div>
     </v-main>
     <LoaderComponent />
+    <ErrorSnackbar />
   </v-layout>
 </template>
 

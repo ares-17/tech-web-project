@@ -2,6 +2,8 @@ package com.unina.techweb.service;
 
 import com.unina.techweb.dto.CustomerDto;
 import com.unina.techweb.entities.Customer;
+import com.unina.techweb.exceptions.MultipleEntitiesException;
+import com.unina.techweb.exceptions.NotFoundException;
 import com.unina.techweb.repository.CustomerRepository;
 import com.unina.techweb.utils.Mapper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,7 +46,8 @@ public class AuthenticationService {
                 )
         );
 
-        return customerRepository.findByUsername(input.getUsername()).orElseThrow();
+        return customerRepository.findByUsername(input.getUsername())
+                .orElseThrow(NotFoundException::new);
     }
 }
 

@@ -4,10 +4,12 @@ import com.unina.techweb.controller.api.AuthApi;
 import com.unina.techweb.dto.AuthenticationDto;
 import com.unina.techweb.dto.CustomerDto;
 import com.unina.techweb.entities.Customer;
+import com.unina.techweb.exceptions.NotFoundException;
 import com.unina.techweb.service.AuthenticationService;
 import com.unina.techweb.service.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,21 +32,35 @@ public class AuthController implements AuthApi {
 
     @Override
     public ResponseEntity<AuthenticationDto> login(CustomerDto customerDto) {
-        Customer authenticatedUser = authenticationService.authenticate(customerDto);
+        try{
+            Customer authenticatedUser = authenticationService.authenticate(customerDto);
 
-        Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("username", authenticatedUser.getUsername());
-        String jwtToken = jwtService.generateToken(extraClaims, authenticatedUser);
+            Map<String, Object> extraClaims = new HashMap<>();
+            extraClaims.put("username", authenticatedUser.getUsername());
+            String jwtToken = jwtService.generateToken(extraClaims, authenticatedUser);
 
-        return ResponseEntity.ok(new AuthenticationDto(
-                BigDecimal.valueOf(jwtService.getExpirationTime()),
-                jwtToken,
-                authenticatedUser.getId().toString()));
+            return ResponseEntity.ok(new AuthenticationDto(
+                    BigDecimal.valueOf(jwtService.getExpirationTime()),
+                    jwtToken,
+                    authenticatedUser.getId().toString()));
+        } catch(NotFoundException e){
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @Override
     public ResponseEntity<AuthenticationDto> register(CustomerDto customerDto) {
-        authenticationService.signup(customerDto);
-        return this.login(customerDto);
+        try{
+            authenticationService.signup(customerDto);
+            return this.login(customerDto);
+        } catch(NotFoundException e){
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

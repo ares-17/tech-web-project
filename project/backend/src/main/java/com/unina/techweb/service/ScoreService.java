@@ -4,6 +4,7 @@ import com.unina.techweb.dto.QuestionResponseDto;
 import com.unina.techweb.dto.QuizResponseDto;
 import com.unina.techweb.dto.ScoreDto;
 import com.unina.techweb.entities.*;
+import com.unina.techweb.exceptions.NotFoundException;
 import com.unina.techweb.repository.CustomerRepository;
 import com.unina.techweb.repository.QuizRepository;
 import com.unina.techweb.repository.ScoreRepository;
@@ -41,12 +42,12 @@ public class ScoreService {
         }
 
         Quiz quiz = this.quizRepository.findById(UUID.fromString(dto.getId()))
-                .orElseThrow(() -> new IllegalArgumentException("Quiz non trovato"));
+                .orElseThrow(() -> new NotFoundException("Quiz non trovato"));
 
         Customer customer = (dto.getIsCustomerAnonymous()) ?
                 this.customerService.getOrCreateAnonymousCustomer() :
                 this.customerRepository.findById(UUID.fromString(dto.getIdCustomer()))
-                    .orElseThrow(() -> new IllegalArgumentException("Utente non trovato"));
+                    .orElseThrow(() -> new NotFoundException("Utente non trovato"));
 
         Score score = new Score();
         score.setQuiz(quiz);
@@ -86,7 +87,7 @@ public class ScoreService {
 
     public List<ScoreDto> getScoresByQuiz(String idQuiz) {
         Quiz quiz = this.quizRepository.findById(UUID.fromString(idQuiz))
-                .orElseThrow(() -> new IllegalArgumentException("Quiz non trovato"));
+                .orElseThrow(() -> new NotFoundException("Quiz non trovato"));
 
         return this.scoreRepository.findByQuiz(quiz).stream()
                 .map(Mapper::mapScoreQuizCustomerToScoreCustomerDto)
@@ -95,7 +96,7 @@ public class ScoreService {
 
     public List<ScoreDto> getScoreByCustomer(String idCustomer) {
         Customer customer = this.customerRepository.findById(UUID.fromString(idCustomer))
-                .orElseThrow(() -> new IllegalArgumentException("Utente non trovato"));
+                .orElseThrow(() -> new NotFoundException("Utente non trovato"));
 
         return this.scoreRepository.findByCustomer(customer).stream()
                 .map(Mapper::mapScoreQuizCustomerToScoreCustomerDto)
