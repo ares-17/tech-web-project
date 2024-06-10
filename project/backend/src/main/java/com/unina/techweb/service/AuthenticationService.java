@@ -2,14 +2,16 @@ package com.unina.techweb.service;
 
 import com.unina.techweb.dto.CustomerDto;
 import com.unina.techweb.entities.Customer;
-import com.unina.techweb.exceptions.MultipleEntitiesException;
-import com.unina.techweb.exceptions.NotFoundException;
+import com.unina.techweb.exceptions.TWNotFoundException;
+import com.unina.techweb.exceptions.UserAlreadyExistsException;
 import com.unina.techweb.repository.CustomerRepository;
 import com.unina.techweb.utils.Mapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthenticationService {
@@ -29,11 +31,17 @@ public class AuthenticationService {
     }
 
     public Customer signup(CustomerDto input) {
+        Optional<Customer> existUsername  = customerRepository.findByUsername(input.getUsername());
+        if(existUsername.isPresent()){
+            throw new UserAlreadyExistsException(input.getUsername());
+        }
+
         var dtoWithEncodePwd = new CustomerDto(
                 input.getId(),
                 input.getUsername(),
                 passwordEncoder.encode(input.getPassword())
         );
+
         Customer customer = Mapper.mapCustomerDtoToCustomer(dtoWithEncodePwd);
         return customerRepository.save(customer);
     }
@@ -47,7 +55,7 @@ public class AuthenticationService {
         );
 
         return customerRepository.findByUsername(input.getUsername())
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new TWNotFoundException(input.getUsername()));
     }
 }
 

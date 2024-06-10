@@ -14,16 +14,20 @@ export default class LoaderMiddleware implements Middleware {
     }
 
     async post(context: ResponseContext): Promise<void | Response> {
+
         this.counter--;
         if (this.counter === 0) {
             //document.getElementById('main-loader')!.style.visibility = 'hidden';
             this.loaderHandling.loaderSubject.next(false);
         }
-        if(context.response.status !== 200){
-            this.errorHandling.errorsSubject
-                .next({ 
-                    display: true, 
-                    text: `STATUS_CODE: ${context.response.status}`
+        if (context.response.status !== 200) {
+            context.response.json()
+                .then(val => {
+                    this.errorHandling.errorsSubject
+                        .next({
+                            display: true,
+                            text: (val && val.detail) ? val.detail : `STATUS_CODE: ${context.response.status}`
+                        });
                 });
         }
 

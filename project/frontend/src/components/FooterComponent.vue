@@ -1,6 +1,6 @@
 <template>
   <v-footer 
-    class="bg-blue-lighten-4 text-center d-flex flex-column app-footer"
+    class="text-center d-flex flex-column app-footer"
   >
     <div>
       <v-btn
@@ -12,7 +12,7 @@
       ></v-btn>
     </div>
 
-    <div class="pt-0">
+    <div class="pt-0 main-text">
       Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit amet. Mauris cursus commodo interdum. Praesent ut risus eget metus luctus accumsan id ultrices nunc. Sed at orci sed massa consectetur dignissim a sit amet dui. Duis commodo vitae velit et faucibus. Morbi vehicula lacinia malesuada. Nulla placerat augue vel ipsum ultrices, cursus iaculis dui sollicitudin. Vestibulum eu ipsum vel diam elementum tempor vel ut orci. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
     </div>
 
@@ -45,13 +45,16 @@ export default defineComponent({
 
 <style scoped>
 .app-footer {
-  background-color: #f8f9fa;
   width: 100%;
-  min-height: 50vh; /* Assicura che il footer occupi almeno il 50% dello schermo */
+  min-height: max-content;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.main-text{
+  text-overflow: ellipsis;
+  overflow-y: auto;
 }
 </style>

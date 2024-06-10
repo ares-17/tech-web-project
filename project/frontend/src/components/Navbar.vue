@@ -89,7 +89,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* Stili personalizzati */
 .navbar-nav .nav-link:hover {
   text-decoration: underline;
 }
@@ -108,7 +107,7 @@ export default defineComponent({
   font-weight: 600;
   font-stretch: expanded;
   line-height: 1.25rem;
-  text-transform: uppercase; 
+  text-transform: uppercase;
 }
 
 .nav-link:hover {
@@ -123,4 +122,5 @@ export default defineComponent({
 .v-app-bar.v-toolbar {
   background: #0000001f;
 }
+
 </style>

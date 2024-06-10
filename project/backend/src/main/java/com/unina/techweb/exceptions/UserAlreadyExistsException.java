@@ -1,8 +1,11 @@
 package com.unina.techweb.exceptions;
 
-public class UserAlreadyExistsException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class UserAlreadyExistsException extends TechWebException {
+
     public UserAlreadyExistsException(String username) {
-        super("User already exists with username: " + username);
+        super(HttpStatus.CONFLICT, "User already exists with username: " + username, "Already exist");
     }
 }
 

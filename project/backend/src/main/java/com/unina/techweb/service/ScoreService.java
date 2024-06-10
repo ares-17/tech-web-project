@@ -4,7 +4,7 @@ import com.unina.techweb.dto.QuestionResponseDto;
 import com.unina.techweb.dto.QuizResponseDto;
 import com.unina.techweb.dto.ScoreDto;
 import com.unina.techweb.entities.*;
-import com.unina.techweb.exceptions.NotFoundException;
+import com.unina.techweb.exceptions.TWNotFoundException;
 import com.unina.techweb.repository.CustomerRepository;
 import com.unina.techweb.repository.QuizRepository;
 import com.unina.techweb.repository.ScoreRepository;
@@ -40,7 +40,7 @@ public class ScoreService {
         }
         if(dto.getIdCustomer() != null && !dto.getIdCustomer().isEmpty()){
             return this.customerRepository.findById(UUID.fromString(dto.getIdCustomer()))
-                .orElseThrow(() -> new NotFoundException("Utente non trovato"));
+                .orElseThrow(() -> new TWNotFoundException(dto.getIdCustomer()));
         }
         if(dto.getNonAuthenticableUsername() != null){
             return this.customerService.createNonAuthenticableUser(dto.getNonAuthenticableUsername());
@@ -57,7 +57,7 @@ public class ScoreService {
         }
 
         Quiz quiz = this.quizRepository.findById(UUID.fromString(dto.getId()))
-                .orElseThrow(() -> new NotFoundException("Quiz non trovato"));
+                .orElseThrow(() -> new TWNotFoundException(dto.getId()));
 
         Customer customer = getCustomerQuizResponseDto(dto);
 
@@ -99,7 +99,7 @@ public class ScoreService {
 
     public List<ScoreDto> getScoresByQuiz(String idQuiz) {
         Quiz quiz = this.quizRepository.findById(UUID.fromString(idQuiz))
-                .orElseThrow(() -> new NotFoundException("Quiz non trovato"));
+                .orElseThrow(() -> new TWNotFoundException(idQuiz));
 
         return this.scoreRepository.findByQuiz(quiz).stream()
                 .map(Mapper::mapScoreQuizCustomerToScoreCustomerDto)
@@ -108,7 +108,7 @@ public class ScoreService {
 
     public List<ScoreDto> getScoreByCustomer(String idCustomer) {
         Customer customer = this.customerRepository.findById(UUID.fromString(idCustomer))
-                .orElseThrow(() -> new NotFoundException("Utente non trovato"));
+                .orElseThrow(() -> new TWNotFoundException(idCustomer));
 
         return this.scoreRepository.findByCustomer(customer).stream()
                 .map(Mapper::mapScoreQuizCustomerToScoreCustomerDto)

@@ -3,7 +3,7 @@ package com.unina.techweb.service;
 import com.unina.techweb.dto.CustomerDto;
 import com.unina.techweb.dto.QuizDto;
 import com.unina.techweb.entities.Customer;
-import com.unina.techweb.exceptions.NotFoundException;
+import com.unina.techweb.exceptions.TWNotFoundException;
 import com.unina.techweb.exceptions.UserAlreadyExistsException;
 import com.unina.techweb.repository.CustomerRepository;
 import com.unina.techweb.repository.QuizRepository;
@@ -34,13 +34,13 @@ public class CustomerService {
 
     public CustomerDto getUserById(String uidUser) {
         Customer customer = this.customerRepository.findById(UUID.fromString(uidUser))
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new TWNotFoundException(uidUser));
         return Mapper.mapCustomerToCustomerDto(customer);
     }
 
     public List<QuizDto> getQuizByUser(String uidUser) {
         Customer customer = this.customerRepository.findById(UUID.fromString(uidUser))
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new TWNotFoundException(uidUser));
 
         return this.quizRepository.findByIdUser(customer).stream()
                 .map(q -> Mapper.mapQuizToQuizDTO(q, List.of())).toList();
@@ -50,7 +50,7 @@ public class CustomerService {
     public CustomerDto createCustomer(CustomerDto customerDto) {
         Optional<Customer> existAnotherSameCustomer = this.customerRepository.findByUsername(customerDto.getUsername());
         if(existAnotherSameCustomer.isPresent()){
-            throw new UserAlreadyExistsException("Username già registrato");
+            throw new UserAlreadyExistsException(customerDto.getUsername());
         }
 
         var customer = new Customer();

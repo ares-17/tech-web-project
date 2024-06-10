@@ -3,7 +3,7 @@ package com.unina.techweb.service;
 import com.unina.techweb.dto.QuizDto;
 import com.unina.techweb.entities.Customer;
 import com.unina.techweb.entities.Quiz;
-import com.unina.techweb.exceptions.NotFoundException;
+import com.unina.techweb.exceptions.TWNotFoundException;
 import com.unina.techweb.repository.CustomerRepository;
 import com.unina.techweb.repository.QuizRepository;
 import com.unina.techweb.utils.Mapper;
@@ -38,7 +38,7 @@ public class QuizService {
     @Transactional
     public QuizDto createQuiz(@RequestBody @Valid QuizDto quizDto) {
         Customer customer = this.customerRepository.findById(UUID.fromString(quizDto.getCreatedBy()))
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new TWNotFoundException(quizDto.getCreatedBy()));
         Quiz quiz = Mapper.mapQuizDTOToQuiz(quizDto, customer);
         var id = this.quizRepository.save(quiz).getId();
 
@@ -55,7 +55,7 @@ public class QuizService {
 
     public QuizDto getQuiz(String uidQuiz) {
         var quiz = this.quizRepository.findById(UUID.fromString(uidQuiz))
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new TWNotFoundException(uidQuiz));
         var questions = this.questionService.getQuestionsByQuiz(uidQuiz);
         return Mapper.mapQuizToQuizDTO(quiz, questions);
     }
