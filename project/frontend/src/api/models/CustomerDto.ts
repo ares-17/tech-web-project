@@ -30,26 +30,21 @@ export interface CustomerDto {
      * @type {string}
      * @memberof CustomerDto
      */
-    username?: string;
+    username: string;
     /**
      * 
-     * @type {boolean}
+     * @type {string}
      * @memberof CustomerDto
      */
-    isLogged?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CustomerDto
-     */
-    isAnonymous: boolean;
+    password: string;
 }
 
 /**
  * Check if a given object implements the CustomerDto interface.
  */
 export function instanceOfCustomerDto(value: object): value is CustomerDto {
-    if (!('isAnonymous' in value) || value['isAnonymous'] === undefined) return false;
+    if (!('username' in value) || value['username'] === undefined) return false;
+    if (!('password' in value) || value['password'] === undefined) return false;
     return true;
 }
 
@@ -64,9 +59,8 @@ export function CustomerDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean
     return {
         
         'id': json['id'] == null ? undefined : json['id'],
-        'username': json['username'] == null ? undefined : json['username'],
-        'isLogged': json['isLogged'] == null ? undefined : json['isLogged'],
-        'isAnonymous': json['isAnonymous'],
+        'username': json['username'],
+        'password': json['password'],
     };
 }
 
@@ -78,8 +72,7 @@ export function CustomerDtoToJSON(value?: CustomerDto | null): any {
         
         'id': value['id'],
         'username': value['username'],
-        'isLogged': value['isLogged'],
-        'isAnonymous': value['isAnonymous'],
+        'password': value['password'],
     };
 }
 

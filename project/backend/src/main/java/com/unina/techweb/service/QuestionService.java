@@ -2,6 +2,7 @@ package com.unina.techweb.service;
 
 import com.unina.techweb.dto.QuestionDto;
 import com.unina.techweb.entities.Quiz;
+import com.unina.techweb.exceptions.TWNotFoundException;
 import com.unina.techweb.repository.AnswerRepository;
 import com.unina.techweb.repository.QuizRepository;
 import com.unina.techweb.utils.Mapper;
@@ -29,7 +30,7 @@ public class QuestionService {
 
     public List<QuestionDto> getQuestionsByQuiz(String uidQuiz) {
         Quiz quiz = quizRepository.findById(UUID.fromString(uidQuiz))
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new TWNotFoundException(uidQuiz));
 
         var questionsWithAnswers = quiz.getQuestions().stream()
                 .peek(q -> q.setAnswers(new HashSet<>(answerRepository.getAnswerByQuestion(q)))).toList();

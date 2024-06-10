@@ -175,7 +175,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ScoreDto'
+              $ref: '#/components/schemas/QuizResponseDto'
       responses:
         '200':
           description: Quiz completato con successo
@@ -257,6 +257,47 @@ paths:
               schema:
                 $ref: '#/components/schemas/CustomerDto'
 
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Effettua l'operazione di login
+      operationId: login
+      requestBody:
+        description: Le informazioni dell'utente
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerDto'
+      responses:
+        '200':
+          description: Login effettuato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationDto'
+
+  /auth/register:
+    post:
+      tags:
+        - auth
+      summary: Consente all'utente di registarsi
+      operationId: register
+      requestBody:
+        description: Le informazioni dell'utente
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerDto'
+      responses:
+        '200':
+          description: Login effettuato con successo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationDto'
 
 
 components:
@@ -281,9 +322,6 @@ components:
           type: integer
           format: int64
           example: 3
-        isOpen:
-          type: boolean
-          example: true
         questions:
           type: array
           items:
@@ -294,7 +332,6 @@ components:
         - title
         - maxErrors
         - questions
-        - createdBy
 
     CustomerDto:
       type: object
@@ -303,12 +340,11 @@ components:
           type: string
         username:
           type: string
-        isLogged:
-          type: boolean
-        isAnonymous:
-          type: boolean
+        password:
+          type: string
       required:
-        - isAnonymous
+        - username
+        - password
 
 
     ScoreDto:
@@ -342,8 +378,6 @@ components:
           format: int64
           example: 3
       required:
-        - customerId
-        - quizId
         - score
 
     QuestionDto:
@@ -361,7 +395,6 @@ components:
             $ref: '#/components/schemas/AnswerDto'
       required:
         - title
-        - idQuiz
         - answers
 
     AnswerDto:
@@ -378,10 +411,44 @@ components:
         idQuiz:
           type: string
       required:
-        - idQuiz
-        - idQuestion
         - text
         - isCorrect
+
+    AuthenticationDto:
+      type: object
+      properties:
+        expiresIn:
+          type: number
+          format: long
+        token:
+          type: string
+        idCustomer:
+          type: string
+
+    QuizResponseDto:
+      type: object
+      properties:
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionResponseDto'
+        id:
+          type: string
+        isCustomerAnonymous:
+          type: boolean
+        idCustomer:
+          type: string
+        nonAuthenticableUsername:
+          type: string
+
+    QuestionResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+        answer:
+          type: string
+
 
     Problem:
       type: object

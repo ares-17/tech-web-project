@@ -43,7 +43,7 @@ export interface QuestionDto {
      * @type {string}
      * @memberof QuestionDto
      */
-    idQuiz: string;
+    idQuiz?: string;
     /**
      * 
      * @type {Array<AnswerDto>}
@@ -57,7 +57,6 @@ export interface QuestionDto {
  */
 export function instanceOfQuestionDto(value: object): value is QuestionDto {
     if (!('title' in value) || value['title'] === undefined) return false;
-    if (!('idQuiz' in value) || value['idQuiz'] === undefined) return false;
     if (!('answers' in value) || value['answers'] === undefined) return false;
     return true;
 }
@@ -74,7 +73,7 @@ export function QuestionDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean
         
         'title': json['title'],
         'id': json['id'] == null ? undefined : json['id'],
-        'idQuiz': json['idQuiz'],
+        'idQuiz': json['idQuiz'] == null ? undefined : json['idQuiz'],
         'answers': ((json['answers'] as Array<any>).map(AnswerDtoFromJSON)),
     };
 }

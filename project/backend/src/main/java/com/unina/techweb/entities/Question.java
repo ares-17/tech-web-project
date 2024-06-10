@@ -30,6 +30,7 @@ public class Question {
     @JoinColumn(name = "uidquiz", nullable = false)
     private Quiz uidquiz;
 
+    @OrderBy("id ASC")
     @OneToMany(mappedBy = "uidquestion", orphanRemoval = true, cascade = CascadeType.ALL)
     private Set<Answer> answers = new LinkedHashSet<>();
 

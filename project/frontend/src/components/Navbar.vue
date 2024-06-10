@@ -1,47 +1,126 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light bg-secondary-subtle fixed-top">
-        <div class="container">
-            <router-link class="navbar-brand" to="/">
-                <img width="40" height="40" src="https://img.icons8.com/external-xnimrodx-lineal-color-xnimrodx/64/external-help-website-development-xnimrodx-lineal-color-xnimrodx.png" alt="external-help-website-development-xnimrodx-lineal-color-xnimrodx"/>   
-            </router-link>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <router-link class="nav-link" to="/create-quiz">{{ $t('navbar_createquizz') }}</router-link>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <router-link class="btn btn-outline-primary me-2" to="/register">{{ $t('navbar_signup') }}</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link class="btn btn-primary" to="/login">{{ $t('navbar_signin') }}</router-link>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+  <v-app-bar>
+    <v-app-bar-title>
+      <router-link class="nav-link m-3 d-none d-md-flex" to="/">SmartQuiz</router-link>
+      <v-btn class="d-lg-none" icon="mdi-home" variant="text" @click="router.push('/')"></v-btn>
+    </v-app-bar-title>
+    <v-spacer></v-spacer>
+    <template v-slot:append>
+      <div v-if="!isLogged" class="d-flex align-items-center">
+        <RouterLink to="/login" class="nav-link m-3 d-none d-md-flex">{{ $t('navbar_signin') }}</RouterLink>
+        <RouterLink to="/register" class="nav-link m-3 d-none d-md-flex">{{ $t('navbar_signup') }}</RouterLink>
+        <v-btn icon class="d-flex d-md-none" @click="drawer = true">
+          <v-icon>mdi-menu</v-icon>
+        </v-btn>
+      </div>
+      <div v-else class="d-flex align-items-center">
+        <span class="mx-5 d-none d-md-block">{{ $t('navbar_welcome', { username })  }}</span>
+        <v-btn class="mx-3" variant="outlined" @click="logout">
+          <span class="d-none d-md-block">Logout</span>
+          <v-icon icon="mdi-exit-to-app"></v-icon>
+        </v-btn>
+      </div>
+    </template>
+  </v-app-bar>
+
+  <v-navigation-drawer v-model="drawer" app temporary class="d-md-none">
+    <v-list>
+      <v-list-item>
+        <RouterLink to="/login" class="nav-link m-3">{{ $t('navbar_signin') }}</RouterLink>
+      </v-list-item>
+      <v-list-item>
+        <RouterLink to="/register" class="nav-link m-3">{{ $t('navbar_signup') }}</RouterLink>
+      </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
+
+
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { RouterLink } from 'vue-router';
+import router from '@/router';
+import { useSessionStore } from '@/stores/sessionStore';
+import { defineComponent, onBeforeUnmount, ref, type Ref } from 'vue';
+import { RouterLink, useRouter } from 'vue-router';
 
 export default defineComponent({
-    name: 'Navbar',
-    components: {
-        RouterLink
+  name: 'Navbar',
+  setup() {
+    const drawer = ref(false);
+    const isLogged = ref(false);
+    const username: Ref<string | undefined> = ref(undefined);
+    const router = useRouter();
+    const sessionStore = useSessionStore();
+
+    const subscriptionIsLogged = sessionStore.isLoggedSubject
+      .subscribe(value => {
+        isLogged.value = value;
+      });
+      
+    const subSessionStorage = sessionStore.sessionStorageSubject
+      .subscribe(values => {
+        if(values && values['username']){
+          username.value = sessionStore.getFromSessionStorage('username') as string;
+        }
+      })
+
+    function logout(){
+      sessionStore.removeUser();
+      router.push('/');
     }
+
+    onBeforeUnmount(() => {
+      subscriptionIsLogged.unsubscribe();
+      subSessionStorage.unsubscribe();
+    });
+
+    return {
+      drawer,
+      isLogged,
+      logout,
+      username,
+      router
+    }
+  },
+  components: {
+    RouterLink,
+  },
 });
 </script>
 
 <style scoped>
-/* Stili personalizzati */
-.navbar-nav .nav-link {
-    color: #000;
+.navbar-nav .nav-link:hover {
+  text-decoration: underline;
 }
+
+.navbar-nav .nav-link {
+  font-size: larger;
+  font-stretch: expanded;
+  line-height: 1.25rem;
+}
+
+.logo {
+  border-radius: 50%;
+}
+
+.nav-link {
+  font-weight: 600;
+  font-stretch: expanded;
+  line-height: 1.25rem;
+  text-transform: uppercase;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+.v-app-bar-title {
+  font-size: x-large;
+  text-transform: uppercase;
+}
+
+.v-app-bar.v-toolbar {
+  background: #0000001f;
+}
+
 </style>

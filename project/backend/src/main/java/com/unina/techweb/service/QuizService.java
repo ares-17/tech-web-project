@@ -3,6 +3,7 @@ package com.unina.techweb.service;
 import com.unina.techweb.dto.QuizDto;
 import com.unina.techweb.entities.Customer;
 import com.unina.techweb.entities.Quiz;
+import com.unina.techweb.exceptions.TWNotFoundException;
 import com.unina.techweb.repository.CustomerRepository;
 import com.unina.techweb.repository.QuizRepository;
 import com.unina.techweb.utils.Mapper;
@@ -36,26 +37,25 @@ public class QuizService {
 
     @Transactional
     public QuizDto createQuiz(@RequestBody @Valid QuizDto quizDto) {
-        Customer customer = this.customerRepository.findById(quizDto.getCreatedById())
-                .orElseThrow(IllegalArgumentException::new);
+        Customer customer = this.customerRepository.findById(UUID.fromString(quizDto.getCreatedBy()))
+                .orElseThrow(() -> new TWNotFoundException(quizDto.getCreatedBy()));
         Quiz quiz = Mapper.mapQuizDTOToQuiz(quizDto, customer);
         var id = this.quizRepository.save(quiz).getId();
 
         return new QuizDto(
-                id,
+                id.toString(),
                 quizDto.getTitle(),
                 quizDto.getDescription(),
                 quizDto.getCreatedAt(),
-                quizDto.getCreatedById(),
+                quizDto.getCreatedBy(),
                 quizDto.getMaxErrors(),
-                quiz.getIsopen(),
                 quizDto.getQuestions()
         );
     }
 
     public QuizDto getQuiz(String uidQuiz) {
         var quiz = this.quizRepository.findById(UUID.fromString(uidQuiz))
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new TWNotFoundException(uidQuiz));
         var questions = this.questionService.getQuestionsByQuiz(uidQuiz);
         return Mapper.mapQuizToQuizDTO(quiz, questions);
     }

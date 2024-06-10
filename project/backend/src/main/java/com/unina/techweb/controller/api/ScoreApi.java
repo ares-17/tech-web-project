@@ -5,6 +5,7 @@
  */
 package com.unina.techweb.controller.api;
 
+import com.unina.techweb.dto.QuizResponseDto;
 import com.unina.techweb.dto.ScoreDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -39,24 +40,24 @@ public interface ScoreApi {
     /**
      * POST /score/complete : Associa il punteggio ottenuto dall&#39;utente
      *
-     * @param scoreDto  (required)
+     * @param quizResponseDto  (required)
      * @return Quiz completato con successo (status code 200)
      */
     @Operation(
-        operationId = "completeQuiz",
-        summary = "Associa il punteggio ottenuto dall'utente",
-        tags = { "score" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Quiz completato con successo")
-        }
+            operationId = "completeQuiz",
+            summary = "Associa il punteggio ottenuto dall'utente",
+            tags = { "score" },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Quiz completato con successo")
+            }
     )
     @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/score/complete",
-        consumes = { "application/json" }
+            method = RequestMethod.POST,
+            value = "/score/complete",
+            consumes = { "application/json" }
     )
     default ResponseEntity<Void> completeQuiz(
-        @Parameter(name = "ScoreDto", description = "", required = true) @Valid @RequestBody ScoreDto scoreDto
+            @Parameter(name = "QuizResponseDto", description = "", required = true) @Valid @RequestBody QuizResponseDto quizResponseDto
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 

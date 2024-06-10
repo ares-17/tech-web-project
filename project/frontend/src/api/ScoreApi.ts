@@ -16,17 +16,20 @@
 import * as runtime from './models/runtime';
 import type {
   Problem,
+  QuizDto,
   ScoreDto,
 } from './models/index';
 import {
     ProblemFromJSON,
     ProblemToJSON,
+    QuizDtoFromJSON,
+    QuizDtoToJSON,
     ScoreDtoFromJSON,
-    ScoreDtoToJSON,
 } from './models/index';
+import { QuizResponseDtoToJSON, type QuizResponseDto } from './models/QuizResponseDto';
 
 export interface CompleteQuizRequest {
-    scoreDto: ScoreDto;
+    quizResponseDto: QuizResponseDto;
 }
 
 export interface GetScoreByCustomerRequest {
@@ -46,10 +49,10 @@ export class ScoreApi extends runtime.BaseAPI {
      * Associa il punteggio ottenuto dall\'utente
      */
     async completeQuizRaw(requestParameters: CompleteQuizRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['scoreDto'] == null) {
+        if (requestParameters['quizResponseDto'] == null) {
             throw new runtime.RequiredError(
-                'scoreDto',
-                'Required parameter "scoreDto" was null or undefined when calling completeQuiz().'
+                'quizResponseDto',
+                'Required parameter "quizResponseDto" was null or undefined when calling completeQuiz().'
             );
         }
 
@@ -64,7 +67,7 @@ export class ScoreApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ScoreDtoToJSON(requestParameters['scoreDto']),
+            body: QuizResponseDtoToJSON(requestParameters['quizResponseDto']),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
