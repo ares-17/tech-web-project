@@ -1,6 +1,10 @@
 
 FROM node:20 AS build-stage
 WORKDIR /app
+
+ARG API_HOST=localhost
+ENV VITE_API_HOST=$API_HOST
+
 COPY ./package*.json ./
 RUN npm install --force
 COPY . .

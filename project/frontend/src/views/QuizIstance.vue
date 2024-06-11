@@ -107,6 +107,7 @@
 <script lang="ts">
 import type { QuizApi, ScoreApi, UserApi } from '@/api';
 import type { ScoreDto } from '@/api/models';
+import { ENV_BASE_PATH } from '@/api/models/runtime';
 import i18n from '@/i18n/i18n';
 import { useErrorHandling } from '@/stores/errorHandling';
 import Utils from '@/utils/Utils';
@@ -185,7 +186,7 @@ export default {
                     width: size,
                     height: size
                 };
-                const path = `localhost:5173/${props.id}`;
+                const path = `http://${ENV_BASE_PATH}:5173/quiz/${props.id}`;
                 QRCode.toCanvas(canvas.value, path, options, (error) => {
                     if (error) {
                         console.error(error);

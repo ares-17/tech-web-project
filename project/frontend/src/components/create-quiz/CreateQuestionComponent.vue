@@ -83,18 +83,26 @@
                     </div>
                 </div>
                 <v-divider></v-divider>
+                <div class="row w-100">
+
                 <v-card-actions>
-                    <v-btn v-if="index > 1" variant="text" @click="$emit('click:prev', questionRef)">
-                        {{ $t('question_component_back') }}
-                    </v-btn>
+                        <div class="col-12 col-md-6 col-sm-12 col-lg-6 col-xl-6 m-2">
+                        <v-btn  v-if="index > 1" variant="text" @click="$emit('click:prev', questionRef)">
+                            {{ $t('question_component_back') }}
+                        </v-btn>
+                    </div>
                     <v-spacer></v-spacer>
-                    <v-btn v-if="index !== total" type="submit" color="primary" variant="flat">
-                        {{ $t('question_component_next') }}
+                    <div class="col-12 col-md-6 col-sm-12 col-lg-6 col-xl-6 m-2">
+                        <v-btn class="w-100 text-center" v-if="index !== total" type="submit" color="primary" variant="flat">
+                            {{ $t('question_component_next') }}
+                        </v-btn>
+                        <v-btn class="w-100 text-center" v-else color="primary" type="submit" variant="flat">
+                            {{ $t('question_component_last_next') }}
                     </v-btn>
-                    <v-btn v-else color="primary" type="submit" variant="flat">
-                        {{ $t('question_component_last_next') }}
-                    </v-btn>
+                    </div>
                 </v-card-actions>
+            </div>
+
             </div>
         </form>
     </div>

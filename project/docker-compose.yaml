@@ -5,11 +5,15 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        API_HOST: ${API_HOST:-localhost}
     container_name: frontend
     ports:
       - "5173:5173"
     networks:
       - app-network
+    environment:
+      API_HOST: ${API_HOST:-localhost}
 
   backend:
     build:

@@ -43,8 +43,10 @@
                                             <v-spacer></v-spacer>
                                             <v-btn :text="$t('create_quiz_dialog_close_btn')" 
                                                 @click="() => isActive.value = false"></v-btn>
-                                            <v-btn :text="$t('create_quiz_dialog_ok_btn')" 
+                                            <v-btn :text="$t('create_quiz_dialog_login')" color="primary" variant="outlined"
                                                 @click="goToLogin"></v-btn>
+                                            <v-btn :text="$t('create_quiz_dialog_register')" color="primary" variant="outlined"
+                                                @click="goToSignUp"></v-btn>
                                         </v-card-actions>
                                         </v-card>
                                     </template>
@@ -104,6 +106,10 @@ export default {
             router.push({ name: 'login' });
         }
 
+        function goToSignUp(){
+            router.push({ name: 'register' });
+        }
+
         onBeforeUnmount(() => subscription.unsubscribe());
 
         return {
@@ -112,7 +118,8 @@ export default {
             toNewQuiz,
             validateUUID,
             goToLogin,
-            dialogLogin
+            dialogLogin,
+            goToSignUp
         }
     },
     component: {
