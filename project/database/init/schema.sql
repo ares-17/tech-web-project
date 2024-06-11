@@ -1,13 +1,10 @@
-
- -- Create the table for Customer inheriting from Player
-CREATE TABLE Customer (
+CREATE TABLE IF NOT EXISTS Customer (
     uid UUID PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL
 );
 
--- Create the table for Quiz
-CREATE TABLE Quiz (
+CREATE TABLE IF NOT EXISTS Quiz (
     uid UUID PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description VARCHAR(255),
@@ -17,16 +14,14 @@ CREATE TABLE Quiz (
     FOREIGN KEY (createdBy) REFERENCES Customer(uid)
 );
 
--- Create the table for Question
-CREATE TABLE Question (
+CREATE TABLE IF NOT EXISTS Question (
     uid UUID PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     uidQuiz UUID NOT NULL,
     FOREIGN KEY (uidQuiz) REFERENCES Quiz(uid)
 );
 
--- Create the table for Answer
-CREATE TABLE Answer (
+CREATE TABLE IF NOT EXISTS Answer (
     uid UUID PRIMARY KEY,
     text VARCHAR(255) NOT NULL,
     isCorrect BOOLEAN NOT NULL,
@@ -34,8 +29,7 @@ CREATE TABLE Answer (
     FOREIGN KEY (uidQuestion) REFERENCES Question(uid)
 );
 
-
-CREATE TABLE Score (
+CREATE TABLE IF NOT EXISTS Score (
 	uid UUID PRIMARY KEY,
 	customer UUID NOT NULL,
 	quiz UUID NOT NULL,
