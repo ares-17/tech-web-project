@@ -20,22 +20,27 @@
                     <span v-html="(quizDetails?.description) ? Utils.toMarkdown(quizDetails?.description) : ''"></span>
                     <div class="row">
                         <div class="d-flex justify-content-start col-12 col-md-6 col-sm-12 col-lg-6 col-xl-6 mb-2">
-                            <v-btn rounded="md" 
-                                color="primary"
-                                class="w-100 mx-auto my-auto"
-                                @click="goToQuiz" variant="elevated">
+                            <v-btn rounded="md" color="primary" class="w-100 mx-auto my-auto" @click="goToQuiz"
+                                variant="elevated">
                                 {{ $t('quiz_deatails_play') }}
                                 <v-icon icon="mdi-play-circle-outline" class="mx-3"></v-icon>
                             </v-btn>
                         </div>
                         <div class="d-flex justify-content-end col-12 col-md-6 col-sm-12 col-lg-6 col-xl-6 mb-2">
-                            <v-btn rounded="md" aria-label="Generate qr code" 
-                                class="w-100 mx-auto my-auto"
+                            <v-btn rounded="md" aria-label="Generate qr code" class="w-100 mx-auto my-auto"
                                 @click="showQrCode" variant="outlined">
                                 {{ $t('quiz_deatails_qrcode_gen') }}
                                 <v-icon icon="mdi-qrcode" class="mx-3"></v-icon>
                             </v-btn>
                         </div>
+                    </div>
+                    <div class="div-link text-center">
+                        <span>Clicca qui per copiare il codice del link 
+                            <v-btn v-if="!errorOnCopy" icon="mdi-content-copy" variant="text"
+                                @click="copyToClipboard"
+                            ></v-btn>
+                            <span v-else><br>{{  quizDetails?.id  }}</span>
+                        </span>
                     </div>
                     <v-divider></v-divider>
                     <v-form readonly>
@@ -102,6 +107,8 @@
 <script lang="ts">
 import type { QuizApi, ScoreApi, UserApi } from '@/api';
 import type { ScoreDto } from '@/api/models';
+import i18n from '@/i18n/i18n';
+import { useErrorHandling } from '@/stores/errorHandling';
 import Utils from '@/utils/Utils';
 import QRCode from 'qrcode';
 import { inject, onMounted, ref, type Ref } from 'vue';
@@ -125,12 +132,15 @@ export default {
             createdAt?: string,
             maxErrors?: number,
             createdBy?: string,
+            id?: string
         }> = ref({});
         const quizApi = inject('QuizApi') as QuizApi;
         const scoreApi = inject('ScoreApi') as ScoreApi;
         const userApi = inject('UserApi') as UserApi;
         const stateQrCodeDialog = ref(false);
         const scores: Ref<ScoreDto[] | undefined> = ref();
+        const errorHandling = useErrorHandling();
+        const errorOnCopy = ref(false);
 
         onMounted(() => {
             quizApi.getQuizById({ uidQuiz: props.id })
@@ -141,7 +151,7 @@ export default {
                         numQuestions: res.questions?.length || 0,
                         createdBy: ''
                     };
-                    if(!!res.createdBy){
+                    if (!!res.createdBy) {
                         userApi.getCustomerById({ idCustomer: res.createdBy })
                             .then(customer => quizDetails.value.createdBy = customer.username);
                     }
@@ -151,7 +161,7 @@ export default {
             scoreApi.getScoresByQuiz({ idQuiz: props.id })
                 .then(res => scores.value = res)
                 .catch(e => console.log(e));
-            
+
         })
 
 
@@ -187,12 +197,32 @@ export default {
             }
         };
 
+        function copyToClipboard(): void {
+            if (!navigator.clipboard) {
+                console.error('Clipboard API is not available');
+                return;
+            }
+
+            navigator.clipboard.writeText(quizDetails?.value?.id!)
+                .then(() => {
+                    console.log('Text copied to clipboard');
+                    errorHandling.errorsSubject
+                        .next({ display: true, text: i18n.global.t('quiz_istance_copy_ok') })
+                })
+                .catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    errorOnCopy.value = true;
+                    errorHandling.errorsSubject
+                        .next({ display: true, text: i18n.global.t('quiz_istance_copy_ko') })
+                });
+        }
+
         function goBack() {
             router.push('/');
         }
 
-        function goToQuiz(){
-            router.push({ name: 'take-quiz', params: { id: props.id }});
+        function goToQuiz() {
+            router.push({ name: 'take-quiz', params: { id: props.id } });
         }
 
         return {
@@ -204,7 +234,9 @@ export default {
             scores,
             goBack,
             Utils,
-            goToQuiz
+            goToQuiz,
+            copyToClipboard,
+            errorOnCopy
         };
     },
 };
@@ -265,5 +297,17 @@ span.or {
     border: 1px solid #999696;
     border-radius: 4px;
     padding: 1rem;
+}
+
+.div-link {
+    border: 1px solid #999696;
+    border-radius: 4px;
+    margin: 1rem 0 1rem 0;
+    width: auto;
+}
+
+.div-link:hover {
+    background: aliceblue;
+    font-weight: 600;
 }
 </style>

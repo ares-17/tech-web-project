@@ -77,6 +77,9 @@
     "dialog_takequiz_username_title": "Inserisci l'username",
     "dialog_takequiz_username_text": "Inserisci l'username per completare il quiz oppure rimani anonimo",
     "dialog_takequiz_username_anonymous_btn": "Rimani anonimo",
-    "dialog_takequiz_title_input": "Username"
+    "dialog_takequiz_title_input": "Username",
+
+    "quiz_istance_copy_ok": "Codice copiato correttamente!",
+    "quiz_istance_copy_ko": "Errore: il browser non consente questa funzionalità, copiarlo manualmente"
 
 }
