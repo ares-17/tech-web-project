@@ -27,6 +27,8 @@ services:
     networks:
       - app-network
       - back-network
+    environment:
+      API_HOST: ${API_HOST:-localhost}
 
   postgres:
     image: postgres:latest

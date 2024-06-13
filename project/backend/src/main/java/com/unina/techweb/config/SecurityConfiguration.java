@@ -2,6 +2,7 @@ package com.unina.techweb.config;
 
 import com.unina.techweb.middleware.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,6 +18,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Configuration
 @EnableWebSecurity
@@ -24,6 +26,10 @@ public class SecurityConfiguration {
     
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Value("${API_HOST:localhost}")
+    private String apiHost;
+    final String ipPattern = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
 
     @Autowired
     public SecurityConfiguration(
@@ -63,11 +69,18 @@ public class SecurityConfiguration {
         return http.build();
     }
 
+    private List<String> getAllowedOrigins(){
+        return (!apiHost.equalsIgnoreCase("localhost") &&
+                Pattern.compile(ipPattern).matcher(apiHost).matches()) ?
+                List.of("http://localhost:5173", "http://" + apiHost + ":5173") :
+                List.of("http://localhost:5173");
+    }
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://127.0.0.1:5173", "http://192.168.1.101:5173"));
+        configuration.setAllowedOrigins(this.getAllowedOrigins());
         configuration.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
         configuration.setAllowCredentials(true);
