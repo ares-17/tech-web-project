@@ -31,7 +31,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
             log.error(problem.toString());
             return handleExceptionInternal(ex, problem, new HttpHeaders(), twException.getCode(), request);
         }
-        String cause = (ex.getCause() != null) ? ex.getCause().toString() : "An error occurred";
+        String cause = (ex.getMessage() != null) ? ex.getMessage() : "An error occurred";
         problem.setDetail(cause);
         problem.setTitle("Error occurred");
         problem.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
