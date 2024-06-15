@@ -10,7 +10,8 @@
                                 @update:counter="onUpdateValuesFirstStep"/>
                         </template>
                         <template v-slot:item.2>
-                            <PreviewStepNewQuiz v-if="firstStepValues" :prev-values="firstStepValues" @prev="currentStep = 1" />
+                            <PreviewStepNewQuiz v-if="firstStepValues" 
+                            :prev-values="firstStepValues" @prev="currentStep = 1" />
                         </template>
                     </v-stepper>
                 </div>
@@ -52,6 +53,7 @@ import FirstStepNewQuiz from '@/components/create-quiz/FirstStepNewQuiz.vue';
 import PreviewStepNewQuiz from '@/components/create-quiz/PreviewStepNewQuiz.vue';
 import i18n from '@/i18n/i18n';
 import { useSessionStore } from '@/stores/sessionStore';
+import { Sanitizer } from '@/utils/Sanitizer';
 import { inject, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -71,9 +73,11 @@ export default {
         const quizApi = inject('QuizApi') as QuizApi;
         const sessionStorage = useSessionStore();
         const router = useRouter();
+        const sanitizer = inject('Sanitizer') as Sanitizer;
+
 
         function onNextFirstStep(value: any) {
-            firstStepValues.value = value;
+            firstStepValues.value = sanitizer.sanitize(value);
             currentStep.value = 2;
         }
 
@@ -98,6 +102,7 @@ export default {
         }
 
         function hasErrors(questions: QuestionDto[]){
+            firstStepValues.value = sanitizer.sanitize(firstStepValues.value);
             return !firstStepValues.value ||
                 isEmptyString(firstStepValues.value?.title) || 
                 isEmptyString(firstStepValues.value?.description) || 
@@ -118,9 +123,10 @@ export default {
                 maxErrors: firstStepValues.value.numMaxErrors,
                 createdBy: sessionStorage.getFromSessionStorage('idCustomer') as string,
             };
+            sanitizer.sanitize(quiz);
             quizApi.createQuiz({ quizDto: quiz })
                 .then(res => {
-                    router.push({ name: 'quiz-istance', params: { id: res.id! } });
+                    router.push({ name: 'quiz-istance', params: { id: sanitizer.sanitizeString(res.id!) } });
                 })
                 .catch(e => console.log(e));
         }

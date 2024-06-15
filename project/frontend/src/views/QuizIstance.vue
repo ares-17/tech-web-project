@@ -76,8 +76,8 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(item, i) in scores" :key="i">
-                                    <td>{{ item.customerUsername }}</td>
-                                    <td>{{ item.score }}</td>
+                                    <td v-html="sanitizer.sanitizeString(item.customerUsername)"></td>
+                                    <td v-html=sanitizer.sanitizeString(String(item.score))></td>
                                 </tr>
                             </tbody>
                         </v-table>
@@ -111,6 +111,7 @@ import { ENV_BASE_PATH } from '@/api/models/runtime';
 import i18n from '@/i18n/i18n';
 import { useErrorHandling } from '@/stores/errorHandling';
 import Utils from '@/utils/Utils';
+import { Sanitizer } from '@/utils/Sanitizer';
 import QRCode from 'qrcode';
 import { inject, onMounted, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -142,6 +143,8 @@ export default {
         const scores: Ref<ScoreDto[] | undefined> = ref();
         const errorHandling = useErrorHandling();
         const errorOnCopy = ref(false);
+        const sanitizer = inject('Sanitizer') as Sanitizer;
+
 
         onMounted(() => {
             quizApi.getQuizById({ uidQuiz: props.id })
@@ -186,7 +189,7 @@ export default {
                     width: size,
                     height: size
                 };
-                const path = `http://${ENV_BASE_PATH}:5173/quiz/${props.id}`;
+                const path = sanitizer.sanitizeString(`http://${ENV_BASE_PATH}:5173/quiz/${props.id}`)!;
                 QRCode.toCanvas(canvas.value, path, options, (error) => {
                     if (error) {
                         console.error(error);
@@ -237,7 +240,8 @@ export default {
             Utils,
             goToQuiz,
             copyToClipboard,
-            errorOnCopy
+            errorOnCopy,
+            sanitizer
         };
     },
 };

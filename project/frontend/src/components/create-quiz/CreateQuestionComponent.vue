@@ -29,7 +29,7 @@
                                             :label="$t('craete_question_answer1')" class="ml-3 mt-2"></v-text-field>
                                     </div>
                                     <div v-else class="ml-3 w-100 py-4">
-                                        <span >{{ question?.answers[0]?.text }}</span>
+                                        <span v-html="sanitizer.sanitizeString(question?.answers[0]?.text)"></span>
                                     </div>
                                 </template>
                             </v-radio>
@@ -43,7 +43,7 @@
                                         :label="$t('craete_question_answer2')" class="ml-3 mt-2"></v-text-field>
                                     </div>
                                     <div v-else class="ml-3 w-100 py-4">
-                                        <span >{{ question?.answers[1]?.text }}</span>
+                                        <span v-html="sanitizer.sanitizeString(question?.answers[1]?.text)"></span>
                                     </div>
                                 </template>
                             </v-radio>
@@ -57,7 +57,7 @@
                                         :label="$t('craete_question_answer3')" class="ml-3 mt-2"></v-text-field>
                                     </div>
                                     <div v-else class="ml-3 w-100 py-4">
-                                        <span >{{ question?.answers[2]?.text }}</span>
+                                        <span v-html="sanitizer.sanitizeString(question?.answers[2]?.text)"></span>
                                     </div>
                                 </template>
                             </v-radio>
@@ -71,7 +71,7 @@
                                         :label="$t('craete_question_answer4')" class="ml-3 mt-2"></v-text-field>
                                     </div>
                                     <div v-else class="ml-3 w-100 py-4">
-                                        <span >{{ question?.answers[3]?.text }}</span>
+                                        <span v-html="sanitizer.sanitizeString(question?.answers[3]?.text)"></span>
                                     </div>
                                 </template>
                             </v-radio>
@@ -110,8 +110,9 @@
 <script lang="ts">
 import type { QuestionDto } from '@/api/models';
 import i18n from '@/i18n/i18n';
+import { Sanitizer } from '@/utils/Sanitizer';
 import { Validators } from '@/utils/Validators';
-import { defineComponent, ref, type PropType, type Ref } from 'vue';
+import { defineComponent, inject, ref, type PropType, type Ref } from 'vue';
 import { VRadio, VRadioGroup } from 'vuetify/components';
 
 export default defineComponent({
@@ -138,6 +139,7 @@ export default defineComponent({
             ref((props.question?.answers?.length === 1) ? 'open' : 'closed') : 
             ref('open');
         const submitted = ref(false);
+        const sanitizer = inject('Sanitizer') as Sanitizer;
 
         const correctAnswer: Ref<undefined | number> = ref(undefined);
 
@@ -228,7 +230,8 @@ export default defineComponent({
             onClickRadio,
             onConfirmQuestion,
             noNull,
-            submitted
+            submitted,
+            sanitizer
         }
     },
     components: {

@@ -59,9 +59,10 @@
 </template>
 
 <script lang="ts">
-import type { AuthApi, UserApi } from '@/api';
+import type { AuthApi } from '@/api';
 import i18n from '@/i18n/i18n';
 import { useSessionStore } from '@/stores/sessionStore';
+import { Sanitizer } from '@/utils/Sanitizer';
 import { Validators } from '@/utils/Validators';
 import { inject, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -75,17 +76,19 @@ export default {
         const pwd: Ref<string | undefined> = ref(undefined);
         const sessionStore = useSessionStore();
         const router = useRouter();
-        const userAPI = inject('UserApi') as UserApi;
+        const sanitizer = inject('Sanitizer') as Sanitizer;
 
         function emailValidation(value: string){
-            return Validators.email(value) || i18n.global.t('validation_email');
+            return Validators.email(value!) || i18n.global.t('validation_email');
         }
 
         function pwdValidation(value: string){
-            return Validators.password(value)|| i18n.global.t('validation_pwd');
+            return Validators.password(value!)|| i18n.global.t('validation_pwd');
         }
 
         function onComplete() {
+            pwd.value = sanitizer.sanitizeString(pwd.value);
+            email.value = sanitizer.sanitizeString(email.value);
             if(!pwd.value || !email.value || !Validators.email(email.value) || !Validators.password(pwd.value)){
                 return;
             }

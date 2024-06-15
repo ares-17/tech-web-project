@@ -83,6 +83,9 @@
     "quiz_istance_copy_ko": "Error: browser does not allow this feature, copy it manually",
 
     "create_quiz_dialog_login": "Login",
-    "create_quiz_dialog_register": "Register"
+    "create_quiz_dialog_register": "Register",
+
+    "under_attack": "We determined malicious behavior with the Web App.",
+    "404_text": "The indicated page was not found, please return to the main screen"
 
 }

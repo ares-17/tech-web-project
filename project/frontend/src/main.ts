@@ -14,8 +14,9 @@ import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
 import 'vuetify/styles';
 import { Configuration } from './api/models/runtime';
-import TokenMiddleware from './middlewares/TokenMiddleware';
 import LoaderMiddleware from './middlewares/LoaderMiddleware';
+import TokenMiddleware from './middlewares/TokenMiddleware';
+import { Sanitizer } from './utils/Sanitizer';
 
 const app = createApp(App);
 
@@ -41,6 +42,7 @@ app.provide('QuizApi', new QuizApi(defaultConfig));
 app.provide('UserApi', new UserApi(defaultConfig));
 app.provide('ScoreApi', new ScoreApi(defaultConfig));
 app.provide('AuthApi', new AuthApi(defaultConfig));
+app.provide('Sanitizer', new Sanitizer(router));
 
 app.mount('#app');
 
