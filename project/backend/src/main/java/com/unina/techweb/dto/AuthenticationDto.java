@@ -1,6 +1,7 @@
 package com.unina.techweb.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.unina.techweb.validators.NoHtml;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
@@ -20,9 +21,11 @@ public class AuthenticationDto {
   private BigDecimal expiresIn;
 
   @JsonProperty("token")
+  @NoHtml
   private String token;
 
   @JsonProperty("idCustomer")
+  @NoHtml
   private String idCustomer;
 
   public AuthenticationDto expiresIn(BigDecimal expiresIn) {

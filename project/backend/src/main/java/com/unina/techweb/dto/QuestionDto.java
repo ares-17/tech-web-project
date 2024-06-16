@@ -1,6 +1,7 @@
 package com.unina.techweb.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.unina.techweb.validators.NoHtml;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
@@ -20,12 +21,15 @@ import java.util.Objects;
 public class QuestionDto {
 
   @JsonProperty("title")
+  @NoHtml
   private String title;
 
   @JsonProperty("id")
+  @NoHtml
   private String id;
 
   @JsonProperty("idQuiz")
+  @NoHtml
   private String idQuiz;
 
   @JsonProperty("answers")
