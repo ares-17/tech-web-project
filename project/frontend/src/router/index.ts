@@ -19,8 +19,12 @@ const authGuard = (to: any, from: any) => {
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  scrollBehavior: () => {
-    return { el: '#app', behavior: 'smooth' }
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { top: 0, behavior: 'smooth' };
+    }
   },
   routes: [
     {

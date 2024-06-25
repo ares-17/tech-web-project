@@ -77,7 +77,8 @@ export default {
 
 
         function onNextFirstStep(value: any) {
-            firstStepValues.value = sanitizer.sanitize(value);
+            sanitizer.sanitize(value);
+            firstStepValues.value = value;
             currentStep.value = 2;
         }
 
@@ -102,7 +103,7 @@ export default {
         }
 
         function hasErrors(questions: QuestionDto[]){
-            firstStepValues.value = sanitizer.sanitize(firstStepValues.value);
+            sanitizer.sanitize(firstStepValues.value);
             return !firstStepValues.value ||
                 isEmptyString(firstStepValues.value?.title) || 
                 isEmptyString(firstStepValues.value?.description) || 

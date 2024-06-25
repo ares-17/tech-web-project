@@ -1,6 +1,7 @@
 <template>
-    <v-snackbar v-model="snackbar" color="deep-purple-accent-4" 
-        elevation="24" v-html="sanitizer.sanitizeString(text)">
+    <v-snackbar v-model="snackbar" color="blue-accent-4" 
+        elevation="24">
+        {{ text }}
     </v-snackbar>
 </template>
 
@@ -20,7 +21,11 @@ export default defineComponent({
             .subscribe(value => {
                 if(value && value.display){
                     snackbar.value = true;
-                    text.value = value.text;
+                    text.value = sanitizer.sanitizeString(value.text)!;
+                    setTimeout(() => {
+                        snackbar.value = false;
+                        text.value = '';
+                    }, 4000);
                 }
             })
 

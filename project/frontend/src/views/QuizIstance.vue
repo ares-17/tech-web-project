@@ -18,6 +18,7 @@
                         <h1 v-html="(quizDetails?.title) ? Utils.toMarkdown(quizDetails?.title) : ''"></h1>
                     </div>
                     <span v-html="(quizDetails?.description) ? Utils.toMarkdown(quizDetails?.description) : ''"></span>
+                    <v-divider></v-divider>
                     <div class="row">
                         <div class="d-flex justify-content-start col-12 col-md-6 col-sm-12 col-lg-6 col-xl-6 mb-2">
                             <v-btn rounded="md" color="primary" class="w-100 mx-auto my-auto" @click="goToQuiz"
