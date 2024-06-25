@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class="div-link text-center">
-                        <span>Copia il codice del link
+                        <span>Copia il codice del quiz
                             <v-btn v-if="!errorOnCopy" icon="mdi-content-copy" variant="text"
                                 @click="copyToClipboard"
                             ></v-btn>
