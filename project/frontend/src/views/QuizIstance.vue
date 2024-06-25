@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class="div-link text-center">
-                        <span>Clicca qui per copiare il codice del link 
+                        <span>Copia il codice del link
                             <v-btn v-if="!errorOnCopy" icon="mdi-content-copy" variant="text"
                                 @click="copyToClipboard"
                             ></v-btn>
