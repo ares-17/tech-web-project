@@ -1,6 +1,7 @@
 package com.unina.techweb.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.unina.techweb.validators.NoHtml;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
@@ -20,22 +21,27 @@ import java.util.Objects;
 public class ScoreDto {
 
   @JsonProperty("customerId")
+  @NoHtml
   private String customerId;
 
   @JsonProperty("customerUsername")
+  @NoHtml
   private String customerUsername;
 
-
   @JsonProperty("quizId")
+  @NoHtml
   private String quizId;
 
   @JsonProperty("quizTitle")
+  @NoHtml
   private String quizTitle;
 
   @JsonProperty("quizDescription")
+  @NoHtml
   private String quizDescription;
 
   @JsonProperty("quizCreatedat")
+  @NoHtml
   private String quizCreatedat;
 
   @JsonProperty("quizMaxerrors")

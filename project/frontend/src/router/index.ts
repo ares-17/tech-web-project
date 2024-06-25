@@ -6,6 +6,8 @@ import QuizIstance from '@/views/QuizIstance.vue';
 import RegisterView from '@/views/RegisterView.vue';
 import TakeQuiz from '@/views/TakeQuiz.vue';
 import { createRouter, createWebHistory } from 'vue-router';
+import UnderAttackErrorPage from '@/views/UnderAttackErrorPage.vue';
+import NotFoundPage from '@/views/NotFoundPage.vue';
 
 const authGuard = (to: any, from: any) => {
   const sessionStorage = useSessionStore();
@@ -17,8 +19,12 @@ const authGuard = (to: any, from: any) => {
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  scrollBehavior: () => {
-    return { el: '#app', behavior: 'smooth' }
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { top: 0, behavior: 'smooth' };
+    }
   },
   routes: [
     {
@@ -53,6 +59,16 @@ const router = createRouter({
       name: 'take-quiz',
       props: true,
       component: TakeQuiz
+    },
+    {
+      path: '/under-attack',
+      name: 'under-attack',
+      component: UnderAttackErrorPage
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: NotFoundPage
     }
   ]
 });

@@ -83,5 +83,8 @@
     "quiz_istance_copy_ko": "Errore: il browser non consente questa funzionalità, copiarlo manualmente",
 
     "create_quiz_dialog_login": "Login",
-    "create_quiz_dialog_register": "Registrati"
+    "create_quiz_dialog_register": "Registrati",
+
+    "under_attack": "Abbiamo determinato un comportamento malintenzionato con la Web App",
+    "404_text": "La pagina indicata non è stata trovata, si consiglia di tornare alla schermata principale"
 }

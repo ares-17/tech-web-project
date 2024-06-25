@@ -1,6 +1,7 @@
 package com.unina.techweb.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.unina.techweb.validators.NoHtml;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import lombok.AllArgsConstructor;
@@ -15,9 +16,11 @@ import java.util.Objects;
 public class QuestionResponseDto {
 
   @JsonProperty("id")
+  @NoHtml
   private String id;
 
   @JsonProperty("answer")
+  @NoHtml
   private String answer;
 
   public QuestionResponseDto id(String id) {

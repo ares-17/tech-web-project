@@ -1,6 +1,7 @@
 package com.unina.techweb.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.unina.techweb.validators.NoHtml;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
@@ -21,15 +22,18 @@ public class Problem {
   private URI type;
 
   @JsonProperty("title")
+  @NoHtml
   private String title;
 
   @JsonProperty("status")
   private Integer status;
 
   @JsonProperty("detail")
+  @NoHtml
   private String detail;
 
   @JsonProperty("instance")
+  @NoHtml
   private String instance;
 
   public Problem type(URI type) {

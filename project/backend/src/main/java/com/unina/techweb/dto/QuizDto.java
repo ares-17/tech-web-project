@@ -1,6 +1,7 @@
 package com.unina.techweb.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.unina.techweb.validators.NoHtml;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
@@ -21,12 +22,15 @@ import java.util.Objects;
 public class QuizDto {
 
   @JsonProperty("id")
+  @NoHtml
   private String id;
 
   @JsonProperty("title")
+  @NoHtml
   private String title;
 
   @JsonProperty("description")
+  @NoHtml
   private String description;
 
   @JsonProperty("createdAt")
@@ -34,6 +38,7 @@ public class QuizDto {
   private OffsetDateTime createdAt;
 
   @JsonProperty("createdBy")
+  @NoHtml
   private String createdBy;
 
   @JsonProperty("maxErrors")

@@ -40,6 +40,8 @@
 <script lang="ts">
 import router from '@/router';
 import { useSessionStore } from '@/stores/sessionStore';
+import { Sanitizer } from '@/utils/Sanitizer';
+import { inject } from 'vue';
 import { defineComponent, onBeforeUnmount, ref, type Ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 
@@ -51,6 +53,7 @@ export default defineComponent({
     const username: Ref<string | undefined> = ref(undefined);
     const router = useRouter();
     const sessionStore = useSessionStore();
+    const sanitizer = inject('Sanitizer') as Sanitizer;
 
     const subscriptionIsLogged = sessionStore.isLoggedSubject
       .subscribe(value => {
@@ -60,7 +63,7 @@ export default defineComponent({
     const subSessionStorage = sessionStore.sessionStorageSubject
       .subscribe(values => {
         if(values && values['username']){
-          username.value = sessionStore.getFromSessionStorage('username') as string;
+          username.value = sanitizer.sanitizeString(sessionStore.getFromSessionStorage('username') as string);
         }
       })
 

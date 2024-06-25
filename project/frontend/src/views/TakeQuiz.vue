@@ -15,9 +15,9 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-1">
-                            <h1 v-html="(quiz?.title) ? Utils.toMarkdown(quiz?.title) : ''"></h1>
+                            <h1 v-html="(quiz?.title) ? Utils.toMarkdown(sanitizer.sanitizeString(quiz?.title)!) : ''"></h1>
                         </div>
-                        <span v-html="(quiz?.description) ? Utils.toMarkdown(quiz?.description) : ''"></span>
+                        <span v-html="(quiz?.description) ? Utils.toMarkdown(sanitizer.sanitizeString(quiz?.description)!) : ''"></span>
                         <v-divider></v-divider>
                         <v-form readonly>
                             <div class="row">
@@ -74,6 +74,7 @@ import type { QuizResponseDto } from '@/api/models/QuizResponseDto';
 import CreateQuestionsWindows from '@/components/create-quiz/CreateQuestionsWindows.vue';
 import i18n from '@/i18n/i18n';
 import { useSessionStore } from '@/stores/sessionStore';
+import { Sanitizer } from '@/utils/Sanitizer';
 import Utils from '@/utils/Utils';
 import { Validators } from '@/utils/Validators';
 import { inject, onMounted, ref, type Ref } from 'vue';
@@ -97,6 +98,8 @@ export default {
         const usernameDialog = ref(false);
         const usernameNotLogged: Ref<string | undefined> = ref();
         const USERNAME_ANONYMOUS = 'Anonymous';
+        const sanitizer = inject('Sanitizer') as Sanitizer;
+
 
         onMounted(() => {
             quizApi.getQuizById({ uidQuiz: props.id })
@@ -108,6 +111,7 @@ export default {
         })
 
         function questionToQuestionResponseDto(question: QuestionDto): QuestionResponseDto {
+            sanitizer.sanitize(question);
             if (!question) {
                 throw new Error('Question in questionToQuestionResponseDto is null');
             }
@@ -130,7 +134,7 @@ export default {
         }
 
         function onAddUsername(){
-            if(usernameNotLogged.value && Validators.minLength(usernameNotLogged.value)){
+            if(usernameNotLogged.value && Validators.minLength(sanitizer.sanitizeString(usernameNotLogged.value)!)){
                 usernameDialog.value = false;
             }
         }
@@ -142,7 +146,7 @@ export default {
 
         function onCompleteQuestions(questions: QuestionDto[]) {
             const idCustomer = (sessionStorage.getFromSessionStorage('idCustomer')) ?
-                sessionStorage.getFromSessionStorage('idCustomer') as string :
+                sanitizer.sanitizeString(sessionStorage.getFromSessionStorage('idCustomer')!) as string :
                 undefined;
 
             const quizResponseDto: QuizResponseDto = {
@@ -154,6 +158,7 @@ export default {
                     usernameNotLogged.value : 
                     undefined
             };
+            sanitizer.sanitize(quizResponseDto);
             scoreApi.completeQuiz({ quizResponseDto })
                 .then(() => router.push({ name: 'quiz-istance', params: { id: props.id } }))
                 .catch((e) => console.log(e));
@@ -167,7 +172,8 @@ export default {
             minLength,
             usernameNotLogged,
             onAddUsername,
-            onStayAnonymous
+            onStayAnonymous,
+            sanitizer
         };
     },
     components: {

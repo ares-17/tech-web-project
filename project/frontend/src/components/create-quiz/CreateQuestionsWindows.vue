@@ -46,10 +46,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
-import CreateQuestionComponent from './CreateQuestionComponent.vue';
 import type { QuestionDto, QuizDto } from '@/api/models';
 import type { PropType, Ref } from 'vue';
+import { defineComponent, inject, ref, watch } from 'vue';
+import CreateQuestionComponent from './CreateQuestionComponent.vue';
+import type { Sanitizer } from '@/utils/Sanitizer';
 
 export default defineComponent({
     name: 'CreateQuestionsWindows',
@@ -72,7 +73,7 @@ export default defineComponent({
             windowsRef.value = Number(props.windows);
             currentWindow.value = 0;
         });
-
+        const sanitizer = inject('Sanitizer') as Sanitizer;
         const questions: Ref<Partial<QuestionDto>[]> = ref([]);
 
         function onClickPrevWindow(index: number, question: QuestionDto){
@@ -102,7 +103,8 @@ export default defineComponent({
             onClickPrevWindow,
             onClickComplete,
             onClickNextWindow,
-            questions
+            questions,
+            sanitizer
         }
     },
     components: {

@@ -42,17 +42,17 @@
 
 <script lang="ts">
 import { Validators } from '@/utils/Validators';
-import { defineComponent, ref, type Ref } from 'vue';
+import { defineComponent, inject, ref, type Ref } from 'vue';
 import i18n from '@/i18n/i18n';
 import type { QuizCreation } from '@/api/models/QuizCreation';
+import { Sanitizer } from '@/utils/Sanitizer';
 
 export default defineComponent({
     name: 'FirstStepNewQuiz',
     emits: ['next', 'update:counter'],
     setup(_, { emit }) {
-        const values: Ref<QuizCreation> = ref({
-
-        });
+        const values: Ref<QuizCreation> = ref({ });
+        const sanitizer = inject('Sanitizer') as Sanitizer;
 
         function onNext() {
             if (hasNoErrors()) {
@@ -62,6 +62,7 @@ export default defineComponent({
         }
 
         function hasNoErrors(): boolean {
+            sanitizer.sanitize(values.value);
             return !!values.value?.title && 
                 !!values.value?.description &&
                 (values.value?.numMaxErrors !== undefined && values.value.numMaxErrors !== null) &&

@@ -12,8 +12,8 @@
         <form @submit.prevent="onConfirmQuestion">
             <div class="col-12">
                 <v-text-field :label="$t('create_question_title')" variant="outlined" class="mb-3 ms-1"
-                    :readonly="!!question"
-                    v-model="questionRef.title" required hide-details="auto" :rules="[minLength]"></v-text-field>
+                    :readonly="!!question" v-model="questionRef.title" required hide-details="auto"
+                    :rules="[minLength]"></v-text-field>
                 <div v-if="typeOfQuest === 'open'">
                     <v-textarea label="Label" variant="outlined" required :rules="[minLength]" class="ms-1"
                         @update:model-value="updateSingleAnswer"></v-textarea>
@@ -29,7 +29,7 @@
                                             :label="$t('craete_question_answer1')" class="ml-3 mt-2"></v-text-field>
                                     </div>
                                     <div v-else class="ml-3 w-100 py-4">
-                                        <span >{{ question?.answers[0]?.text }}</span>
+                                        <span v-html="sanitizer.sanitizeString(question?.answers[0]?.text)"></span>
                                     </div>
                                 </template>
                             </v-radio>
@@ -38,12 +38,12 @@
                             <v-radio :value="1" class="d-flex align-center" required>
                                 <template v-slot:label>
                                     <div v-if="!question" class="w-100">
-                                    <v-text-field variant="outlined" required :rules="[minLength]"
-                                        @update:model-value="val => updateAnswer(1, val)"
-                                        :label="$t('craete_question_answer2')" class="ml-3 mt-2"></v-text-field>
+                                        <v-text-field variant="outlined" required :rules="[minLength]"
+                                            @update:model-value="val => updateAnswer(1, val)"
+                                            :label="$t('craete_question_answer2')" class="ml-3 mt-2"></v-text-field>
                                     </div>
                                     <div v-else class="ml-3 w-100 py-4">
-                                        <span >{{ question?.answers[1]?.text }}</span>
+                                        <span v-html="sanitizer.sanitizeString(question?.answers[1]?.text)"></span>
                                     </div>
                                 </template>
                             </v-radio>
@@ -52,12 +52,12 @@
                             <v-radio :value="2" class="d-flex align-center" required>
                                 <template v-slot:label>
                                     <div v-if="!question" class="w-100">
-                                    <v-text-field variant="outlined" required :rules="[minLength]"
-                                        @update:model-value="val => updateAnswer(2, val)"
-                                        :label="$t('craete_question_answer3')" class="ml-3 mt-2"></v-text-field>
+                                        <v-text-field variant="outlined" required :rules="[minLength]"
+                                            @update:model-value="val => updateAnswer(2, val)"
+                                            :label="$t('craete_question_answer3')" class="ml-3 mt-2"></v-text-field>
                                     </div>
                                     <div v-else class="ml-3 w-100 py-4">
-                                        <span >{{ question?.answers[2]?.text }}</span>
+                                        <span v-html="sanitizer.sanitizeString(question?.answers[2]?.text)"></span>
                                     </div>
                                 </template>
                             </v-radio>
@@ -66,12 +66,12 @@
                             <v-radio :value="3" class="d-flex align-center" required>
                                 <template v-slot:label>
                                     <div v-if="!question" class="w-100">
-                                    <v-text-field variant="outlined" required :rules="[minLength]"
-                                        @update:model-value="val => updateAnswer(3, val)"
-                                        :label="$t('craete_question_answer4')" class="ml-3 mt-2"></v-text-field>
+                                        <v-text-field variant="outlined" required :rules="[minLength]"
+                                            @update:model-value="val => updateAnswer(3, val)"
+                                            :label="$t('craete_question_answer4')" class="ml-3 mt-2"></v-text-field>
                                     </div>
                                     <div v-else class="ml-3 w-100 py-4">
-                                        <span >{{ question?.answers[3]?.text }}</span>
+                                        <span v-html="sanitizer.sanitizeString(question?.answers[3]?.text)"></span>
                                     </div>
                                 </template>
                             </v-radio>
@@ -83,26 +83,23 @@
                     </div>
                 </div>
                 <v-divider></v-divider>
-                <div class="row w-100">
-
-                <v-card-actions>
-                        <div class="col-12 col-md-6 col-sm-12 col-lg-6 col-xl-6 m-2">
-                        <v-btn  v-if="index > 1" variant="text" @click="$emit('click:prev', questionRef)">
+                <div class="row w-100 mx-auto">
+                    <div v-if="index > 1" class="col-12 col-md-6 col-sm-12 col-lg-6 col-xl-6 m-2  mx-auto">
+                        <v-btn  variant="text" @click="$emit('click:prev', questionRef)" class="mx-auto">
                             {{ $t('question_component_back') }}
                         </v-btn>
                     </div>
-                    <v-spacer></v-spacer>
-                    <div class="col-12 col-md-6 col-sm-12 col-lg-6 col-xl-6 m-2">
-                        <v-btn class="w-100 text-center" v-if="index !== total" type="submit" color="primary" variant="flat">
+                    <v-spacer v-if="index > 1"></v-spacer>
+                    <div class="col-12 col-md-6 col-sm-12 col-lg-6 col-xl-6 m-2  mx-auto">
+                        <v-btn class="w-100 text-center mx-auto" v-if="index !== total" type="submit" color="primary"
+                            variant="flat">
                             {{ $t('question_component_next') }}
                         </v-btn>
-                        <v-btn class="w-100 text-center" v-else color="primary" type="submit" variant="flat">
+                        <v-btn class="w-100 text-center mx-auto" v-else color="primary" type="submit" variant="flat">
                             {{ $t('question_component_last_next') }}
-                    </v-btn>
+                        </v-btn>
                     </div>
-                </v-card-actions>
-            </div>
-
+                </div>
             </div>
         </form>
     </div>
@@ -110,8 +107,9 @@
 <script lang="ts">
 import type { QuestionDto } from '@/api/models';
 import i18n from '@/i18n/i18n';
+import { Sanitizer } from '@/utils/Sanitizer';
 import { Validators } from '@/utils/Validators';
-import { defineComponent, ref, type PropType, type Ref } from 'vue';
+import { defineComponent, inject, ref, type PropType, type Ref } from 'vue';
 import { VRadio, VRadioGroup } from 'vuetify/components';
 
 export default defineComponent({
@@ -138,6 +136,7 @@ export default defineComponent({
             ref((props.question?.answers?.length === 1) ? 'open' : 'closed') : 
             ref('open');
         const submitted = ref(false);
+        const sanitizer = inject('Sanitizer') as Sanitizer;
 
         const correctAnswer: Ref<undefined | number> = ref(undefined);
 
@@ -228,7 +227,8 @@ export default defineComponent({
             onClickRadio,
             onConfirmQuestion,
             noNull,
-            submitted
+            submitted,
+            sanitizer
         }
     },
     components: {

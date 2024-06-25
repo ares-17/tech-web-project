@@ -63,6 +63,7 @@
 <script lang="ts">
 import type { QuizApi } from '@/api/QuizApi';
 import { useSessionStore } from '@/stores/sessionStore';
+import { Sanitizer } from '@/utils/Sanitizer';
 import type { Ref } from 'vue';
 import { inject, onBeforeUnmount, ref } from 'vue';
 import { useRouter, type Router } from 'vue-router';
@@ -78,8 +79,11 @@ export default {
         const dialogLogin = ref(false);
         const isLogged = ref(false);
         const subscription = sessionStore.isLoggedSubject.subscribe(val => isLogged.value = val);
+        const sanitizer = inject('Sanitizer') as Sanitizer;
+
 
         function getQuizByCode() {
+            code.value = (code.value) ? sanitizer.sanitizeString(code.value)! : code.value;
             if (!code.value || !uuidRegex.test(code.value)) {
                 return;
             }
@@ -99,7 +103,8 @@ export default {
         }
 
         function validateUUID(value: string){
-            return uuidRegex.test(value) || 'Formato del codice errato';
+            const sanValue = value;
+            return uuidRegex.test(sanValue!) || 'Formato del codice errato';
         }
 
         function goToLogin(){

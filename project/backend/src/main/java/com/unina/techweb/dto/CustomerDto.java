@@ -1,6 +1,7 @@
 package com.unina.techweb.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.unina.techweb.validators.NoHtml;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Generated;
 import jakarta.validation.constraints.NotNull;
@@ -16,12 +17,15 @@ import java.util.Objects;
 public class CustomerDto {
 
   @JsonProperty("id")
+  @NoHtml
   private String id;
 
   @JsonProperty("username")
+  @NoHtml
   private String username;
 
   @JsonProperty("password")
+  @NoHtml
   private String password;
 
   public CustomerDto id(String id) {
